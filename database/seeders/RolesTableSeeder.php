@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 
 class RolesTableSeeder extends Seeder
 {
-
     /**
      * Auto generated seed file
      *
@@ -19,7 +18,7 @@ class RolesTableSeeder extends Seeder
         \DB::table('roles')->delete();
         
         \DB::table('roles')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'name' => 'admin',
@@ -27,7 +26,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2023-11-07 02:24:32',
                 'updated_at' => '2023-11-07 02:24:32',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'name' => 'user',
@@ -35,7 +34,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:14:57',
                 'updated_at' => '2024-03-10 08:15:06',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'name' => 'moderator',
@@ -44,7 +43,5 @@ class RolesTableSeeder extends Seeder
                 'updated_at' => '2024-03-10 14:01:33',
             ),
         ));
-        
-        
     }
 }

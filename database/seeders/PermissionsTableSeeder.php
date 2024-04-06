@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 
 class PermissionsTableSeeder extends Seeder
 {
-
     /**
      * Auto generated seed file
      *
@@ -19,7 +18,7 @@ class PermissionsTableSeeder extends Seeder
         \DB::table('permissions')->delete();
         
         \DB::table('permissions')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'name' => 'view-any JourneyAttempt',
@@ -27,7 +26,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'name' => 'view-any JourneyAttempt',
@@ -35,7 +34,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'name' => 'view JourneyAttempt',
@@ -43,7 +42,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 4,
                 'name' => 'view JourneyAttempt',
@@ -51,7 +50,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 5,
                 'name' => 'create JourneyAttempt',
@@ -59,7 +58,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 6,
                 'name' => 'create JourneyAttempt',
@@ -67,7 +66,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 7,
                 'name' => 'update JourneyAttempt',
@@ -75,7 +74,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 8,
                 'name' => 'update JourneyAttempt',
@@ -83,7 +82,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 9,
                 'name' => 'delete JourneyAttempt',
@@ -91,7 +90,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 10,
                 'name' => 'delete JourneyAttempt',
@@ -99,7 +98,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 11,
                 'name' => 'restore JourneyAttempt',
@@ -107,7 +106,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 12,
                 'name' => 'restore JourneyAttempt',
@@ -115,7 +114,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            12 => 
+            12 =>
             array (
                 'id' => 13,
                 'name' => 'force-delete JourneyAttempt',
@@ -123,7 +122,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            13 => 
+            13 =>
             array (
                 'id' => 14,
                 'name' => 'force-delete JourneyAttempt',
@@ -131,7 +130,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            14 => 
+            14 =>
             array (
                 'id' => 15,
                 'name' => 'replicate JourneyAttempt',
@@ -139,7 +138,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            15 => 
+            15 =>
             array (
                 'id' => 16,
                 'name' => 'replicate JourneyAttempt',
@@ -147,7 +146,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            16 => 
+            16 =>
             array (
                 'id' => 17,
                 'name' => 'reorder JourneyAttempt',
@@ -155,7 +154,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            17 => 
+            17 =>
             array (
                 'id' => 18,
                 'name' => 'reorder JourneyAttempt',
@@ -163,7 +162,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            18 => 
+            18 =>
             array (
                 'id' => 19,
                 'name' => 'view-any User',
@@ -171,7 +170,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            19 => 
+            19 =>
             array (
                 'id' => 20,
                 'name' => 'view-any User',
@@ -179,7 +178,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            20 => 
+            20 =>
             array (
                 'id' => 21,
                 'name' => 'view User',
@@ -187,7 +186,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            21 => 
+            21 =>
             array (
                 'id' => 22,
                 'name' => 'view User',
@@ -195,7 +194,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            22 => 
+            22 =>
             array (
                 'id' => 23,
                 'name' => 'create User',
@@ -203,7 +202,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            23 => 
+            23 =>
             array (
                 'id' => 24,
                 'name' => 'create User',
@@ -211,7 +210,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            24 => 
+            24 =>
             array (
                 'id' => 25,
                 'name' => 'update User',
@@ -219,7 +218,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            25 => 
+            25 =>
             array (
                 'id' => 26,
                 'name' => 'update User',
@@ -227,7 +226,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            26 => 
+            26 =>
             array (
                 'id' => 27,
                 'name' => 'delete User',
@@ -235,7 +234,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            27 => 
+            27 =>
             array (
                 'id' => 28,
                 'name' => 'delete User',
@@ -243,7 +242,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            28 => 
+            28 =>
             array (
                 'id' => 29,
                 'name' => 'restore User',
@@ -251,7 +250,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            29 => 
+            29 =>
             array (
                 'id' => 30,
                 'name' => 'restore User',
@@ -259,7 +258,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            30 => 
+            30 =>
             array (
                 'id' => 31,
                 'name' => 'force-delete User',
@@ -267,7 +266,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            31 => 
+            31 =>
             array (
                 'id' => 32,
                 'name' => 'force-delete User',
@@ -275,7 +274,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            32 => 
+            32 =>
             array (
                 'id' => 33,
                 'name' => 'replicate User',
@@ -283,7 +282,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            33 => 
+            33 =>
             array (
                 'id' => 34,
                 'name' => 'replicate User',
@@ -291,7 +290,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            34 => 
+            34 =>
             array (
                 'id' => 35,
                 'name' => 'reorder User',
@@ -299,7 +298,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            35 => 
+            35 =>
             array (
                 'id' => 36,
                 'name' => 'reorder User',
@@ -307,7 +306,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            36 => 
+            36 =>
             array (
                 'id' => 37,
                 'name' => 'view-any Waypoint',
@@ -315,7 +314,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            37 => 
+            37 =>
             array (
                 'id' => 38,
                 'name' => 'view-any Waypoint',
@@ -323,7 +322,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            38 => 
+            38 =>
             array (
                 'id' => 39,
                 'name' => 'view Waypoint',
@@ -331,7 +330,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            39 => 
+            39 =>
             array (
                 'id' => 40,
                 'name' => 'view Waypoint',
@@ -339,7 +338,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            40 => 
+            40 =>
             array (
                 'id' => 41,
                 'name' => 'create Waypoint',
@@ -347,7 +346,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            41 => 
+            41 =>
             array (
                 'id' => 42,
                 'name' => 'create Waypoint',
@@ -355,7 +354,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            42 => 
+            42 =>
             array (
                 'id' => 43,
                 'name' => 'update Waypoint',
@@ -363,7 +362,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            43 => 
+            43 =>
             array (
                 'id' => 44,
                 'name' => 'update Waypoint',
@@ -371,7 +370,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            44 => 
+            44 =>
             array (
                 'id' => 45,
                 'name' => 'delete Waypoint',
@@ -379,7 +378,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            45 => 
+            45 =>
             array (
                 'id' => 46,
                 'name' => 'delete Waypoint',
@@ -387,7 +386,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            46 => 
+            46 =>
             array (
                 'id' => 47,
                 'name' => 'restore Waypoint',
@@ -395,7 +394,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            47 => 
+            47 =>
             array (
                 'id' => 48,
                 'name' => 'restore Waypoint',
@@ -403,7 +402,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            48 => 
+            48 =>
             array (
                 'id' => 49,
                 'name' => 'force-delete Waypoint',
@@ -411,7 +410,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            49 => 
+            49 =>
             array (
                 'id' => 50,
                 'name' => 'force-delete Waypoint',
@@ -419,7 +418,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            50 => 
+            50 =>
             array (
                 'id' => 51,
                 'name' => 'replicate Waypoint',
@@ -427,7 +426,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            51 => 
+            51 =>
             array (
                 'id' => 52,
                 'name' => 'replicate Waypoint',
@@ -435,7 +434,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            52 => 
+            52 =>
             array (
                 'id' => 53,
                 'name' => 'reorder Waypoint',
@@ -443,7 +442,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-03-10 08:13:52',
                 'updated_at' => '2024-03-10 08:13:52',
             ),
-            53 => 
+            53 =>
             array (
                 'id' => 54,
                 'name' => 'reorder Waypoint',
@@ -452,7 +451,5 @@ class PermissionsTableSeeder extends Seeder
                 'updated_at' => '2024-03-10 08:13:52',
             ),
         ));
-        
-        
     }
 }
