@@ -36,10 +36,13 @@ class UserResource extends Resource
                 Section::make()
                        ->description()
                        ->schema([
-                           TextInput::make('name'),
+                           TextInput::make('f_name'),
+                           TextInput::make('l_name'),
                            TextInput::make('email')->email(),
                            TextInput::make('mobile'),
-                           TextInput::make('address'),
+                           TextInput::make('city'),
+                           TextInput::make('street'),
+                           TextInput::make('n_house'),
                            TextInput::make('password')
                                     ->password()
                                     ->dehydrateStateUsing(fn($state) => Hash::make($state))
@@ -61,13 +64,14 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('profile_image')->label('Image')->circular()->toggleable()->stacked()->wrap(),
                 TextColumn::make('name'),
                 TextColumn::make('email'),
                 TextColumn::make('mobile'),
-                TextColumn::make('address'),
-                TextColumn::make('created_at')->dateTime(),
+                TextColumn::make('address')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('created_at')->toggleable(isToggledHiddenByDefault: true)->dateTime(),
+                TextColumn::make('updated_at')->toggleable(isToggledHiddenByDefault: true)->dateTime(),
                 TextColumn::make('roles.name')->listWithLineBreaks(),
-                Tables\Columns\SpatieMediaLibraryImageColumn::make('profile_image')->toggleable(),
             ])
             ->filters([
                 Filter::make('email_verified_at')->label('Email verified')->query(function (Builder $query): Builder {

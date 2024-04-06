@@ -38,13 +38,15 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'f_name',
+        'l_name',
         'email',
         'password',
-        'profile_photo_path',
         'otp',
         'mobile',
-        'address',
+        'city',
+        'street',
+        'n_house',
     ];
 
     /**
@@ -74,7 +76,8 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
      * @var array<int, string>
      */
     protected $appends = [
-        'profile_photo_url',
+        'name',
+        'address',
         'profile_image',
     ];
 
@@ -89,6 +92,20 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
             ->addMediaConversion('preview')
             ->fit(Manipulations::FIT_CROP, 300, 300)
             ->nonQueued();
+    }
+
+    public function name(): Attribute
+    {
+        return Attribute::get(function () {
+            return $this->f_name . ' ' . $this->l_name;
+        });
+    }
+
+    public function address(): Attribute
+    {
+        return Attribute::get(function () {
+            return $this->city . ' ' . $this->street . ' ' . $this->n_house;
+        });
     }
 
     public function profileImage(): Attribute
