@@ -36,18 +36,35 @@ class UserResource extends Resource
                 Section::make()
                        ->description()
                        ->schema([
-                           TextInput::make('f_name'),
-                           TextInput::make('l_name'),
+                           Section::make('User name')
+                               ->columns([
+                                   'sm' => 1,
+                                   'xl' => 2,
+                                   '2xl' => 2,
+                               ])
+                                  ->schema([
+                                      TextInput::make('f_name')->label('First name'),
+                                      TextInput::make('l_name')->label('Last name'),
+                                  ]),
+                           Section::make('User address')
+                               ->columns([
+                                   'sm' => 1,
+                                   'xl' => 3,
+                                   '2xl' => 3,
+                               ])
+                                  ->schema([
+                                      TextInput::make('city'),
+                                      TextInput::make('street'),
+                                      TextInput::make('n_house')->label('House number'),
+                                  ]),
                            TextInput::make('email')->email(),
-                           TextInput::make('mobile'),
-                           TextInput::make('city'),
-                           TextInput::make('street'),
-                           TextInput::make('n_house'),
                            TextInput::make('password')
+                                    ->helperText('Leave the password field empty to keep the current password unchanged')
                                     ->password()
                                     ->dehydrateStateUsing(fn($state) => Hash::make($state))
                                     ->dehydrated(fn($state) => filled($state))
                                     ->required(fn(string $context): bool => $context === 'create'),
+                           TextInput::make('mobile'),
                            Select::make('roles')->multiple()->relationship('roles', 'name'),
                            SpatieMediaLibraryFileUpload::make('profile_image'),
                        ]),
