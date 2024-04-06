@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="PHP_CodeSniffer">
-    <description>The coding standard for Salesman-Dilemma-Solver-Backend project.</description>
+    <description>The coding standard for Perfect food project.</description>
     <rule ref="PSR2"/>
 
     <file>app</file>

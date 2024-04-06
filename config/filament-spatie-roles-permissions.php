@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Team;
+use App\Models\User;
+
 return [
 
     'preload_roles' => true,
@@ -8,7 +11,7 @@ return [
 
     'navigation_section_group' => 'Settings', // Default uses language constant
 
-    'team_model' => \App\Models\Team::class,
+    'team_model' => Team::class,
 
     'scope_to_tenant' => true,
 
@@ -49,7 +52,7 @@ return [
     ],
 
     /*
-     *  Navigation items order - int value, false  restores the default position
+     * Navigation items order - int value, false restores the default position
      */
 
     'sort' => [
@@ -88,12 +91,12 @@ return [
         /*
          * returns the "name" for the permission.
          *
-         * $permission which is an iteration of [permission_affixes] ,
+         * $permission which is an iteration of [permission_affixes],
          * $model The model to which the $permission will be concatenated
          *
          * Eg: 'permission_name' => 'return $permissionAffix . ' ' . Str::kebab($modelName),
          *
-         * Note: If you are changing the "permission_name" , It's recommended to run with --clean to avoid duplications
+         * Note: If you are changing the "permission_name", It's recommended to run with --clean to avoid duplications
          */
         'permission_name' => 'return $permissionAffix . \' \' . $modelName;',
 
@@ -103,7 +106,7 @@ return [
         'discover_models_through_filament_resources' => false,
 
         /*
-         * Include directories which consists of models.
+         * Include directories that consist of models.
          */
         'model_directories' => [
             app_path('Models'),
@@ -125,7 +128,7 @@ return [
         ],
 
         'excluded_policy_models' => [
-            \App\Models\User::class,
+            User::class,
         ],
 
         /*
@@ -135,7 +138,7 @@ return [
             //'view-log'
         ],
 
-        'user_model' => \App\Models\User::class,
+        'user_model' => User::class,
 
         'policies_namespace' => 'App\Policies',
     ],
