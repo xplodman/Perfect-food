@@ -2,25 +2,25 @@
 $menuItems = [
 	[
 		'name'        => 'Vegetable Salad on Plate',
-		'image'       => 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		'image'       => '/assets/images/pexels-photo-1640777.jpeg',
 		'description' => 'Fresh mixed vegetable salad served on a plate.',
 		'price'       => '$8.99',
 	],
 	[
 		'name'        => 'Fries With Leaves Dish',
-		'image'       => 'https://images.pexels.com/photos/718742/pexels-photo-718742.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		'image'       => '/assets/images/pexels-photo-718742.webp',
 		'description' => 'A delicious combination of crispy fries served with fresh salad leaves.',
 		'price'       => '$6.99',
 	],
 	[
 		'name'        => 'Fries and Burger on Plate',
-		'image'       => 'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		'image'       => '/assets/images/pexels-photo-70497.webp',
 		'description' => 'Crispy fries served with a juicy burger on a plate.',
 		'price'       => '$10.99',
 	],
 	[
 		'name'        => 'Pasta With Tomato and Basil',
-		'image'       => 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		'image'       => '/assets/images/pexels-photo-1279330.webp',
 		'description' => 'Classic pasta dish with tomato sauce and fresh basil leaves.',
 		'price'       => '$12.99',
 	],
