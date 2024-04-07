@@ -1,55 +1,46 @@
-<?php
+<?php include_once './includes/header.php';
+$menuItems = [
+	[
+		'name'        => 'Vegetable Salad on Plate',
+		'image'       => 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		'description' => 'Fresh mixed vegetable salad served on a plate.',
+		'price'       => '$8.99',
+	],
+	[
+		'name'        => 'Fries With Leaves Dish',
+		'image'       => 'https://images.pexels.com/photos/718742/pexels-photo-718742.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		'description' => 'A delicious combination of crispy fries served with fresh salad leaves.',
+		'price'       => '$6.99',
+	],
+	[
+		'name'        => 'Fries and Burger on Plate',
+		'image'       => 'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		'description' => 'Crispy fries served with a juicy burger on a plate.',
+		'price'       => '$10.99',
+	],
+	[
+		'name'        => 'Pasta With Tomato and Basil',
+		'image'       => 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+		'description' => 'Classic pasta dish with tomato sauce and fresh basil leaves.',
+		'price'       => '$12.99',
+	],
+];
+?>
 
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Http\Request;
+<div class="row">
+	<?php foreach ( $menuItems as $item ): ?>
+		<div class="col-md-3 mb-4">
+			<div class="card">
+				<img src="<?php echo $item['image']; ?>" class="card-img-top" alt="<?php echo $item['name']; ?>">
+				<div class="card-body">
+					<h5 class="card-title"><?php echo $item['name']; ?></h5>
+					<p class="card-text"><?php echo $item['description']; ?></p>
+					<p class="card-text"><strong>Price:</strong> <?php echo $item['price']; ?></p>
+					<button class="btn btn-primary">Add to Cart</button>
+				</div>
+			</div>
+		</div>
+	<?php endforeach; ?>
+</div>
 
-define('LARAVEL_START', microtime(true));
-
-/*
-|--------------------------------------------------------------------------
-| Check If The Application Is Under Maintenance
-|--------------------------------------------------------------------------
-|
-| If the application is in maintenance / demo mode via the "down" command
-| we will load this file so that any pre-rendered content can be shown
-| instead of starting the framework, which could cause an exception.
-|
-*/
-
-if (file_exists($maintenance = __DIR__.'/storage/framework/maintenance.php')) {
-    require $maintenance;
-}
-
-/*
-|--------------------------------------------------------------------------
-| Register The Auto Loader
-|--------------------------------------------------------------------------
-|
-| Composer provides a convenient, automatically generated class loader for
-| this application. We just need to utilize it! We'll simply require it
-| into the script here so we don't need to manually load our classes.
-|
-*/
-
-require __DIR__.'/vendor/autoload.php';
-
-/*
-|--------------------------------------------------------------------------
-| Run The Application
-|--------------------------------------------------------------------------
-|
-| Once we have the application, we can handle the incoming request using
-| the application's HTTP kernel. Then, we will send the response back
-| to this client's browser, allowing them to enjoy our application.
-|
-*/
-
-$app = require_once __DIR__.'/bootstrap/app.php';
-
-$kernel = $app->make(Kernel::class);
-
-$response = $kernel->handle(
-    $request = Request::capture()
-)->send();
-
-$kernel->terminate($request, $response);
+<?php include_once './includes/footer.php' ?>
