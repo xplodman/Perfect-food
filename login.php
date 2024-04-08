@@ -25,9 +25,6 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 		header( "Location: index.php" );
 		exit;
 	}
-
-	// Login failed
-	$_SESSION['errors'][] = "Invalid email or password.";
 }
 include_once './includes/partial/errors.php'
 ?>
