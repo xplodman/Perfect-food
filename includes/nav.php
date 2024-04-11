@@ -38,7 +38,7 @@
 					<!-- Cart Icon with Count -->
 					<li class="nav-item">
 						<a class="nav-link" href="cart.php">
-							<img width="30" src="/assets/images/icons-cart.png">
+							<img width="30" src="assets/images/icons-cart.png">
 							<?php
 							// Display the count of items in the cart
 							$cartCount = isset( $_SESSION['cart'] ) ? array_sum( $_SESSION['cart'] ) : 0;
