@@ -7,13 +7,14 @@
 				<h5 class="card-title"><?php echo $item['name']; ?></h5>
 				<p class="card-text"><?php echo $item['description']; ?></p>
 				<p class="card-text">
-					<?php if ($_SESSION["discount"] > 0): ?>
-						<strong>Price:</strong> <del><?php echo $item['price']; ?></del>
+					<?php if ( $_SESSION["discount"] > 0 ): ?>
+						<strong>Price:</strong>
+						<del><?php echo $item['price']; ?></del>
 						<br>
 						<strong>Discounted Price:</strong> <?php echo $item['price'] - $_SESSION["discount"]; ?>
-				<?php else: ?>
+					<?php else: ?>
 						<strong>Price:</strong> <?php echo $item['price']; ?>
-				<?php endif; ?>
+					<?php endif; ?>
 				</p>
 				<button type="submit" class="btn btn-primary">Add to Cart</button>
 			</div>

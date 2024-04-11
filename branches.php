@@ -1,9 +1,10 @@
 <?php
+
 use PerfectFood\Classes\Branch;
 
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
-$branch = new Branch();
+$branch   = new Branch();
 $branches = $branch->getAllBranches(); // Assuming you have a method to retrieve all branches
 
 ?>
@@ -20,7 +21,7 @@ $branches = $branch->getAllBranches(); // Assuming you have a method to retrieve
 		</tr>
 		</thead>
 		<tbody>
-		<?php foreach ($branches as $branch): ?>
+		<?php foreach ( $branches as $branch ): ?>
 			<tr>
 				<td><?php echo $branch['id']; ?></td>
 				<td><?php echo $branch['name']; ?></td>
@@ -32,4 +33,4 @@ $branches = $branch->getAllBranches(); // Assuming you have a method to retrieve
 	</table>
 </div>
 
-<?php include_once './includes/footer.php' ?>
+<?php include_once 'includes/footer.php' ?>

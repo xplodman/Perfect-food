@@ -3,7 +3,7 @@
 use PerfectFood\Classes\User\Customer;
 
 // Include the autoload.php file
-require_once './includes/autoload.php';
+require_once 'includes/autoload.php';
 
 
 // Start the session

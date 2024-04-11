@@ -3,7 +3,7 @@
 use PerfectFood\Classes\MenuItem;
 use PerfectFood\Classes\User\Customer;
 
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
 // Check if the user is already logged in, if yes, redirect to homepage
 if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
@@ -12,13 +12,13 @@ if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in
 }
 
 // Check if the user is already logged in, if yes, redirect to homepage
-if ( empty($_SESSION['cart']) ) {
+if ( empty( $_SESSION['cart'] ) ) {
 	header( "Location: menus.php" );
 	exit;
 }
 
 $menuItems = new MenuItem();
-$customer = new Customer();
+$customer  = new Customer();
 
 // Initialize an array to store cart items with their details
 $cartItems = array();
@@ -49,7 +49,7 @@ foreach ( $_SESSION['cart'] as $itemId => $quantity ) {
 $customerId = $_SESSION['customer_id'];
 
 // Retrieve phone numbers associated with the customer ID
-$phoneNumbers = $customer->getPhonesByCustomerId($customerId);
+$phoneNumbers = $customer->getPhonesByCustomerId( $customerId );
 ?>
 <div class="container">
 	<h1>Cart</h1>
@@ -66,7 +66,7 @@ $phoneNumbers = $customer->getPhonesByCustomerId($customerId);
 		</thead>
 		<tbody>
 		<!-- Iterate through cart items and display each item -->
-		<?php foreach ($cartItems as $index => $cartItem): ?>
+		<?php foreach ( $cartItems as $index => $cartItem ): ?>
 			<tr>
 				<td><?php echo $index + 1; ?></td>
 				<td><?php echo $cartItem["name"]; ?></td>
@@ -119,10 +119,10 @@ $phoneNumbers = $customer->getPhonesByCustomerId($customerId);
 				</div>
 			</div>
 			<div class="row mb-3">
-				<?php for ($i = 1; $i <= 3; $i++): ?>
+				<?php for ( $i = 1; $i <= 3; $i ++ ): ?>
 					<div class="col-4">
 						<label for="phone_<?php echo $i; ?>" class="form-label">Phone #<?php echo $i; ?></label>
-						<input type="text" class="form-control" id="phone_<?php echo $i; ?>" name="phones[]" value="<?php echo $phoneNumbers[$i-1]; ?>">
+						<input type="text" class="form-control" id="phone_<?php echo $i; ?>" name="phones[]" value="<?php echo $phoneNumbers[ $i - 1 ]; ?>">
 					</div>
 				<?php endfor; ?>
 			</div>
@@ -132,4 +132,4 @@ $phoneNumbers = $customer->getPhonesByCustomerId($customerId);
 </div>
 
 
-<?php include_once './includes/footer.php' ?>
+<?php include_once 'includes/footer.php' ?>

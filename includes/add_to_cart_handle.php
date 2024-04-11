@@ -8,5 +8,5 @@ if ( ( $_SERVER["REQUEST_METHOD"] === "POST" ) && isset( $_POST['item_id'] ) ) {
 	}
 
 	// Increment the count of the item in the session cart array
-	$_SESSION['cart'][$_POST['item_id']] = isset($_SESSION['cart'][$_POST['item_id']]) ? $_SESSION['cart'][$_POST['item_id']] + 1 : 1;
+	$_SESSION['cart'][ $_POST['item_id'] ] = isset( $_SESSION['cart'][ $_POST['item_id'] ] ) ? $_SESSION['cart'][ $_POST['item_id'] ] + 1 : 1;
 }

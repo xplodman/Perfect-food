@@ -1,5 +1,5 @@
 <?php
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
 use PerfectFood\Classes\Book;
 use PerfectFood\Classes\Evaluate;
@@ -16,7 +16,7 @@ $customerId = $_SESSION['customer_id'];
 
 // Retrieve orders for the logged-in customer
 $bookings = $book->getBookingsByCustomerId( $customerId );
-include_once './includes/partial/alerts.php';
+include_once 'includes/partial/alerts.php';
 
 ?>
 
@@ -69,7 +69,7 @@ include_once './includes/partial/alerts.php';
 					<td>
 						<?php
 						// Convert booking creation time to Unix timestamp
-						$bookingCreationTime = strtotime($booking['created_at']) + 7200;
+						$bookingCreationTime = strtotime( $booking['created_at'] ) + 7200;
 
 						// Get current Unix timestamp
 						$currentTime = time();
@@ -78,7 +78,7 @@ include_once './includes/partial/alerts.php';
 						$timeDifference = $currentTime - $bookingCreationTime;
 
 						// If the time difference is less than or equal to 1 hour, display the delete button
-						if ($timeDifference <= 3600 && $booking['status'] === 'pending') :
+						if ( $timeDifference <= 3600 && $booking['status'] === 'pending' ) :
 							?>
 							<form method="post" action="delete_booking.php">
 								<input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>">
@@ -94,4 +94,4 @@ include_once './includes/partial/alerts.php';
 	<?php endif; ?>
 </div>
 
-<?php include_once './includes/footer.php'; ?>
+<?php include_once 'includes/footer.php'; ?>

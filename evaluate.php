@@ -1,10 +1,10 @@
 <?php
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
 use PerfectFood\Classes\Evaluate;
 
 // Check if the user is already logged in, if yes, redirect to homepage
-if ( !isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
 	header( "Location: index.php" );
 	exit;
 }
@@ -12,10 +12,10 @@ if ( !isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"
 // Check if the form is submitted
 if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	$evaluate = new Evaluate();
-	$evaluate->submitEvaluation($_POST['id'], $_POST['type'], $_POST['rating'], $_POST['comment']);
+	$evaluate->submitEvaluation( $_POST['id'], $_POST['type'], $_POST['rating'], $_POST['comment'] );
 }
 
-include_once './includes/partial/alerts.php'
+include_once 'includes/partial/alerts.php'
 ?>
 	<div class="row">
 		<div class="col-md-6 offset-md-3 form-container">
@@ -42,4 +42,4 @@ include_once './includes/partial/alerts.php'
 			</form>
 		</div>
 	</div>
-<?php include_once './includes/footer.php' ?>
+<?php include_once 'includes/footer.php' ?>

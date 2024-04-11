@@ -1,10 +1,10 @@
 <?php
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
 use PerfectFood\Classes\User\Customer;
 
 // Check if the user is already logged in, if yes, redirect to homepage
-if ( !isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
 	header( "Location: login.php" );
 	exit;
 }
@@ -17,23 +17,23 @@ $customerId = $_SESSION['customer_id'];
 // Check if the form is submitted
 if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	// Update customer details
-	$customer->updateCustomerDetails($customerId, $_POST);
+	$customer->updateCustomerDetails( $customerId, $_POST );
 
 	// Update phone numbers
-	$customer->updateCustomerPhones($customerId, $_POST["phones"]);
+	$customer->updateCustomerPhones( $customerId, $_POST["phones"] );
 
 	// Reload customer information
 	$customer->reloadCustomerInfo();
 }
 
 // Retrieve phone numbers associated with the customer ID
-$phoneNumbers = $customer->getPhonesByCustomerId($customerId);
-include_once './includes/partial/alerts.php'
+$phoneNumbers = $customer->getPhonesByCustomerId( $customerId );
+include_once 'includes/partial/alerts.php'
 ?>
 	<div class="row">
 		<div class="col-md-6 offset-md-3 form-container">
 			<h2 class="mb-4">Account details</h2>
-			<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+			<form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ); ?>">
 				<div class="mb-3">
 					<label for="email" class="form-label">Email</label>
 					<input type="email" class="form-control" disabled id="email" value="<?php echo $_SESSION["email"]; ?>">
@@ -74,10 +74,10 @@ include_once './includes/partial/alerts.php'
 					</div>
 				</div>
 				<div class="row mb-3">
-					<?php for ($i = 1; $i <= 3; $i++): ?>
+					<?php for ( $i = 1; $i <= 3; $i ++ ): ?>
 						<div class="col-4">
 							<label for="phone_<?php echo $i; ?>" class="form-label">Phone #<?php echo $i; ?></label>
-							<input type="text" class="form-control" id="phone_<?php echo $i; ?>" name="phones[]" value="<?php echo $phoneNumbers[$i-1]; ?>">
+							<input type="text" class="form-control" id="phone_<?php echo $i; ?>" name="phones[]" value="<?php echo $phoneNumbers[ $i - 1 ]; ?>">
 						</div>
 					<?php endfor; ?>
 				</div>
@@ -90,4 +90,4 @@ include_once './includes/partial/alerts.php'
 			</form>
 		</div>
 	</div>
-<?php include_once './includes/footer.php' ?>
+<?php include_once 'includes/footer.php' ?>

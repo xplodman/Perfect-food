@@ -2,17 +2,17 @@
 
 use PerfectFood\Classes\Book;
 
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
 // Check if the user is logged in
-if (!isset($_SESSION["customer_logged_in"]) || $_SESSION["customer_logged_in"] !== true) {
-	header("Location: login.php");
+if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+	header( "Location: login.php" );
 	exit;
 }
 
 // Check if the booking ID is provided in the request
-if (!isset($_POST['booking_id'])) {
-	header("Location: bookings.php");
+if ( ! isset( $_POST['booking_id'] ) ) {
+	header( "Location: bookings.php" );
 	exit;
 }
 
@@ -23,8 +23,8 @@ $booking = new Book();
 $bookingId = $_POST['booking_id'];
 
 // Attempt to delete the booking
-$booking->deleteBooking($bookingId);
+$booking->deleteBooking( $bookingId );
 
 // Redirect back to the bookings page
-header("Location: bookings.php");
+header( "Location: bookings.php" );
 exit;

@@ -1,5 +1,5 @@
 <?php
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
 use PerfectFood\Classes\User\Customer;
 
@@ -26,7 +26,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 		exit;
 	}
 }
-include_once './includes/partial/alerts.php'
+include_once 'includes/partial/alerts.php'
 ?>
 	<div class="row">
 		<div class="col-md-6 offset-md-3 form-container">
@@ -44,4 +44,4 @@ include_once './includes/partial/alerts.php'
 			</form>
 		</div>
 	</div>
-<?php include_once './includes/footer.php' ?>
+<?php include_once 'includes/footer.php' ?>

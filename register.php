@@ -1,5 +1,5 @@
 <?php
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
 use PerfectFood\Classes\User\Customer;
 
@@ -22,12 +22,12 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	$city        = $_POST['city'];
 	$street      = $_POST['street'];
 	$houseNumber = $_POST['house_number'];
-	$phones       = $_POST['phones'];
+	$phones      = $_POST['phones'];
 
 	// Validate input dat
-	if ( empty( $email ) || empty( $password ) || empty( $firstName ) || empty( $lastName ) || empty( $city ) || empty( $street ) || empty( $houseNumber ) || empty( array_filter($phones) ) ) {
+	if ( empty( $email ) || empty( $password ) || empty( $firstName ) || empty( $lastName ) || empty( $city ) || empty( $street ) || empty( $houseNumber ) || empty( array_filter( $phones ) ) ) {
 		$_SESSION['errors'][] = "All fields are required.";
-	}else{
+	} else {
 		// Create a new Customer object
 		$customer = new Customer();
 
@@ -38,8 +38,8 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 
 			// Insert phone numbers into the phone table
 			$phones = $_POST['phones'];
-			foreach ($phones as $phone) {
-				$customer->addPhone($customerId, $phone);
+			foreach ( $phones as $phone ) {
+				$customer->addPhone( $customerId, $phone );
 			}
 
 			// Registration successful, create session
@@ -54,7 +54,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	}
 }
 
-include_once './includes/partial/alerts.php'
+include_once 'includes/partial/alerts.php'
 ?>
 	<div class="row">
 		<div class="col-md-6 offset-md-3 form-container">
@@ -69,14 +69,14 @@ include_once './includes/partial/alerts.php'
 					<input type="password" class="form-control" id="password" name="password" required>
 				</div>
 				<div class="row mb-3">
-						<div class="col">
-							<label for="first_name" class="form-label">First Name</label>
-							<input type="text" class="form-control" id="first_name" name="first_name" required>
-						</div>
-						<div class="col">
-							<label for="last_name" class="form-label">Last Name</label>
-							<input type="text" class="form-control" id="last_name" name="last_name" required>
-						</div>
+					<div class="col">
+						<label for="first_name" class="form-label">First Name</label>
+						<input type="text" class="form-control" id="first_name" name="first_name" required>
+					</div>
+					<div class="col">
+						<label for="last_name" class="form-label">Last Name</label>
+						<input type="text" class="form-control" id="last_name" name="last_name" required>
+					</div>
 				</div>
 				<div class="row mb-3">
 					<div class="col-4">
@@ -111,4 +111,4 @@ include_once './includes/partial/alerts.php'
 			</form>
 		</div>
 	</div>
-<?php include_once './includes/footer.php' ?>
+<?php include_once 'includes/footer.php' ?>

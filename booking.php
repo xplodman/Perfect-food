@@ -2,9 +2,9 @@
 
 use PerfectFood\Classes\Branch;
 
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
-$branch = new Branch();
+$branch   = new Branch();
 $branches = $branch->getAllBranches();
 
 ?>
@@ -16,7 +16,7 @@ $branches = $branch->getAllBranches();
 			<label for="branch" class="form-label">Select Branch:</label>
 			<select class="form-select" id="branch" name="branch" required>
 				<option value="" disabled selected>Select Branch</option>
-				<?php foreach ($branches as $branch): ?>
+				<?php foreach ( $branches as $branch ): ?>
 					<option value="<?php echo $branch['id']; ?>">
 						<?php echo $branch['name']; ?> - <?php echo $branch['location']; ?> - <?php echo $branch['contact_info']; ?>
 					</option>
@@ -40,4 +40,4 @@ $branches = $branch->getAllBranches();
 	</form>
 </div>
 
-<?php include_once './includes/footer.php' ?>
+<?php include_once 'includes/footer.php' ?>

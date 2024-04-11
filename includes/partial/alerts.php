@@ -1,7 +1,7 @@
-<?php if (!empty($_SESSION['info']) && is_array($_SESSION['info'])): ?>
+<?php if ( ! empty( $_SESSION['info'] ) && is_array( $_SESSION['info'] ) ): ?>
 	<div class="alert alert-success">
-		<?php foreach ($_SESSION['info'] as $message): ?>
-			<p><?php echo htmlspecialchars($message); ?></p>
+		<?php foreach ( $_SESSION['info'] as $message ): ?>
+			<p><?php echo htmlspecialchars( $message ); ?></p>
 		<?php endforeach; ?>
 	</div>
 	<?php
@@ -9,10 +9,10 @@
 endif;
 ?>
 
-<?php if (!empty($_SESSION['errors']) && is_array($_SESSION['errors'])): ?>
+<?php if ( ! empty( $_SESSION['errors'] ) && is_array( $_SESSION['errors'] ) ): ?>
 	<div class="alert alert-danger">
-		<?php foreach ($_SESSION['errors'] as $error): ?>
-			<p><?php echo htmlspecialchars($error); ?></p>
+		<?php foreach ( $_SESSION['errors'] as $error ): ?>
+			<p><?php echo htmlspecialchars( $error ); ?></p>
 		<?php endforeach; ?>
 	</div>
 	<?php

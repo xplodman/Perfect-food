@@ -1,10 +1,11 @@
 <?php
+
 use PerfectFood\Classes\Menu;
 use PerfectFood\Classes\MenuItem;
 
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
-$menu = new Menu();
+$menu      = new Menu();
 $menuItems = new MenuItem();
 
 // Fetch menus
@@ -21,7 +22,7 @@ $allItems = $menuItems->getAllMenuItems();
 		<li class="nav-item">
 			<a class="nav-link active" id="allTab" data-bs-toggle="tab" href="#allMenu" role="tab">All</a>
 		</li>
-		<?php foreach ($menus as $menu) : ?>
+		<?php foreach ( $menus as $menu ) : ?>
 			<li class="nav-item">
 				<a class="nav-link" id="menuTab<?= $menu['id'] ?>" data-bs-toggle="tab" href="#menu<?= $menu['id'] ?>" role="tab"><?= $menu['name'] ?></a>
 			</li>
@@ -33,21 +34,21 @@ $allItems = $menuItems->getAllMenuItems();
 		<!-- All tab content -->
 		<div class="tab-pane fade show active" id="allMenu" role="tabpanel">
 			<div class="row">
-				<?php foreach ($allItems as $item) : ?>
-					<?php require './includes/partial/items_card.php' ?>
+				<?php foreach ( $allItems as $item ) : ?>
+					<?php require 'includes/partial/items_card.php' ?>
 				<?php endforeach; ?>
 			</div>
 		</div>
 
 		<!-- Menu tabs content -->
-		<?php foreach ($menus as $menu) : ?>
+		<?php foreach ( $menus as $menu ) : ?>
 			<div class="tab-pane fade" id="menu<?= $menu['id'] ?>" role="tabpanel">
 				<div class="row">
 					<?php
 					// Fetch menu items for the current menu
-					$items = $menuItems->getMenuItemsByMenuId($menu['id']);
-					foreach ($items as $item) : ?>
-						<?php require './includes/partial/items_card.php' ?>
+					$items = $menuItems->getMenuItemsByMenuId( $menu['id'] );
+					foreach ( $items as $item ) : ?>
+						<?php require 'includes/partial/items_card.php' ?>
 					<?php endforeach; ?>
 				</div>
 			</div>
@@ -55,4 +56,4 @@ $allItems = $menuItems->getAllMenuItems();
 	</div>
 </div>
 
-<?php include_once './includes/footer.php' ?>
+<?php include_once 'includes/footer.php' ?>

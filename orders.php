@@ -1,5 +1,5 @@
 <?php
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
 use PerfectFood\Classes\Evaluate;
 use PerfectFood\Classes\Order;
@@ -16,7 +16,7 @@ $customerId = $_SESSION['customer_id'];
 
 // Retrieve orders for the logged-in customer
 $orders = $orderClass->getOrdersByCustomerId( $customerId );
-include_once './includes/partial/alerts.php';
+include_once 'includes/partial/alerts.php';
 
 ?>
 
@@ -92,4 +92,4 @@ include_once './includes/partial/alerts.php';
 	<?php endif; ?>
 </div>
 
-<?php include_once './includes/footer.php'; ?>
+<?php include_once 'includes/footer.php'; ?>

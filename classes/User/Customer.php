@@ -45,6 +45,11 @@ class Customer {
 		}
 	}
 
+	public function getLastInsertedId() {
+		// Retrieve the last inserted ID
+		return $this->db->connection->lastInsertId();
+	}
+
 	public function loginUser( $email, $password ) {
 		try {
 			// Retrieve the hashed password from the database for the given email
@@ -87,6 +92,24 @@ class Customer {
 		}
 	}
 
+	private function calculateDiscountDependOnTotalPrice( $totalPrice ) {
+		// Define discount tiers and corresponding discounts
+		$discountTiers = [ 100, 200, 300 ]; // Total price tiers
+		$discountRates = [ 0.05, 0.10, 0.02 ]; // Corresponding discount rates
+
+		// Iterate through tiers and find the appropriate discount rate
+		$discountRate = 0; // Default discount rate
+		foreach ( $discountTiers as $index => $tier ) {
+			if ( $totalPrice >= $tier ) {
+				$discountRate = $discountRates[ $index ];
+			} else {
+				break; // Stop iteration if the total price is less than the current tier
+			}
+		}
+
+		return $discountRate;
+	}
+
 	public function logoutUser() {
 		// Unset all session variables
 		$_SESSION = [];
@@ -120,11 +143,6 @@ class Customer {
 
 			return false;
 		}
-	}
-
-	public function getLastInsertedId() {
-		// Retrieve the last inserted ID
-		return $this->db->connection->lastInsertId();
 	}
 
 	public function updateCustomerDetails( $customerId, $postData ) {
@@ -243,24 +261,6 @@ class Customer {
 			// Error handling for account deletion
 			$_SESSION['errors'][] = "Error deleting customer account: " . $e->getMessage();
 		}
-	}
-
-	private function calculateDiscountDependOnTotalPrice( $totalPrice ) {
-		// Define discount tiers and corresponding discounts
-		$discountTiers = [ 100, 200, 300 ]; // Total price tiers
-		$discountRates = [ 0.05, 0.10, 0.02 ]; // Corresponding discount rates
-
-		// Iterate through tiers and find the appropriate discount rate
-		$discountRate = 0; // Default discount rate
-		foreach ( $discountTiers as $index => $tier ) {
-			if ( $totalPrice >= $tier ) {
-				$discountRate = $discountRates[ $index ];
-			} else {
-				break; // Stop iteration if the total price is less than the current tier
-			}
-		}
-
-		return $discountRate;
 	}
 
 

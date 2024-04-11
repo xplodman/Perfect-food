@@ -4,19 +4,26 @@ use PerfectFood\Classes\Book;
 use PerfectFood\Classes\MenuItem;
 use PerfectFood\Classes\Order;
 
-include_once './includes/header.php';
+include_once 'includes/header.php';
+include_once 'includes/partial/alerts.php';
+
+if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+	header( "Location: login.php" );
+	exit;
+}
 
 $menuItems = new MenuItem();
-include_once './includes/partial/alerts.php';
 
 $booking = new Book();
 $order   = new Order();
+// Retrieve customer ID from session
+$customerId = $_SESSION['customer_id'];
 
 // Count of orders for each status
-$orderStatusCounts = $order->getOrderStatusCounts();
+$orderStatusCounts = $order->getOrderStatusCounts( $customerId );
 
 // Count of bookings for each status
-$bookingStatusCounts = $booking->getBookingStatusCounts();
+$bookingStatusCounts = $booking->getBookingStatusCounts( $customerId );
 
 ?>
 
@@ -41,10 +48,10 @@ $bookingStatusCounts = $booking->getBookingStatusCounts();
 	<h2>Random Menu Items</h2>
 	<div class="row">
 		<?php foreach ( $menuItems->getMenuItemsRandomWithLimit( 4 ) as $item ): ?>
-			<?php require './includes/partial/items_card.php' ?>
+			<?php require 'includes/partial/items_card.php' ?>
 		<?php endforeach; ?>
 	</div>
 </div>
 
 
-<?php include_once './includes/footer.php' ?>
+<?php include_once 'includes/footer.php' ?>

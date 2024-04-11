@@ -2,17 +2,17 @@
 
 use PerfectFood\Classes\Order;
 
-include_once './includes/header.php';
+include_once 'includes/header.php';
 
 // Check if the user is logged in
-if (!isset($_SESSION["customer_logged_in"]) || $_SESSION["customer_logged_in"] !== true) {
-	header("Location: login.php");
+if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+	header( "Location: login.php" );
 	exit;
 }
 
 // Check if the order ID is provided in the request
-if (!isset($_POST['order_id'])) {
-	header("Location: orders.php");
+if ( ! isset( $_POST['order_id'] ) ) {
+	header( "Location: orders.php" );
 	exit;
 }
 
@@ -23,8 +23,8 @@ $order = new Order();
 $orderID = $_POST['order_id'];
 
 // Attempt to delete the order
-$order->deleteOrder($orderID);
+$order->deleteOrder( $orderID );
 
 // Redirect back to the orders page
-header("Location: orders.php");
+header( "Location: orders.php" );
 exit;

@@ -64,10 +64,20 @@ class Book {
 		}
 	}
 
-	public function getBookingStatusCounts() {
+	public function getBookingStatusCounts( $customerId = null ) {
 		try {
-			$query        = "SELECT status, COUNT(*) AS count FROM bookings GROUP BY status";
-			$statement    = $this->db->connection->query( $query );
+			$query = "SELECT status, COUNT(*) AS count FROM bookings";
+			if ( $customerId !== null ) {
+				$query .= " WHERE customer_id = :customer_id";
+			}
+			$query .= " GROUP BY status";
+
+			$statement = $this->db->connection->prepare( $query );
+			if ( $customerId !== null ) {
+				$statement->bindParam( ':customer_id', $customerId, PDO::PARAM_INT );
+			}
+			$statement->execute();
+
 			$statusCounts = [];
 			foreach ( $statement->fetchAll( PDO::FETCH_ASSOC ) as $row ) {
 				$statusCounts[ $row['status'] ] = $row['count'];

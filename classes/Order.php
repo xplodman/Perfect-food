@@ -2,7 +2,6 @@
 
 namespace PerfectFood\Classes;
 
-use DateTime;
 use PDO;
 use PDOException;
 
@@ -121,7 +120,7 @@ class Order {
 		}
 	}
 
-	public function getTotalPricesByCustomerId($customerId) {
+	public function getTotalPricesByCustomerId( $customerId ) {
 		try {
 			// Prepare the SQL query
 			$query = "SELECT
@@ -138,31 +137,43 @@ class Order {
                     orders.status = 'completed'";
 
 			// Prepare and execute the statement
-			$statement = $this->db->connection->prepare($query);
-			$statement->execute([$customerId]);
+			$statement = $this->db->connection->prepare( $query );
+			$statement->execute( [ $customerId ] );
 
 			// Fetch the total price
-			$result = $statement->fetch(PDO::FETCH_ASSOC);
+			$result = $statement->fetch( PDO::FETCH_ASSOC );
 
 			// Return the total price
 			return $result['total_price'] ?? 0; // If no result is found, return 0
-		} catch (PDOException $e) {
+		} catch ( PDOException $e ) {
 			// Handle database errors
 			$_SESSION['errors'][] = "Error retrieving total prices: " . $e->getMessage();
+
 			return 0; // Return 0 in case of an error
 		}
 	}
 
-	public function getOrderStatusCounts() {
+	public function getOrderStatusCounts( $customerId = null ) {
 		try {
-			$query = "SELECT status, COUNT(*) AS count FROM orders GROUP BY status";
-			$statement = $this->db->connection->query($query);
-			$statusCounts = [];
-			foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $row) {
-				$statusCounts[$row['status']] = $row['count'];
+			$query = "SELECT status, COUNT(*) AS count FROM orders";
+			if ( $customerId !== null ) {
+				$query .= " WHERE customer_id = :customer_id";
 			}
+			$query .= " GROUP BY status";
+
+			$statement = $this->db->connection->prepare( $query );
+			if ( $customerId !== null ) {
+				$statement->bindParam( ':customer_id', $customerId, PDO::PARAM_INT );
+			}
+			$statement->execute();
+
+			$statusCounts = [];
+			foreach ( $statement->fetchAll( PDO::FETCH_ASSOC ) as $row ) {
+				$statusCounts[ $row['status'] ] = $row['count'];
+			}
+
 			return $statusCounts;
-		} catch (PDOException $e) {
+		} catch ( PDOException $e ) {
 			return [];
 		}
 	}
