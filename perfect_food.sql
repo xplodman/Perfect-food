@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 09, 2024 at 01:02 AM
+-- Generation Time: Apr 11, 2024 at 10:19 PM
 -- Server version: 8.0.36-0ubuntu0.22.04.1
 -- PHP Version: 8.1.27
 
@@ -24,18 +24,52 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `booking`
+-- Table structure for table `bookings`
 --
 
-CREATE TABLE `booking` (
+CREATE TABLE `bookings` (
   `id` int NOT NULL,
-  `date` date NOT NULL,
-  `type` enum('event','table') NOT NULL,
-  `event_name` varchar(100) DEFAULT NULL,
-  `table_numbers` varchar(255) DEFAULT NULL,
-  `status` enum('pending','confirmed','cancelled') NOT NULL,
-  `customer_id` int NOT NULL
+  `customer_id` int NOT NULL,
+  `branch_id` int NOT NULL,
+  `booking_date` date NOT NULL,
+  `booking_time` time NOT NULL,
+  `guests` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(50) NOT NULL DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `bookings`
+--
+
+INSERT INTO `bookings` (`id`, `customer_id`, `branch_id`, `booking_date`, `booking_time`, `guests`, `created_at`, `status`) VALUES
+(3, 16, 2, '1986-08-01', '15:02:00', 619, '2024-04-11 18:42:55', 'completed'),
+(4, 16, 3, '1974-07-27', '21:54:00', 18, '2024-04-11 19:19:11', 'pending'),
+(5, 16, 2, '2014-12-20', '05:03:00', 291, '2024-04-11 19:19:13', 'pending');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branches`
+--
+
+CREATE TABLE `branches` (
+  `id` int NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `contact_info` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `branches`
+--
+
+INSERT INTO `branches` (`id`, `name`, `location`, `contact_info`) VALUES
+(1, 'Cairo Central', '13 El-Gomhoreya Street, Downtown, Cairo, Egypt', 'Phone: +20 12 3456 7890, Email: cairocentral@example.com'),
+(2, 'Cairo East', '5 Salah Salem Street, Nasr City, Cairo, Egypt', 'Phone: +20 12 3456 7891, Email: cairoeast@example.com'),
+(3, 'Cairo West', '10 El Haram Street, Giza, Cairo, Egypt', 'Phone: +20 12 3456 7892, Email: cairowest@example.com'),
+(4, 'Cairo North', '30 El Nozha Street, Heliopolis, Cairo, Egypt', 'Phone: +20 12 3456 7893, Email: caironorth@example.com'),
+(5, 'Cairo South', '25 Corniche El Nil, Maadi, Cairo, Egypt', 'Phone: +20 12 3456 7894, Email: cairosouth@example.com');
 
 -- --------------------------------------------------------
 
@@ -60,10 +94,34 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id`, `first_name`, `last_name`, `email`, `password`, `city`, `street`, `house_number`, `created_at`) VALUES
-(1, 'Demetria', 'Whitfield', 'admin@perfect-food.localhost', '$2y$10$xK7H74tVHNO58p9xpDTDTuirWiXjFiFx9JPSTN3htZNklXdfTyqRK', 'Enim minima ullam ip', 'Qui rem amet ea in ', '111', '2024-04-07 00:15:28'),
 (3, 'Brian', 'Stanton', 'jydepuj@testing-mail.com', '$2y$10$/2JlB4iF9aGWWfkGmFuFlOEP.OcFO9TE.vZM.cyL08h2ksKq1vbV.', 'Rerum aperiam veniam', 'Nesciunt non maxime', '224', '2024-04-07 09:23:40'),
 (13, 'Isabelle', 'Dawson', 'dozisetehi@testing-mail.com', '$2y$10$NixFT/nZIQyXoYA0Mj7p0uJwUyx5MkEYFR8uyoajPuKziA84nIOGK', 'Ex adipisicing dolor', 'Magni dolor pariatur', '614', '2024-04-07 09:44:32'),
-(14, 'Raphael', 'Jennings', 'sopeq@testing-mail.com', '$2y$10$Q4.q.2PXi/Podi9GkFv2Fef4If5cVHkdI7T4diygk3EfDygftdYDa', 'Sed id dolores labo', 'Distinctio Non laud', '612', '2024-04-07 20:49:56');
+(14, 'Raphael', 'Jennings', 'sopeq@testing-mail.com', '$2y$10$Q4.q.2PXi/Podi9GkFv2Fef4If5cVHkdI7T4diygk3EfDygftdYDa', 'Sed id dolores labo', 'Distinctio Non laud', '612', '2024-04-07 20:49:56'),
+(15, 'Yoko', 'Carpenter', 'vivam@testing-mail.com', '$2y$10$yHRHuGtmmy5E8us4aiV2NeroVf5d7dxM7EthYKw6aGE9CRVTGkRsi', 'Nemo sapiente error ', 'Laboris rem veniam ', '144', '2024-04-11 15:37:06'),
+(16, 'Erin', 'Finley', 'hexi@testing-mail.com', '$2y$10$.DbzHhxZcMo4.WmerqkM.e4Mh5WjPyvYhZmBqvkZkOsABZ/UgP0Ka', 'Eius et quisquam ani', 'Ut quos eum error qu', '370', '2024-04-11 15:37:17');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `evaluations`
+--
+
+CREATE TABLE `evaluations` (
+  `id` int NOT NULL,
+  `entity_id` int NOT NULL,
+  `entity_type` enum('order','booking') NOT NULL,
+  `rating` int DEFAULT NULL,
+  `comment` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `evaluations`
+--
+
+INSERT INTO `evaluations` (`id`, `entity_id`, `entity_type`, `rating`, `comment`, `created_at`) VALUES
+(2, 10, 'order', 3, 'good items', '2024-04-11 18:33:05'),
+(3, 3, 'booking', 4, 'good booking', '2024-04-11 18:45:21');
 
 -- --------------------------------------------------------
 
@@ -112,7 +170,7 @@ CREATE TABLE `menu_items` (
 --
 
 INSERT INTO `menu_items` (`id`, `name`, `description`, `image`, `price`, `menu_id`, `active`) VALUES
-(1, 'Classic Pancakes', 'Fluffy pancakes served with maple syrup', '/assets/images/1.jpeg', '9.99', 1, 1),
+(1, 'Classic Pancakes', 'Fluffy pancakes served with maple syrup', '/assets/images/1.jpg', '9.99', 1, 1),
 (2, 'Avocado Toast', 'Sliced avocado on toasted bread with poached eggs', '/assets/images/2.jpeg', '12.99', 1, 1),
 (3, 'Club Sandwich', 'Triple-decker sandwich with turkey, bacon, lettuce, and tomato', '/assets/images/3.jpg', '11.99', 2, 1),
 (4, 'Caesar Salad', 'Romaine lettuce, croutons, Parmesan cheese, and Caesar dressing', '/assets/images/4.jpg', '8.99', 2, 1),
@@ -137,10 +195,29 @@ INSERT INTO `menu_items` (`id`, `name`, `description`, `image`, `price`, `menu_i
 
 CREATE TABLE `orders` (
   `id` int NOT NULL,
-  `time` datetime NOT NULL,
-  `status` enum('pending','completed') NOT NULL,
-  `customer_id` int NOT NULL
+  `customer_id` int NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `street` varchar(100) NOT NULL,
+  `house_number` varchar(20) NOT NULL,
+  `phone_1` varchar(20) NOT NULL,
+  `phone_2` varchar(20) DEFAULT NULL,
+  `phone_3` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(50) NOT NULL DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `customer_id`, `first_name`, `last_name`, `email`, `city`, `street`, `house_number`, `phone_1`, `phone_2`, `phone_3`, `created_at`, `status`) VALUES
+(10, 16, 'Erin', 'Finley', 'hexi@testing-mail.com', 'Eius et quisquam ani', 'Ut quos eum error qu', '370', '+1 (338) 683-1141', '+1 (623) 468-7946', '+1 (935) 879-7977', '2024-04-11 18:08:59', 'completed'),
+(11, 16, 'Erin', 'Finley', 'hexi@testing-mail.com', 'Eius et quisquam ani', 'Ut quos eum error qu', '370', '+1 (338) 683-1141', '+1 (623) 468-7946', '+1 (935) 879-7977', '2024-04-11 18:59:41', 'completed'),
+(12, 16, 'Erin', 'Finley', 'hexi@testing-mail.com', 'Eius et quisquam ani', 'Ut quos eum error qu', '370', '+1 (338) 683-1141', '+1 (623) 468-7946', '+1 (935) 879-7977', '2024-04-11 19:01:39', 'completed'),
+(13, 16, 'Erin', 'Finley', 'hexi@testing-mail.com', 'Eius et quisquam ani', 'Ut quos eum error qu', '370', '+1 (338) 683-1141', '+1 (623) 468-7946', '+1 (935) 879-7977', '2024-04-11 19:18:57', 'pending');
 
 -- --------------------------------------------------------
 
@@ -151,9 +228,33 @@ CREATE TABLE `orders` (
 CREATE TABLE `order_items` (
   `id` int NOT NULL,
   `order_id` int NOT NULL,
-  `menu_item_id` int NOT NULL,
+  `item_id` int NOT NULL,
   `quantity` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `item_id`, `quantity`) VALUES
+(16, 10, 1, 1),
+(17, 10, 2, 1),
+(18, 10, 3, 1),
+(19, 10, 4, 1),
+(20, 11, 1, 1),
+(21, 11, 15, 1),
+(22, 11, 2, 2),
+(23, 11, 3, 2),
+(24, 11, 16, 1),
+(25, 11, 6, 1),
+(26, 11, 4, 1),
+(27, 11, 10, 1),
+(28, 12, 1, 1),
+(29, 13, 9, 1),
+(30, 13, 3, 1),
+(31, 13, 4, 1),
+(32, 13, 2, 1),
+(33, 13, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -172,9 +273,12 @@ CREATE TABLE `phones` (
 --
 
 INSERT INTO `phones` (`id`, `customer_id`, `phone_number`) VALUES
-(1, 14, '+1 (792) 616-9299'),
-(2, 14, '+1 (749) 911-8653'),
-(3, 14, '+1 (509) 894-8982');
+(88, 15, '+1 (772) 749-6282'),
+(89, 15, '+1 (113) 758-5919'),
+(90, 15, '+1 (314) 211-1024'),
+(97, 16, '+1 (338) 683-1141'),
+(98, 16, '+1 (623) 468-7946'),
+(99, 16, '+1 (935) 879-7977');
 
 -- --------------------------------------------------------
 
@@ -196,11 +300,18 @@ CREATE TABLE `restaurants` (
 --
 
 --
--- Indexes for table `booking`
+-- Indexes for table `bookings`
 --
-ALTER TABLE `booking`
+ALTER TABLE `bookings`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `customer_id` (`customer_id`);
+  ADD KEY `customer_id` (`customer_id`),
+  ADD KEY `branch_id` (`branch_id`);
+
+--
+-- Indexes for table `branches`
+--
+ALTER TABLE `branches`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `customers`
@@ -208,6 +319,13 @@ ALTER TABLE `booking`
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `evaluations`
+--
+ALTER TABLE `evaluations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `entity_id` (`entity_id`);
 
 --
 -- Indexes for table `menus`
@@ -234,8 +352,8 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `order_id` (`order_id`),
-  ADD KEY `menu_item_id` (`menu_item_id`);
+  ADD KEY `order_items_ibfk_1` (`order_id`),
+  ADD KEY `order_items_ibfk_2` (`item_id`);
 
 --
 -- Indexes for table `phones`
@@ -255,16 +373,28 @@ ALTER TABLE `restaurants`
 --
 
 --
--- AUTO_INCREMENT for table `booking`
+-- AUTO_INCREMENT for table `bookings`
 --
-ALTER TABLE `booking`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `bookings`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `branches`
+--
+ALTER TABLE `branches`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `evaluations`
+--
+ALTER TABLE `evaluations`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `menus`
@@ -282,19 +412,19 @@ ALTER TABLE `menu_items`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `phones`
 --
 ALTER TABLE `phones`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- AUTO_INCREMENT for table `restaurants`
@@ -307,10 +437,11 @@ ALTER TABLE `restaurants`
 --
 
 --
--- Constraints for table `booking`
+-- Constraints for table `bookings`
 --
-ALTER TABLE `booking`
-  ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`);
+ALTER TABLE `bookings`
+  ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `menu_items`
@@ -328,8 +459,8 @@ ALTER TABLE `orders`
 -- Constraints for table `order_items`
 --
 ALTER TABLE `order_items`
-  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
-  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`menu_item_id`) REFERENCES `menu_items` (`id`);
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `menu_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `phones`

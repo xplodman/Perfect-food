@@ -26,7 +26,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 		exit;
 	}
 }
-include_once './includes/partial/errors.php'
+include_once './includes/partial/alerts.php'
 ?>
 	<div class="row">
 		<div class="col-md-6 offset-md-3 form-container">

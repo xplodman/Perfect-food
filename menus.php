@@ -47,16 +47,7 @@ $allItems = $menuItems->getAllMenuItems();
 					// Fetch menu items for the current menu
 					$items = $menuItems->getMenuItemsByMenuId($menu['id']);
 					foreach ($items as $item) : ?>
-						<div class="col-md-4">
-							<div class="card mb-3">
-								<img src="<?= $item['image'] ?>" class="card-img-top" alt="<?= $item['name'] ?>">
-								<div class="card-body">
-									<h5 class="card-title"><?= $item['name'] ?></h5>
-									<p class="card-text"><?= $item['description'] ?></p>
-									<p class="card-text">Price: $<?= $item['price'] ?></p>
-								</div>
-							</div>
-						</div>
+						<?php require './includes/partial/items_card.php' ?>
 					<?php endforeach; ?>
 				</div>
 			</div>

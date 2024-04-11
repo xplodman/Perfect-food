@@ -13,5 +13,6 @@ session_start();
 	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
 </head>
 <body>
+<?php include_once './includes/add_to_cart_handle.php'; ?>
 <?php include_once './includes/nav.php'; ?>
 <div class="container justify-content-center">

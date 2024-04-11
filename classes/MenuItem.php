@@ -50,9 +50,35 @@ class MenuItem {
 			return $stmt->rowCount() > 0;
 		} catch(PDOException $e) {
 			// Error occurred while updating the menu item
-			echo "Error updating menu item: " . $e->getMessage();
+			$_SESSION['errors'][] = "Error updating menu item: " . $e->getMessage();
 			return false;
 		}
 	}
+
+	public function getItemDetailsById( int $itemId ) {
+		$query = "SELECT * FROM menu_items WHERE id = :id";
+		$statement = $this->db->connection->prepare($query);
+		$statement->bindParam(':id', $itemId);
+		$statement->execute();
+		return $statement->fetch(PDO::FETCH_ASSOC);
+	}
+
+	public function getMenuItemsByPriceRange($minPrice, $maxPrice) {
+		try {
+			// Prepare the SQL query
+			$query = "SELECT * FROM menu_items WHERE price BETWEEN ? AND ?";
+			$statement = $this->db->connection->prepare($query);
+
+			// Bind the min and max price parameters and execute the statement
+			$statement->execute([$minPrice, $maxPrice]);
+
+			// Fetch the filtered menu items
+			return $statement->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			// Handle database errors
+			return [];
+		}
+	}
+
 
 }
