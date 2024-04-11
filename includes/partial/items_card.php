@@ -7,7 +7,7 @@
 				<h5 class="card-title"><?php echo $item['name']; ?></h5>
 				<p class="card-text"><?php echo $item['description']; ?></p>
 				<p class="card-text">
-					<?php if ( $_SESSION["discount"] > 0 ): ?>
+					<?php if ( isset($_SESSION["discount"]) && $_SESSION["discount"] > 0 ): ?>
 						<strong>Price:</strong>
 						<del><?php echo $item['price']; ?></del>
 						<br>
