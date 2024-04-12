@@ -64,14 +64,31 @@ class MenuItem {
 		return $statement->fetch( PDO::FETCH_ASSOC );
 	}
 
-	public function getMenuItemsByPriceRange( $minPrice, $maxPrice ) {
+	public function getMenuItemsByPriceRange( $minPrice, $maxPrice, $menuId ) {
 		try {
-			// Prepare the SQL query
-			$query     = "SELECT * FROM menu_items WHERE price BETWEEN ? AND ?";
-			$statement = $this->db->connection->prepare( $query );
+			// Prepare the base SQL query
+			$query = "SELECT * FROM menu_items WHERE price BETWEEN :min_price AND :max_price";
 
-			// Bind the min and max price parameters and execute the statement
-			$statement->execute( [ $minPrice, $maxPrice ] );
+
+			// Add menu ID condition if provided
+			if (!empty($menuId)) {
+				$query .= " AND menu_id = :menu_id";
+			}
+
+			// Prepare the statement
+			$statement = $this->db->connection->prepare($query);
+
+			// Bind parameters
+			$statement->bindValue(':min_price', $minPrice);
+			$statement->bindValue(':max_price', $maxPrice);
+
+			// Bind menu ID if provided
+			if (!empty($menuId)) {
+				$statement->bindValue(':menu_id', $menuId);
+			}
+
+			// Execute the statement
+			$statement->execute();
 
 			// Fetch the filtered menu items
 			return $statement->fetchAll( PDO::FETCH_ASSOC );
