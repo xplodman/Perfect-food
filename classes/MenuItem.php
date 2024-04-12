@@ -93,7 +93,6 @@ class MenuItem {
 			// Fetch the filtered menu items
 			return $statement->fetchAll( PDO::FETCH_ASSOC );
 		} catch ( PDOException $e ) {
-			// Handle database errors
 			return [];
 		}
 	}

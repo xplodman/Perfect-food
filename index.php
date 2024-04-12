@@ -34,7 +34,7 @@ $randomMenuItems = $menuItems->getMenuItemsRandomWithLimit( 4 );
 <div class="container">
 	<div class="row mb-2">
 		<!-- Orders Status Counts -->
-		<div class="col-md-4">
+		<div class="col-md-6">
 			<h2>Orders Status</h2>
 			<ul class="list-group">
 				<?php foreach ( $orderStatusCounts as $status => $count ) : ?>
@@ -44,7 +44,7 @@ $randomMenuItems = $menuItems->getMenuItemsRandomWithLimit( 4 );
 		</div>
 
 		<!-- Bookings Status Counts -->
-		<div class="col-md-4">
+		<div class="col-md-6">
 			<h2>Bookings Status</h2>
 			<ul class="list-group">
 				<?php foreach ( $bookingStatusCounts as $status => $count ) : ?>

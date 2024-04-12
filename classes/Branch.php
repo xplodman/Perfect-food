@@ -18,7 +18,6 @@ class Branch {
 
 			return $this->db->connection->query( $query )->fetchAll( PDO::FETCH_ASSOC );
 		} catch ( PDOException $e ) {
-			// Handle the exception, such as logging or displaying an error message
 			return [];
 		}
 	}
