@@ -4,6 +4,12 @@ use PerfectFood\Classes\MenuItem;
 
 include_once 'includes/header.php';
 
+// Redirect to login page if user is not logged in
+if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+	header( "Location: login.php" );
+	exit;
+}
+
 $menu = new Menu();
 $menuItems = new MenuItem();
 

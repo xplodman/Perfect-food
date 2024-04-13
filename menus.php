@@ -5,6 +5,12 @@ use PerfectFood\Classes\MenuItem;
 
 include_once 'includes/header.php';
 
+// Redirect to login page if user is not logged in
+if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+	header( "Location: login.php" );
+	exit;
+}
+
 $menu      = new Menu();
 $menuItems = new MenuItem();
 
@@ -23,8 +29,14 @@ $allItems = $menuItems->getAllMenuItems();
 			<a class="nav-link active" id="allTab" data-bs-toggle="tab" href="#allMenu" role="tab">All</a>
 		</li>
 		<?php foreach ( $menus as $menu ) : ?>
-			<li class="nav-item">
+			<li class="nav-item d-flex align-items-center"> <!-- Use flexbox utilities -->
 				<a class="nav-link" id="menuTab<?= $menu['id'] ?>" data-bs-toggle="tab" href="#menu<?= $menu['id'] ?>" role="tab"><?= $menu['name'] ?></a>
+				<?php if ($_SESSION["role"] === 'admin') : ?>
+					<!-- Edit Link -->
+					<a href="edit-menu.php?menu_id=<?php echo $menu['id']; ?>" title="Edit" class="ms-2">
+						<i class="bi bi-pencil-square"></i>
+					</a>
+				<?php endif; ?>
 			</li>
 		<?php endforeach; ?>
 	</ul>

@@ -7,17 +7,23 @@
 				<h5 class="card-title"><?php echo $item['name']; ?></h5>
 				<p class="card-text"><?php echo $item['description']; ?></p>
 				<p class="card-text">
-					<?php if ( isset($_SESSION["discount"]) && $_SESSION["discount"] > 0 ): ?>
+					<?php if ( isset( $_SESSION["discount"] ) && $_SESSION["discount"] > 0 ) : ?>
 						<strong>Price:</strong>
 						<del><?php echo $item['price']; ?></del>
 						<br>
 						<strong>Discounted Price:</strong> <?php echo $item['price'] - $_SESSION["discount"]; ?>
-					<?php else: ?>
+					<?php else : ?>
 						<strong>Price:</strong> <?php echo $item['price']; ?>
 					<?php endif; ?>
 				</p>
 				<button type="submit" class="btn btn-primary">Add to Cart</button>
 			</div>
 		</form>
+		<?php if ( $_SESSION["role"] === 'admin' ): ?>
+			<!-- Edit Link -->
+			<a class="edit-link position-absolute bottom-0 end-0 p-2" href="edit-item.php?item_id=<?php echo $item['id']; ?>" title="Edit">
+				<i class="bi bi-pencil-square"></i>
+			</a>
+		<?php endif; ?>
 	</div>
 </div>

@@ -36,10 +36,14 @@ class MenuItem {
 	public function updateMenuItem( $itemId, $newData ) {
 		try {
 			// Prepare the SQL statement to update the menu item
-			$stmt = $this->db->connection->prepare( "UPDATE menu_items SET image = :image WHERE id = :id" );
+			$stmt = $this->db->connection->prepare("UPDATE menu_items SET name = :name, description = :description, price = :price, image = :image, menu_id = :menu_id WHERE id = :id");
 
 			// Bind parameters
+			$stmt->bindParam( ':name', $newData['name'] );
+			$stmt->bindParam( ':description', $newData['description'] );
+			$stmt->bindParam( ':price', $newData['price'] );
 			$stmt->bindParam( ':image', $newData['image'] );
+			$stmt->bindParam( ':menu_id', $newData['menu_id'] );
 			$stmt->bindParam( ':id', $itemId );
 
 			// Execute the statement
@@ -48,9 +52,6 @@ class MenuItem {
 			// Check if any rows were affected
 			return $stmt->rowCount() > 0;
 		} catch ( PDOException $e ) {
-			// Error occurred while updating the menu item
-			$_SESSION['errors'][] = "Error updating menu item: " . $e->getMessage();
-
 			return false;
 		}
 	}
@@ -96,6 +97,5 @@ class MenuItem {
 			return [];
 		}
 	}
-
 
 }

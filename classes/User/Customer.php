@@ -14,26 +14,27 @@ class Customer {
 		$this->db = new DB();
 	}
 
-	public function registerUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber ) {
+	public function registerUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber, $role = 'customer' ) {
 		try {
 			// Hash the password before storing it in the database
 			$hashedPassword = password_hash( $password, PASSWORD_DEFAULT );
 
 			// Prepare the SQL statement to insert user data into the database
-			$stmt = $this->db->connection->prepare( "INSERT INTO customers (first_name, last_name, email, password, city, street, house_number) VALUES (?, ?, ?, ?, ?, ?, ?)" );
+			$stmt = $this->db->connection->prepare( "INSERT INTO customers (first_name, last_name, email, password, city, street, house_number, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)" );
 			$stmt->execute( [ $firstName, $lastName, $email, $hashedPassword, $city, $street, $houseNumber ] );
 
 			$customerId = $this->getLastInsertedId();
 
 			// Set session variables
-			$_SESSION["customer_logged_in"] = true;
-			$_SESSION['customer_id']        = $customerId;
-			$_SESSION["first_name"]         = $firstName;
-			$_SESSION["last_name"]          = $lastName;
-			$_SESSION["email"]              = $email;
 			$_SESSION["city"]               = $city;
-			$_SESSION["street"]             = $street;
+			$_SESSION["customer_logged_in"] = true;
+			$_SESSION["email"]              = $email;
+			$_SESSION["first_name"]         = $firstName;
 			$_SESSION["house_number"]       = $houseNumber;
+			$_SESSION["last_name"]          = $lastName;
+			$_SESSION["role"]               = $role;
+			$_SESSION["street"]             = $street;
+			$_SESSION['customer_id']        = $customerId;
 
 			// User registration successful
 			return true;
@@ -67,16 +68,16 @@ class Customer {
 				$discount    = $this->calculateDiscountDependOnTotalPrice( $totalPrices );
 
 				// Set session variables
-				$_SESSION["customer_logged_in"] = true;
-				$_SESSION["email"]              = $email;
-				$_SESSION['customer_id']        = $user['id'];
-				$_SESSION["first_name"]         = $user['first_name'];
-				$_SESSION["last_name"]          = $user['last_name'];
-				$_SESSION["email"]              = $user['email'];
 				$_SESSION["city"]               = $user['city'];
-				$_SESSION["street"]             = $user['street'];
-				$_SESSION["house_number"]       = $user['house_number'];
+				$_SESSION["customer_logged_in"] = true;
 				$_SESSION["discount"]           = $discount;
+				$_SESSION["email"]              = $email;
+				$_SESSION["first_name"]         = $user['first_name'];
+				$_SESSION["house_number"]       = $user['house_number'];
+				$_SESSION["last_name"]          = $user['last_name'];
+				$_SESSION["role"]               = $user['role'];
+				$_SESSION["street"]             = $user['street'];
+				$_SESSION['customer_id']        = $user['id'];
 
 				return true;
 			}
