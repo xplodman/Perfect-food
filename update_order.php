@@ -10,20 +10,24 @@ if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== t
 	exit;
 }
 
+// Check if the user is an admin
+if ($_SESSION["role"] !== 'admin') {
+	$_SESSION['errors'][] = 'You do not have access to this page';
+	header('Location: index.php');
+	exit();
+}
+
 // Check if the order ID is provided in the request
 if ( ! isset( $_POST['order_id'] ) ) {
 	header( "Location: orders.php" );
 	exit;
 }
 
-// Create an instance of the Order class
+// Create an instance of the Book class
 $order = new Order();
 
-// Get the order ID from the request
-$orderID = $_POST['order_id'];
-
-// Attempt to delete the order
-$order->deleteOrder( $orderID );
+// Attempt to update the order
+$order->updateOrder( $_POST['order_id'], $_POST['status'] );
 
 // Redirect back to the orders page
 header( "Location: orders.php" );

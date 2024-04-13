@@ -1,33 +1,33 @@
 <?php
 include_once 'includes/header.php';
 
-use PerfectFood\Classes\User\Customer;
+use PerfectFood\Classes\User;
 
 // Check if the user is already logged in, if yes, redirect to homepage
-if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {
 	header( "Location: login.php" );
 	exit;
 }
 
-$customer = new Customer();
+$user = new User();
 
-// Retrieve customer ID from session
-$customerId = $_SESSION['customer_id'];
+// Retrieve user ID from session
+$userId = $_SESSION['user_id'];
 
 // Check if the form is submitted
 if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
-	// Update customer details
-	$customer->updateCustomerDetails( $customerId, $_POST );
+	// Update user details
+	$user->updateUserDetails( $userId, $_POST );
 
 	// Update phone numbers
-	$customer->updateCustomerPhones( $customerId, $_POST["phones"] );
+	$user->updateUserPhones( $userId, $_POST["phones"] );
 
-	// Reload customer information
-	$customer->reloadCustomerInfo();
+	// Reload user information
+	$user->reloadUserInfo();
 }
 
-// Retrieve phone numbers associated with the customer ID
-$phoneNumbers = $customer->getPhonesByCustomerId( $customerId );
+// Retrieve phone numbers associated with the user ID
+$phoneNumbers = $user->getPhonesByUserId( $userId );
 include_once 'includes/partial/alerts.php'
 ?>
 	<div class="row">

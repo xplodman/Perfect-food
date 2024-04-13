@@ -10,6 +10,13 @@ if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== t
 	exit;
 }
 
+// Check if the user is an admin
+if ($_SESSION["role"] !== 'admin') {
+	$_SESSION['errors'][] = 'You do not have access to this page';
+	header('Location: index.php');
+	exit();
+}
+
 // Check if the booking ID is provided in the request
 if ( ! isset( $_POST['booking_id'] ) ) {
 	header( "Location: bookings.php" );
@@ -19,11 +26,8 @@ if ( ! isset( $_POST['booking_id'] ) ) {
 // Create an instance of the Book class
 $booking = new Book();
 
-// Get the booking ID from the request
-$bookingId = $_POST['booking_id'];
-
-// Attempt to delete the booking
-$booking->deleteBooking( $bookingId );
+// Attempt to update the booking
+$booking->updateBooking( $_POST['booking_id'], $_POST['status'] );
 
 // Redirect back to the bookings page
 header( "Location: bookings.php" );

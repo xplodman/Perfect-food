@@ -1,10 +1,10 @@
 <?php
 include_once 'includes/header.php';
 
-use PerfectFood\Classes\User\Customer;
+use PerfectFood\Classes\User;
 
 // Check if the user is already logged in, if yes, redirect to homepage
-if ( isset( $_SESSION["customer_logged_in"] ) && $_SESSION["customer_logged_in"] === true ) {
+if ( isset( $_SESSION["user_logged_in"] ) && $_SESSION["user_logged_in"] === true ) {
 	header( "Location: index.php" );
 	exit;
 }
@@ -28,22 +28,22 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	if ( empty( $email ) || empty( $password ) || empty( $firstName ) || empty( $lastName ) || empty( $city ) || empty( $street ) || empty( $houseNumber ) || empty( array_filter( $phones ) ) ) {
 		$_SESSION['errors'][] = "All fields are required.";
 	} else {
-		// Create a new Customer object
-		$customer = new Customer();
+		// Create a new User object
+		$user = new User();
 
 		// Attempt to register user
-		if ( $customer->registerUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber ) ) {
-			// Get the ID of the newly registered customer
-			$customerId = $customer->getLastInsertedId();
+		if ( $user->registerUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber ) ) {
+			// Get the ID of the newly registered user
+			$userId = $user->getLastInsertedId();
 
 			// Insert phone numbers into the phone table
 			$phones = $_POST['phones'];
 			foreach ( $phones as $phone ) {
-				$customer->addPhone( $customerId, $phone );
+				$user->addPhone( $userId, $phone );
 			}
 
 			// Registration successful, create session
-			$_SESSION["customer_logged_in"] = true;
+			$_SESSION["user_logged_in"] = true;
 			$_SESSION["email"]              = $email;
 			header( "Location: index.php" );
 			exit;

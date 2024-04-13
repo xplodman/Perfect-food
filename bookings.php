@@ -5,23 +5,22 @@ use PerfectFood\Classes\Book;
 use PerfectFood\Classes\Evaluate;
 
 // Check if the user is already logged in, if not, redirect to login page
-if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {
 	header( "Location: login.php" );
 	exit;
 }
 
 $book       = new Book();
 $evaluation = new Evaluate();
-$customerId = $_SESSION['customer_id'];
 
-// Retrieve orders for the logged-in customer
-$bookings = $book->getBookingsByCustomerId( $customerId );
+// Retrieve bookings for the logged-in customer
+$bookings = $book->getBookingsBasedOnUserRole();
 include_once 'includes/partial/alerts.php';
 
 ?>
 
 <div class="container">
-	<h1>Bookings</h1>
+	<h1><?php echo ( $_SESSION["role"] === 'admin' ) ? 'All Bookings' : 'My Bookings' ?></h1>
 
 	<?php if ( empty( $bookings ) ) : ?>
 		<p>No Bookings found.</p>
@@ -51,40 +50,52 @@ include_once 'includes/partial/alerts.php';
 					<td><?php echo $booking['guests']; ?></td>
 					<td>
 						<?php if ( $booking['status'] === 'completed' ) :
-							if ( $evaluation->entityHasRating( $booking['id'], 'booking' ) ):
+							if ( $evaluation->entityHasRating( $booking['id'], 'booking' ) ) :
 								$rating = $evaluation->getEntityRating( $booking['id'], 'booking' );
 								?>
 								<span class="rating-value"><?php echo $rating['rating']; ?></span>
 								<br>
 								<small class="form-text text-muted"><?php echo $rating['comment']; ?></small>
-							<?php else: ?>
+							<?php elseif ( $_SESSION["role"] !== 'admin' ): ?>
 								<form method="get" action="evaluate.php">
 									<input type="hidden" name="type" value="booking">
 									<input type="hidden" name="id" value="<?php echo $booking['id']; ?>">
 									<button type="submit" class="btn btn-info">Rate</button>
 								</form>
-							<?php endif; ?>
-						<?php endif; ?>
+							<?php endif;
+						endif; ?>
 					</td>
 					<td>
-						<?php
-						// Convert booking creation time to Unix timestamp
-						$bookingCreationTime = strtotime( $booking['created_at'] ) + 7200;
-
-						// Get current Unix timestamp
-						$currentTime = time();
-
-						// Calculate time difference in seconds
-						$timeDifference = $currentTime - $bookingCreationTime;
-
-						// If the time difference is less than or equal to 1 hour, display the delete button
-						if ( $timeDifference <= 3600 && $booking['status'] === 'pending' ) :
-							?>
-							<form method="post" action="delete_booking.php">
-								<input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>">
-								<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this booking?')">Delete</button>
+						<?php if ($_SESSION["role"] === 'admin' && ($booking['status'] === 'pending' || $booking['status'] === 'in_progress')) :
+							if ($booking['status'] === 'pending') : ?>
+								<form method="post" action="update_booking.php">
+									<input type="hidden" name="booking_id" value="<?= $booking['id']; ?>">
+									<input type="hidden" name="status" value="in_progress">
+									<button type="submit" class="btn btn-primary">Mark as In Progress</button>
+								</form>
+							<?php elseif ($booking['status'] === 'in_progress') : ?>
+								<form method="post" action="update_booking.php">
+									<input type="hidden" name="booking_id" value="<?= $booking['id']; ?>">
+									<input type="hidden" name="status" value="completed">
+									<button type="submit" class="btn btn-success">Mark as Completed</button>
+								</form>
+							<?php endif; ?>
+							<form method="post" action="update_booking.php">
+								<input type="hidden" name="booking_id" value="<?= $booking['id']; ?>">
+								<input type="hidden" name="status" value="cancelled">
+								<button type="submit" class="btn btn-danger">Mark as Cancelled</button>
 							</form>
-						<?php endif; ?>
+						<?php elseif ($_SESSION["role"] !== 'admin' && $booking['status'] === 'pending') :
+							$bookingCreationTime = strtotime($booking['created_at']) + 7200;
+							$currentTime = time();
+							$timeDifference = $currentTime - $bookingCreationTime;
+							if ($timeDifference <= 3600) : ?>
+								<form method="post" action="delete_booking.php">
+									<input type="hidden" name="booking_id" value="<?= $booking['id']; ?>">
+									<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this booking?')">Delete</button>
+								</form>
+							<?php endif;
+						endif; ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>

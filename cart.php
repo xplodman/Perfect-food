@@ -1,12 +1,12 @@
 <?php
 
 use PerfectFood\Classes\MenuItem;
-use PerfectFood\Classes\User\Customer;
+use PerfectFood\Classes\User;
 
 include_once 'includes/header.php';
 
 // Check if the user is already logged in, if yes, redirect to homepage
-if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {
 	header( "Location: login.php" );
 	exit;
 }
@@ -18,7 +18,7 @@ if ( empty( $_SESSION['cart'] ) ) {
 }
 
 $menuItems = new MenuItem();
-$customer  = new Customer();
+$user  = new User();
 
 // Initialize an array to store cart items with their details
 $cartItems = array();
@@ -45,11 +45,11 @@ foreach ( $_SESSION['cart'] as $itemId => $quantity ) {
 	}
 }
 
-// Retrieve customer ID from session
-$customerId = $_SESSION['customer_id'];
+// Retrieve user ID from session
+$userId = $_SESSION['user_id'];
 
-// Retrieve phone numbers associated with the customer ID
-$phoneNumbers = $customer->getPhonesByCustomerId( $customerId );
+// Retrieve phone numbers associated with the user ID
+$phoneNumbers = $user->getPhonesByUserId( $userId );
 ?>
 <div class="container">
 	<h1>Cart</h1>
@@ -85,7 +85,7 @@ $phoneNumbers = $customer->getPhonesByCustomerId( $customerId );
 	</table>
 </div>
 
-<!-- Customer Details Form -->
+<!-- User Details Form -->
 <div class="row">
 	<div class="container">
 		<h2 class="mb-4">Checkout</h2>

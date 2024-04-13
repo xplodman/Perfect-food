@@ -1,23 +1,23 @@
 <?php
 include_once 'includes/header.php';
 
-use PerfectFood\Classes\User\Customer;
+use PerfectFood\Classes\User;
 
 // Check if the user is already logged in, if yes, redirect to homepage
-if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {
 	header( "Location: login.php" );
 	exit;
 }
 
-$customer = new Customer();
+$user = new User();
 
-// Retrieve customer ID from session
-$customerId = $_SESSION['customer_id'];
+// Retrieve user ID from session
+$userId = $_SESSION['user_id'];
 
 // Check if the form is submitted
 if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	// Perform the deletion of the user account
-	$customer->deleteCustomerAccount( $customerId );
+	$user->deleteUserAccount( $userId );
 
 	// Log out the user
 	session_unset();

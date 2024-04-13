@@ -1,40 +1,38 @@
 <?php
 
-namespace PerfectFood\Classes\User;
+namespace PerfectFood\Classes;
 
 use PDO;
 use PDOException;
-use PerfectFood\Classes\DB;
-use PerfectFood\Classes\Order;
 
-class Customer {
+class User {
 	private DB $db;
 
 	public function __construct() {
 		$this->db = new DB();
 	}
 
-	public function registerUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber, $role = 'customer' ) {
+	public function registerUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber, $role = 'user' ) {
 		try {
 			// Hash the password before storing it in the database
 			$hashedPassword = password_hash( $password, PASSWORD_DEFAULT );
 
 			// Prepare the SQL statement to insert user data into the database
-			$stmt = $this->db->connection->prepare( "INSERT INTO customers (first_name, last_name, email, password, city, street, house_number, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)" );
+			$stmt = $this->db->connection->prepare( "INSERT INTO users (first_name, last_name, email, password, city, street, house_number, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)" );
 			$stmt->execute( [ $firstName, $lastName, $email, $hashedPassword, $city, $street, $houseNumber ] );
 
-			$customerId = $this->getLastInsertedId();
+			$userId = $this->getLastInsertedId();
 
 			// Set session variables
 			$_SESSION["city"]               = $city;
-			$_SESSION["customer_logged_in"] = true;
+			$_SESSION["user_logged_in"] = true;
 			$_SESSION["email"]              = $email;
 			$_SESSION["first_name"]         = $firstName;
 			$_SESSION["house_number"]       = $houseNumber;
 			$_SESSION["last_name"]          = $lastName;
 			$_SESSION["role"]               = $role;
 			$_SESSION["street"]             = $street;
-			$_SESSION['customer_id']        = $customerId;
+			$_SESSION['user_id']        = $userId;
 
 			// User registration successful
 			return true;
@@ -54,7 +52,7 @@ class Customer {
 	public function loginUser( $email, $password ) {
 		try {
 			// Retrieve the hashed password from the database for the given email
-			$stmt = $this->db->connection->prepare( "SELECT * FROM customers WHERE email = ? LIMIT 1" );
+			$stmt = $this->db->connection->prepare( "SELECT * FROM users WHERE email = ? LIMIT 1" );
 			$stmt->execute( [ $email ] );
 			$user = $stmt->fetch();
 
@@ -64,12 +62,12 @@ class Customer {
 				$order = new Order();
 
 				// Determine discount based on completed orders count
-				$totalPrices = $order->getTotalPricesByCustomerId( $user['id'] );
+				$totalPrices = $order->getTotalPricesByUserId( $user['id'] );
 				$discount    = $this->calculateDiscountDependOnTotalPrice( $totalPrices );
 
 				// Set session variables
 				$_SESSION["city"]               = $user['city'];
-				$_SESSION["customer_logged_in"] = true;
+				$_SESSION["user_logged_in"] = true;
 				$_SESSION["discount"]           = $discount;
 				$_SESSION["email"]              = $email;
 				$_SESSION["first_name"]         = $user['first_name'];
@@ -77,7 +75,7 @@ class Customer {
 				$_SESSION["last_name"]          = $user['last_name'];
 				$_SESSION["role"]               = $user['role'];
 				$_SESSION["street"]             = $user['street'];
-				$_SESSION['customer_id']        = $user['id'];
+				$_SESSION['user_id']        = $user['id'];
 
 				return true;
 			}
@@ -119,11 +117,11 @@ class Customer {
 		session_destroy();
 	}
 
-	public function addPhone( $customerId, $phoneNumber ) {
+	public function addPhone( $userId, $phoneNumber ) {
 		try {
 			// Prepare the SQL statement to insert phone number into the database
-			$stmt = $this->db->connection->prepare( "INSERT INTO phones (customer_id, phone_number) VALUES (?, ?)" );
-			$stmt->execute( [ $customerId, $phoneNumber ] );
+			$stmt = $this->db->connection->prepare( "INSERT INTO phones (user_id, phone_number) VALUES (?, ?)" );
+			$stmt->execute( [ $userId, $phoneNumber ] );
 		} catch ( PDOException $e ) {
 			// Error handling for phone number insertion
 			$_SESSION['errors'][] = "Error adding phone number: " . $e->getMessage();
@@ -131,11 +129,11 @@ class Customer {
 		}
 	}
 
-	public function getPhonesByCustomerId( $customerId ) {
+	public function getPhonesByUserId( $userId ) {
 		try {
-			// Prepare the SQL statement to retrieve phone numbers by customer ID
-			$stmt = $this->db->connection->prepare( "SELECT phone_number FROM phones WHERE customer_id = ?" );
-			$stmt->execute( [ $customerId ] );
+			// Prepare the SQL statement to retrieve phone numbers by user ID
+			$stmt = $this->db->connection->prepare( "SELECT phone_number FROM phones WHERE user_id = ?" );
+			$stmt->execute( [ $userId ] );
 
 			return $stmt->fetchAll( PDO::FETCH_COLUMN );
 		} catch ( PDOException $e ) {
@@ -146,10 +144,10 @@ class Customer {
 		}
 	}
 
-	public function updateCustomerDetails( $customerId, $postData ) {
+	public function updateUserDetails( $userId, $postData ) {
 		try {
-			// Prepare the SQL statement to update customer details
-			$query = "UPDATE customers SET 
+			// Prepare the SQL statement to update user details
+			$query = "UPDATE users SET 
                   first_name = :first_name, 
                   last_name = :last_name, 
                   city = :city, 
@@ -171,7 +169,7 @@ class Customer {
 			$stmt->bindParam( ':city', $postData['city'] );
 			$stmt->bindParam( ':street', $postData['street'] );
 			$stmt->bindParam( ':house_number', $postData['house_number'] );
-			$stmt->bindParam( ':id', $customerId );
+			$stmt->bindParam( ':id', $userId );
 
 			// Bind password parameter if provided
 			if ( ! empty( $postData['password'] ) && $postData['password'] === $postData['confirm_password'] ) {
@@ -185,25 +183,25 @@ class Customer {
 			return true;
 		} catch ( PDOException $e ) {
 			// Error handling for database update
-			$_SESSION['errors'][] = "Error updating customer details: " . $e->getMessage();
+			$_SESSION['errors'][] = "Error updating user details: " . $e->getMessage();
 
 			return false;
 		}
 	}
 
-	public function updateCustomerPhones( $customerId, $phoneNumbers ) {
+	public function updateUserPhones( $userId, $phoneNumbers ) {
 		try {
 			// Start a transaction
 			$this->db->connection->beginTransaction();
 
 			// Remove existing phone numbers
-			$stmtDelete = $this->db->connection->prepare( "DELETE FROM phones WHERE customer_id = :customer_id" );
-			$stmtDelete->bindParam( ':customer_id', $customerId );
+			$stmtDelete = $this->db->connection->prepare( "DELETE FROM phones WHERE user_id = :user_id" );
+			$stmtDelete->bindParam( ':user_id', $userId );
 			$stmtDelete->execute();
 
 			// Add new phone numbers
-			$stmtInsert = $this->db->connection->prepare( "INSERT INTO phones (customer_id, phone_number) VALUES (:customer_id, :phone_number)" );
-			$stmtInsert->bindParam( ':customer_id', $customerId );
+			$stmtInsert = $this->db->connection->prepare( "INSERT INTO phones (user_id, phone_number) VALUES (:user_id, :phone_number)" );
+			$stmtInsert->bindParam( ':user_id', $userId );
 
 			foreach ( $phoneNumbers as $phoneNumber ) {
 				$stmtInsert->bindParam( ':phone_number', $phoneNumber );
@@ -217,22 +215,22 @@ class Customer {
 		} catch ( PDOException $e ) {
 			// Roll back the transaction if an error occurs
 			$this->db->connection->rollBack();
-			$_SESSION['errors'][] = "Error updating customer phones: " . $e->getMessage();
+			$_SESSION['errors'][] = "Error updating user phones: " . $e->getMessage();
 
 			return false;
 		}
 	}
 
-	public function reloadCustomerInfo() {
+	public function reloadUserInfo() {
 		try {
-			// Retrieve the customer information from the database based on the session's customer_id
-			$stmt = $this->db->connection->prepare( "SELECT * FROM customers WHERE id = ?" );
-			$stmt->execute( [ $_SESSION['customer_id'] ] );
+			// Retrieve the user information from the database based on the session's user_id
+			$stmt = $this->db->connection->prepare( "SELECT * FROM users WHERE id = ?" );
+			$stmt->execute( [ $_SESSION['user_id'] ] );
 			$user = $stmt->fetch();
 
-			// Check if customer information is found
+			// Check if user information is found
 			if ( $user ) {
-				// Update session variables with the new customer information
+				// Update session variables with the new user information
 				$_SESSION['email']        = $user['email'];
 				$_SESSION['first_name']   = $user['first_name'];
 				$_SESSION['last_name']    = $user['last_name'];
@@ -243,26 +241,25 @@ class Customer {
 				return true;
 			}
 
-			// Customer information not found
+			// User information not found
 			return false;
 		} catch ( PDOException $e ) {
-			// Error occurred while reloading customer information
+			// Error occurred while reloading user information
 			$_SESSION['errors'][] = $e->getMessage();
 
 			return false;
 		}
 	}
 
-	public function deleteCustomerAccount( $customerId ) {
+	public function deleteUserAccount( $userId ) {
 		try {
-			// Prepare the SQL statement to delete the customer account
-			$stmt = $this->db->connection->prepare( "DELETE FROM customers WHERE id = ?" );
-			$stmt->execute( [ $customerId ] );
+			// Prepare the SQL statement to delete the user account
+			$stmt = $this->db->connection->prepare( "DELETE FROM users WHERE id = ?" );
+			$stmt->execute( [ $userId ] );
 		} catch ( PDOException $e ) {
 			// Error handling for account deletion
-			$_SESSION['errors'][] = "Error deleting customer account: " . $e->getMessage();
+			$_SESSION['errors'][] = "Error deleting user account: " . $e->getMessage();
 		}
 	}
-
 
 }

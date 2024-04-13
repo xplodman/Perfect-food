@@ -1,6 +1,6 @@
 <?php
-// Include the Customer class
-use PerfectFood\Classes\User\Customer;
+// Include the User class
+use PerfectFood\Classes\User;
 
 // Include the autoload.php file
 require_once 'includes/autoload.php';
@@ -9,11 +9,11 @@ require_once 'includes/autoload.php';
 // Start the session
 session_start();
 
-// Create a new Customer object
-$customer = new Customer();
+// Create a new User object
+$user = new User();
 
 // Call the logoutUser method
-$customer->logoutUser();
+$user->logoutUser();
 
 // Redirect the user to the homepage or login page
 header( "Location: index.php" );

@@ -12,15 +12,31 @@ class Book {
 		$this->db = new DB();
 	}
 
-	public function book( $customerId, $branchId, $bookingDate, $bookingTime, $guests ) {
+	public function book( $userId, $branchId, $bookingDate, $bookingTime, $guests ) {
 		try {
+			// Validate booking date
+//			$currentDate = date( 'Y-m-d' );
+//			if ( strtotime( $bookingDate ) < $currentDate ) {
+//				$_SESSION['errors'][] = "Booking date cannot be before the current date.";
+//
+//				return false; // Booking failed
+//			}
+//
+//			// Validate booking time
+//			$currentTime = date( 'H:i:s' );
+//			if ( strtotime( $bookingDate ) == $currentDate && $bookingTime < $currentTime ) {
+//				$_SESSION['errors'][] = "Booking time cannot be before the current time.";
+//
+//				return false; // Booking failed
+//			}
+
 			// Start a transaction
 			$this->db->connection->beginTransaction();
 
 			// Insert booking details into the database
-			$query     = "INSERT INTO bookings (customer_id, branch_id, booking_date, booking_time, guests) VALUES (?, ?, ?, ?, ?)";
+			$query     = "INSERT INTO bookings (user_id, branch_id, booking_date, booking_time, guests) VALUES (?, ?, ?, ?, ?)";
 			$statement = $this->db->connection->prepare( $query );
-			$statement->execute( [ $customerId, $branchId, $bookingDate, $bookingTime, $guests ] );
+			$statement->execute( [ $userId, $branchId, $bookingDate, $bookingTime, $guests ] );
 
 			// Commit the transaction
 			$this->db->connection->commit();
@@ -38,11 +54,19 @@ class Book {
 		}
 	}
 
-	public function getBookingsByCustomerId( $customerId ) {
+	public function getBookingsBasedOnUserRole() {
 		try {
-			$query     = "SELECT b.*, br.name AS branch_name FROM bookings b JOIN branches br ON b.branch_id = br.id WHERE b.customer_id = ?; ";
-			$statement = $this->db->connection->prepare( $query );
-			$statement->execute( [ $customerId ] );
+			if ( $_SESSION["role"] === 'admin' ) {
+				// If the user is an admin, fetch all bookings without filtering by user_id
+				$query     = "SELECT b.*, br.name AS branch_name FROM bookings b JOIN branches br ON b.branch_id = br.id;";
+				$statement = $this->db->connection->prepare( $query );
+				$statement->execute();
+			} else {
+				// If the user is not an admin, fetch bookings only for the current user
+				$query     = "SELECT b.*, br.name AS branch_name FROM bookings b JOIN branches br ON b.branch_id = br.id WHERE b.user_id = ?;";
+				$statement = $this->db->connection->prepare( $query );
+				$statement->execute( [ $_SESSION['user_id'] ] );
+			}
 
 			return $statement->fetchAll( PDO::FETCH_ASSOC );
 		} catch ( PDOException $e ) {
@@ -64,17 +88,17 @@ class Book {
 		}
 	}
 
-	public function getBookingStatusCounts( $customerId = null ) {
+	public function getBookingStatusCounts() {
 		try {
 			$query = "SELECT status, COUNT(*) AS count FROM bookings";
-			if ( $customerId !== null ) {
-				$query .= " WHERE customer_id = :customer_id";
+			if ( $_SESSION["role"] !== 'admin' ) {
+				$query .= " WHERE user_id = :user_id";
 			}
 			$query .= " GROUP BY status";
 
 			$statement = $this->db->connection->prepare( $query );
-			if ( $customerId !== null ) {
-				$statement->bindParam( ':customer_id', $customerId, PDO::PARAM_INT );
+			if ( $_SESSION["role"] !== 'admin' ) {
+				$statement->bindParam( ':user_id', $_SESSION['user_id'], PDO::PARAM_INT );
 			}
 			$statement->execute();
 
@@ -86,6 +110,25 @@ class Book {
 			return $statusCounts;
 		} catch ( PDOException $e ) {
 			return [];
+		}
+	}
+
+	public function updateBooking( $bookingId, $status ) {
+		try {
+			// Prepare the SQL statement to update the booking
+			$stmt = $this->db->connection->prepare( "UPDATE bookings SET status = :status WHERE id = :id" );
+
+			// Bind parameters
+			$stmt->bindParam( ':status', $status );
+			$stmt->bindParam( ':id', $bookingId );
+
+			// Execute the statement
+			$stmt->execute();
+
+			// Check if any rows were affected
+			return $stmt->rowCount() > 0;
+		} catch ( PDOException $e ) {
+			return false;
 		}
 	}
 

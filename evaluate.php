@@ -4,7 +4,7 @@ include_once 'includes/header.php';
 use PerfectFood\Classes\Evaluate;
 
 // Check if the user is already logged in, if yes, redirect to homepage
-if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {
 	header( "Location: index.php" );
 	exit;
 }

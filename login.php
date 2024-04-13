@@ -1,26 +1,26 @@
 <?php
 include_once 'includes/header.php';
 
-use PerfectFood\Classes\User\Customer;
+use PerfectFood\Classes\User;
 
 // Check if the user is already logged in, if yes, redirect to homepage
-if ( isset( $_SESSION["customer_logged_in"] ) && $_SESSION["customer_logged_in"] === true ) {
+if ( isset( $_SESSION["user_logged_in"] ) && $_SESSION["user_logged_in"] === true ) {
 	header( "Location: index.php" );
 	exit;
 }
 
 if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
-	// Create a new Customer object
-	$customer = new Customer();
+	// Create a new User object
+	$user = new User();
 
 	// Retrieve email and password from the form
 	$email    = $_POST['email'];
 	$password = $_POST['password'];
 
 	// Attempt to login
-	if ( $customer->loginUser( $email, $password ) ) {
+	if ( $user->loginUser( $email, $password ) ) {
 		// Login successful, create session
-		$_SESSION["customer_logged_in"] = true;
+		$_SESSION["user_logged_in"] = true;
 		$_SESSION["email"]              = $email;
 		header( "Location: index.php" );
 		exit;

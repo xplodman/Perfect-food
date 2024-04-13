@@ -7,16 +7,27 @@
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<?php
-				const NAV_ITEMS = [
+				$navItems = [
 					[ 'Home', 'index.php', 'house' ],
 					[ 'Menus', 'menus.php', 'list' ],
 					[ 'Search', 'search.php', 'search' ],
-					[ 'Booking', 'booking.php', 'calendar' ],
 					[ 'Branches', 'branches.php', 'map' ],
 				];
 
+				// Conditionally add additional navigation items based on the user's role
+				if ( isset($_SESSION["role"]) && $_SESSION["role"] === 'admin' ) {
+					$navItems[] = [ 'All bookings', 'bookings.php', 'calendar' ];
+					$navItems[] = [ 'All orders', 'orders.php', 'list' ];
+				}else{
+					// Additional navigation items for non-admin users
+					$navItems[] = [ 'Booking', 'booking.php', 'calendar' ];
+				}
+
+				// Convert to constant if needed
+				define( 'NAV_ITEMS', $navItems );
+
 				// Loop through navigation items and generate the links dynamically
-				foreach (NAV_ITEMS as $item) :
+				foreach ( NAV_ITEMS as $item ) :
 					?>
 					<li class="nav-item">
 						<a class="nav-link" href="<?php echo $item[1]; ?>">
@@ -27,16 +38,20 @@
 				<?php endforeach; ?>
 			</ul>
 			<ul class="navbar-nav">
-				<?php if (!empty($_SESSION['customer_logged_in'])) : ?>
+				<?php if ( ! empty( $_SESSION['user_logged_in'] ) ) : ?>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<?php echo $_SESSION['email']; ?>
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<li><a class="dropdown-item" href="account.php">Account</a></li>
-							<li><a class="dropdown-item" href="bookings.php">My Bookings</a></li>
-							<li><a class="dropdown-item" href="orders.php">My Orders</a></li>
-							<li><hr class="dropdown-divider"></li>
+							<?php if ( $_SESSION["role"] !== 'admin' ): ?>
+								<li><a class="dropdown-item" href="bookings.php">My Bookings</a></li>
+								<li><a class="dropdown-item" href="orders.php">My Orders</a></li>
+							<?php endif; ?>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
 							<li><a class="dropdown-item" href="logout.php">Logout</a></li>
 						</ul>
 					</li>
@@ -47,9 +62,9 @@
 							<span class="d-none d-sm-inline">Cart</span>
 							<?php
 							// Display the count of items in the cart
-							$cartCount = isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
+							$cartCount = isset( $_SESSION['cart'] ) ? array_sum( $_SESSION['cart'] ) : 0;
 							?>
-							<?php if ($cartCount > 0) : ?>
+							<?php if ( $cartCount > 0 ) : ?>
 								<span class="badge bg-light text-primary"><?php echo $cartCount; ?></span>
 							<?php endif; ?>
 						</a>

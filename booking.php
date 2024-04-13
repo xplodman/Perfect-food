@@ -7,6 +7,7 @@ include_once 'includes/header.php';
 $branch   = new Branch();
 $branches = $branch->getAllBranches();
 
+include_once 'includes/partial/alerts.php';
 ?>
 
 <div class="container">

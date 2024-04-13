@@ -12,13 +12,13 @@ class Order {
 		$this->db = new DB();
 	}
 
-	public function placeOrder( $customerId, $postData ) {
+	public function placeOrder( $userId, $postData ) {
 		try {
 			// Start a transaction
 			$this->db->connection->beginTransaction();
 
-			// Retrieve customer details from the $postData array
-			$customerData = [
+			// Retrieve user details from the $postData array
+			$userData = [
 				'first_name'   => $postData['first_name'],
 				'last_name'    => $postData['last_name'],
 				'email'        => $postData['email'],
@@ -31,19 +31,19 @@ class Order {
 			];
 
 			// Insert order details into the database
-			$query     = "INSERT INTO orders (customer_id, first_name, last_name, email, city, street, house_number, phone_1, phone_2, phone_3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			$query     = "INSERT INTO orders (user_id, first_name, last_name, email, city, street, house_number, phone_1, phone_2, phone_3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			$statement = $this->db->connection->prepare( $query );
 			$statement->execute( [
-				$customerId,
-				$customerData['first_name'],
-				$customerData['last_name'],
-				$customerData['email'],
-				$customerData['city'],
-				$customerData['street'],
-				$customerData['house_number'],
-				$customerData['phone_1'],
-				$customerData['phone_2'],
-				$customerData['phone_3'],
+				$userId,
+				$userData['first_name'],
+				$userData['last_name'],
+				$userData['email'],
+				$userData['city'],
+				$userData['street'],
+				$userData['house_number'],
+				$userData['phone_1'],
+				$userData['phone_2'],
+				$userData['phone_3'],
 			] );
 
 			// Retrieve the order ID of the newly inserted order
@@ -78,36 +78,6 @@ class Order {
 		}
 	}
 
-	public function getOrdersByCustomerId( $customerId ) {
-		try {
-			// Prepare the SQL statement to retrieve orders by customer ID
-			$query     = "
-                SELECT 
-                    orders.*, 
-                    COUNT(order_items.item_id) AS item_count, 
-                    SUM(order_items.quantity * menu_items.price) AS total_sum
-                FROM 
-                    orders
-                LEFT JOIN 
-                    order_items ON orders.id = order_items.order_id
-                LEFT JOIN 
-                    menu_items ON order_items.item_id = menu_items.id
-                WHERE 
-                    orders.customer_id = ?
-                GROUP BY 
-                    orders.id
-            ";
-			$statement = $this->db->connection->prepare( $query );
-			$statement->execute( [ $customerId ] );
-			$orders = $statement->fetchAll( PDO::FETCH_ASSOC );
-
-			return $orders;
-		} catch ( PDOException $e ) {
-			// Handle the error (You might want to log or display an error message)
-			return [];
-		}
-	}
-
 	public function deleteOrder( $orderId ) {
 		try {
 			$query     = "DELETE FROM orders WHERE id = ?";
@@ -120,7 +90,7 @@ class Order {
 		}
 	}
 
-	public function getTotalPricesByCustomerId( $customerId ) {
+	public function getTotalPricesByUserId( $userId ) {
 		try {
 			// Prepare the SQL query
 			$query = "SELECT
@@ -132,13 +102,13 @@ class Order {
                   JOIN
                     menu_items ON order_items.item_id = menu_items.id
                   WHERE
-                    orders.customer_id = ?
+                    orders.user_id = ?
                   AND
                     orders.status = 'completed'";
 
 			// Prepare and execute the statement
 			$statement = $this->db->connection->prepare( $query );
-			$statement->execute( [ $customerId ] );
+			$statement->execute( [ $userId ] );
 
 			// Fetch the total price
 			$result = $statement->fetch( PDO::FETCH_ASSOC );
@@ -153,17 +123,17 @@ class Order {
 		}
 	}
 
-	public function getOrderStatusCounts( $customerId = null ) {
+	public function getOrderStatusCounts() {
 		try {
 			$query = "SELECT status, COUNT(*) AS count FROM orders";
-			if ( $customerId !== null ) {
-				$query .= " WHERE customer_id = :customer_id";
+			if ( $_SESSION["role"] !== 'admin' ) {
+				$query .= " WHERE user_id = :user_id";
 			}
 			$query .= " GROUP BY status";
 
 			$statement = $this->db->connection->prepare( $query );
-			if ( $customerId !== null ) {
-				$statement->bindParam( ':customer_id', $customerId, PDO::PARAM_INT );
+			if ( $_SESSION["role"] !== 'admin' ) {
+				$statement->bindParam( ':user_id', $_SESSION['user_id'], PDO::PARAM_INT );
 			}
 			$statement->execute();
 
@@ -177,5 +147,75 @@ class Order {
 			return [];
 		}
 	}
+
+	public function getOrdersBasedOnUserRole() {
+		try {
+			if ( $_SESSION["role"] === 'admin' ) {
+				// If the user is an admin, fetch all bookings without filtering by user_id
+				$query     = "
+                SELECT 
+                    orders.*, 
+                    COUNT(order_items.item_id) AS item_count, 
+                    SUM(order_items.quantity * menu_items.price) AS total_sum
+                FROM 
+                    orders
+                LEFT JOIN 
+                    order_items ON orders.id = order_items.order_id
+                LEFT JOIN 
+                    menu_items ON order_items.item_id = menu_items.id
+                GROUP BY 
+                    orders.id
+            ";
+				$statement = $this->db->connection->prepare( $query );
+				$statement->execute();
+			} else {
+				// If the user is not an admin, fetch bookings only for the current user
+				$query     = "
+                SELECT 
+                    orders.*, 
+                    COUNT(order_items.item_id) AS item_count, 
+                    SUM(order_items.quantity * menu_items.price) AS total_sum
+                FROM 
+                    orders
+                LEFT JOIN 
+                    order_items ON orders.id = order_items.order_id
+                LEFT JOIN 
+                    menu_items ON order_items.item_id = menu_items.id
+                WHERE 
+                    orders.user_id = ?
+                GROUP BY 
+                    orders.id
+            ";
+				$statement = $this->db->connection->prepare( $query );
+				$statement->execute( [ $_SESSION['user_id'] ] );
+			}
+
+			return $statement->fetchAll( PDO::FETCH_ASSOC );
+		} catch ( PDOException $e ) {
+			$_SESSION['errors'][] = "Error fetching orders: " . $e->getMessage();
+
+			return false;
+		}
+	}
+
+	public function updateOrder( $bookingId, $status ) {
+		try {
+			// Prepare the SQL statement to update the order
+			$stmt = $this->db->connection->prepare("UPDATE orders SET status = :status WHERE id = :id");
+
+			// Bind parameters
+			$stmt->bindParam( ':status', $status );
+			$stmt->bindParam( ':id', $bookingId );
+
+			// Execute the statement
+			$stmt->execute();
+
+			// Check if any rows were affected
+			return $stmt->rowCount() > 0;
+		} catch ( PDOException $e ) {
+			return false;
+		}
+	}
+
 
 }

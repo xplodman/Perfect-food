@@ -8,7 +8,7 @@ include_once 'includes/header.php';
 include_once 'includes/partial/alerts.php';
 
 // Redirect to login page if user is not logged in
-if ( ! isset( $_SESSION["customer_logged_in"] ) || $_SESSION["customer_logged_in"] !== true ) {
+if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {
 	header( "Location: login.php" );
 	exit;
 }
@@ -18,14 +18,14 @@ $menuItems = new MenuItem();
 $booking   = new Book();
 $order     = new Order();
 
-// Retrieve customer ID from session
-$customerId = $_SESSION['customer_id'];
+// Retrieve user ID from session
+$userId = $_SESSION['user_id'];
 
 // Get counts of orders for each status
-$orderStatusCounts = $order->getOrderStatusCounts( $customerId );
+$orderStatusCounts = $order->getOrderStatusCounts( $userId );
 
 // Get counts of bookings for each status
-$bookingStatusCounts = $booking->getBookingStatusCounts( $customerId );
+$bookingStatusCounts = $booking->getBookingStatusCounts( $userId );
 
 // Get random menu items
 $randomMenuItems = $menuItems->getMenuItemsRandomWithLimit( 4 );

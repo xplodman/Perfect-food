@@ -6,9 +6,9 @@ include_once 'includes/header.php';
 $book = new Book();
 // Check if the form is submitted
 if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
-	$customerId = $_SESSION['customer_id'];
+	$userId = $_SESSION['user_id'];
 
-	$book->book( $customerId, $_POST['branch'], $_POST['date'], $_POST['time'], $_POST['guests'] );
+	$book->book( $userId, $_POST['branch'], $_POST['date'], $_POST['time'], $_POST['guests'] );
 }
 
 // If form is not submitted, redirect to the booking page
