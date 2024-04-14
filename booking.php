@@ -4,6 +4,12 @@ use PerfectFood\Classes\Branch;
 
 include_once 'includes/header.php';
 
+// Check if the user is already logged in, if not, redirect to login page
+if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {
+	header( "Location: login.php" );
+	exit;
+}
+
 $branch   = new Branch();
 $branches = $branch->getAllBranches();
 

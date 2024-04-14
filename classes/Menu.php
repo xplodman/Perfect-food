@@ -15,7 +15,7 @@ class Menu {
 	public function getMenus() {
 		$query = "SELECT * FROM menus";
 
-		if ( $_SESSION["role"] !== 'admin' ){
+		if ( !isset($_SESSION["role"]) || $_SESSION["role"] !== 'admin' ){
 			$query .= ' WHERE active = 1';
 		}
 

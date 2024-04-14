@@ -17,6 +17,36 @@ if ( empty( $_SESSION['cart'] ) ) {
 	exit;
 }
 
+// Check if the form has been submitted
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+	// Check if the action is to delete an item
+	if (isset($_POST['action']) && $_POST['action'] === 'delete') {
+		// Check if the item_id is set
+		if (isset($_POST['item_id'])) {
+			$itemIdToDelete = $_POST['item_id'];
+
+			// Check if the item exists in the cart session
+			if ( isset($_SESSION['cart'][$itemIdToDelete]) ) {
+				// Remove the item from the cart session
+				unset($_SESSION['cart'][$itemIdToDelete]);
+				// Optionally, you can display a success message
+				$_SESSION['info'][] = 'Item removed from cart.';
+				header( "Location: cart.php" );
+				exit;
+			}
+
+			$_SESSION['errors'][] = 'Item not found in cart.';
+			header( "Location: cart.php" );
+			exit;
+		}
+
+		// Optionally, you can display an error message
+		$_SESSION['errors'][] = 'Item ID not provided.';
+		header( "Location: cart.php" );
+		exit;
+	}
+}
+
 $menuItems = new MenuItem();
 $user  = new User();
 
@@ -50,6 +80,8 @@ $userId = $_SESSION['user_id'];
 
 // Retrieve phone numbers associated with the user ID
 $phoneNumbers = $user->getPhonesByUserId( $userId );
+
+include_once 'includes/partial/alerts.php';
 ?>
 <div class="container">
 	<h1>Cart</h1>
@@ -62,6 +94,12 @@ $phoneNumbers = $user->getPhonesByUserId( $userId );
 			<th>Price</th>
 			<th>Quantity</th>
 			<th>Subtotal</th>
+			<th>Action</th>
+			<?php
+			/**
+			 * 1. make random items work without login, menus and search
+			 */
+			?>
 		</tr>
 		</thead>
 		<tbody>
@@ -73,6 +111,13 @@ $phoneNumbers = $user->getPhonesByUserId( $userId );
 				<td>$<?php echo $cartItem["price"]; ?></td>
 				<td><?php echo $cartItem["quantity"]; ?></td>
 				<td>$<?php echo $cartItem["subtotal"]; ?></td>
+				<td>
+					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+						<input type="hidden" name="action" value="delete">
+						<input type="hidden" name="item_id" value="<?php echo $cartItem["id"]; ?>">
+						<button type="submit" class="btn btn-danger">Delete</button>
+					</form>
+				</td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>

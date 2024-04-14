@@ -7,25 +7,18 @@ use PerfectFood\Classes\Order;
 include_once 'includes/header.php';
 include_once 'includes/partial/alerts.php';
 
-// Redirect to login page if user is not logged in
-if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {
-	header( "Location: login.php" );
-	exit;
-}
-
 // Initialize classes
 $menuItems = new MenuItem();
 $booking   = new Book();
 $order     = new Order();
 
-// Retrieve user ID from session
-$userId = $_SESSION['user_id'];
+if ( isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"] === true ) {
+	// Get counts of orders for each status
+	$orderStatusCounts = $order->getOrderStatusCounts();
 
-// Get counts of orders for each status
-$orderStatusCounts = $order->getOrderStatusCounts( $userId );
-
-// Get counts of bookings for each status
-$bookingStatusCounts = $booking->getBookingStatusCounts( $userId );
+	// Get counts of bookings for each status
+	$bookingStatusCounts = $booking->getBookingStatusCounts();
+}
 
 // Get random menu items
 $randomMenuItems = $menuItems->getMenuItemsRandomWithLimit( 4 );
@@ -33,16 +26,19 @@ $randomMenuItems = $menuItems->getMenuItemsRandomWithLimit( 4 );
 
 <div class="container">
 	<div class="row mb-2">
-		<!-- Orders Status Counts -->
-		<div class="col-md-6">
-			<h2>Orders Status</h2>
-			<ul class="list-group">
-				<?php foreach ( $orderStatusCounts as $status => $count ) : ?>
-					<li class="list-group-item"><?php echo ucfirst( $status ) . ': ' . $count; ?></li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
+		<?php if ( isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"] === true ): ?>
+			<!-- Orders Status Counts -->
+			<div class="col-md-6">
+				<h2>Orders Status</h2>
+				<ul class="list-group">
+					<?php foreach ( $orderStatusCounts as $status => $count ) : ?>
+						<li class="list-group-item"><?php echo ucfirst( $status ) . ': ' . $count; ?></li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		<?php endif; ?>
 
+		<?php if ( isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"] === true ): ?>
 		<!-- Bookings Status Counts -->
 		<div class="col-md-6">
 			<h2>Bookings Status</h2>
@@ -52,6 +48,8 @@ $randomMenuItems = $menuItems->getMenuItemsRandomWithLimit( 4 );
 				<?php endforeach; ?>
 			</ul>
 		</div>
+		<?php endif; ?>
+
 	</div>
 	<div class="row">
 		<!-- Display Random Menu Items -->
