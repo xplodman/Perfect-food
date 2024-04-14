@@ -154,7 +154,8 @@ class Order {
 				// If the user is an admin, fetch all bookings without filtering by user_id
 				$query     = "
                 SELECT 
-                    orders.*, 
+                    orders.*,
+                    users.email,
                     COUNT(order_items.item_id) AS item_count, 
                     SUM(order_items.quantity * menu_items.price) AS total_sum
                 FROM 
@@ -163,6 +164,8 @@ class Order {
                     order_items ON orders.id = order_items.order_id
                 LEFT JOIN 
                     menu_items ON order_items.item_id = menu_items.id
+                LEFT JOIN 
+                    users ON orders.user_id = users.id
                 GROUP BY 
                     orders.id
             ";
@@ -172,7 +175,8 @@ class Order {
 				// If the user is not an admin, fetch bookings only for the current user
 				$query     = "
                 SELECT 
-                    orders.*, 
+                    orders.*,
+                    users.email,
                     COUNT(order_items.item_id) AS item_count, 
                     SUM(order_items.quantity * menu_items.price) AS total_sum
                 FROM 
@@ -181,6 +185,8 @@ class Order {
                     order_items ON orders.id = order_items.order_id
                 LEFT JOIN 
                     menu_items ON order_items.item_id = menu_items.id
+                LEFT JOIN 
+                    users ON orders.user_id = users.id
                 WHERE 
                     orders.user_id = ?
                 GROUP BY 
@@ -201,7 +207,7 @@ class Order {
 	public function updateOrder( $bookingId, $status ) {
 		try {
 			// Prepare the SQL statement to update the order
-			$stmt = $this->db->connection->prepare("UPDATE orders SET status = :status WHERE id = :id");
+			$stmt = $this->db->connection->prepare( "UPDATE orders SET status = :status WHERE id = :id" );
 
 			// Bind parameters
 			$stmt->bindParam( ':status', $status );

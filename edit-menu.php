@@ -61,7 +61,13 @@ if (!$menuDetails) {
 include_once 'includes/partial/alerts.php'
 ?>
 <div class="container">
-	<h2>Edit Menu</h2>
+	<div class="d-flex justify-content-between">
+		<h2>Edit Menu</h2>
+		<form method="post" action="delete-menu.php">
+			<input type="hidden" name="menu_id" value="<?php echo $menuDetails['id']; ?>">
+			<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this menu?')">Delete</button>
+		</form>
+	</div>
 	<!-- Display item details and edit form here -->
 	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 		<input type="hidden" name="menu_id" value="<?php echo $menuDetails['id']; ?>">

@@ -51,4 +51,36 @@ class Menu {
 
 		return $statement->fetch( PDO::FETCH_ASSOC );
 	}
+
+	public function createMenu( $data ) {
+		try {
+			// Prepare the SQL statement to create the menu
+			$stmt = $this->db->connection->prepare("INSERT INTO menus (name, description, active) VALUES (:name, :description, :active)");
+
+			// Bind parameters
+			$stmt->bindParam( ':name', $data['name'] );
+			$stmt->bindParam( ':description', $data['description'] );
+			$stmt->bindParam( ':active', $data['active'] );
+
+			// Execute the statement
+			$stmt->execute();
+
+			// Check if any rows were affected
+			return $stmt->rowCount() > 0;
+		} catch ( PDOException $e ) {
+			return false;
+		}
+	}
+
+	public function deleteMenu( $menuID ) {
+		try {
+			$query     = "DELETE FROM menus WHERE id = ?";
+			$statement = $this->db->connection->prepare( $query );
+			$statement->execute( [ $menuID ] );
+
+			$_SESSION['info'][] = "Menu deleted successfully.";
+		} catch ( PDOException $e ) {
+			$_SESSION['errors'][] = "Failed to delete the menu:" . $e->getMessage();
+		}
+	}
 }

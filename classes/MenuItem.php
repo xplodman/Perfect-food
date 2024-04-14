@@ -33,6 +33,28 @@ class MenuItem {
 		return $this->db->connection->query( $query )->fetchAll( PDO::FETCH_ASSOC );
 	}
 
+	public function createMenuItem( $data ) {
+		try {
+			// Prepare the SQL statement to create the menu item
+			$stmt = $this->db->connection->prepare("INSERT INTO menu_items (name, description, price, image, menu_id) VALUES (:name, :description, :price, :image, :menu_id)");
+
+			// Bind parameters
+			$stmt->bindParam( ':name', $data['name'] );
+			$stmt->bindParam( ':description', $data['description'] );
+			$stmt->bindParam( ':price', $data['price'] );
+			$stmt->bindParam( ':image', $data['image'] );
+			$stmt->bindParam( ':menu_id', $data['menu_id'] );
+
+			// Execute the statement
+			$stmt->execute();
+
+			// Check if any rows were affected
+			return $stmt->rowCount() > 0;
+		} catch ( PDOException $e ) {
+			return false;
+		}
+	}
+
 	public function updateMenuItem( $itemId, $newData ) {
 		try {
 			// Prepare the SQL statement to update the menu item
@@ -95,6 +117,18 @@ class MenuItem {
 			return $statement->fetchAll( PDO::FETCH_ASSOC );
 		} catch ( PDOException $e ) {
 			return [];
+		}
+	}
+
+	public function deleteMenuItem( $itemID ) {
+		try {
+			$query     = "DELETE FROM menu_items WHERE id = ?";
+			$statement = $this->db->connection->prepare( $query );
+			$statement->execute( [ $itemID ] );
+
+			$_SESSION['info'][] = "Menu item deleted successfully.";
+		} catch ( PDOException $e ) {
+			$_SESSION['errors'][] = "Failed to delete the menu item:" . $e->getMessage();
 		}
 	}
 

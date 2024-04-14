@@ -89,7 +89,7 @@ $phoneNumbers = $user->getPhonesByUserId( $userId );
 <div class="row">
 	<div class="container">
 		<h2 class="mb-4">Checkout</h2>
-		<form method="post" action="place_order.php">
+		<form method="post" action="place-order.php">
 			<div class="mb-3">
 				<label for="email" class="form-label">Email</label>
 				<input type="email" class="form-control" id="email" name="email" required value="<?php echo $_SESSION["email"]; ?>">

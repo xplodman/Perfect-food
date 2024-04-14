@@ -32,6 +32,9 @@ include_once 'includes/partial/alerts.php';
 			<tr>
 				<th scope="col">#</th>
 				<th>Order ID</th>
+				<?php if ( $_SESSION["role"] === 'admin' ): ?>
+					<th>User</th>
+				<?php endif; ?>
 				<th>Status</th>
 				<th>Total Items</th>
 				<th>Total Sum</th>
@@ -45,6 +48,9 @@ include_once 'includes/partial/alerts.php';
 				<tr>
 					<td><?php echo $index + 1; ?></td>
 					<td><?php echo $order["id"]; ?></td>
+					<?php if ( $_SESSION["role"] === 'admin' ): ?>
+						<td><?php echo $order['email']; ?></td>
+					<?php endif; ?>
 					<td><?php echo $order["status"]; ?></td>
 					<td><?php echo $order["item_count"]; ?></td>
 					<td>$<?php echo number_format( $order["total_sum"] ?? 0, 2 ); ?></td>
@@ -67,32 +73,32 @@ include_once 'includes/partial/alerts.php';
 						<?php endif; ?>
 					</td>
 					<td>
-						<?php if ($_SESSION["role"] === 'admin' && ($order['status'] === 'pending' || $order['status'] === 'in_progress')) :
-							if ($order['status'] === 'pending') : ?>
-								<form method="post" action="update_order.php">
-									<input type="hidden" name="order_id" value="<?= $order['id']; ?>">
+						<?php if ( $_SESSION["role"] === 'admin' && ( $order['status'] === 'pending' || $order['status'] === 'in_progress' ) ) :
+							if ( $order['status'] === 'pending' ) : ?>
+								<form method="post" action="update-order.php">
+									<input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
 									<input type="hidden" name="status" value="in_progress">
-									<button type="submit" class="btn btn-primary">Mark as In Progress</button>
+									<button type="submit" class="btn btn-primary m-2">Mark as In Progress</button>
 								</form>
-							<?php elseif ($order['status'] === 'in_progress') : ?>
-								<form method="post" action="update_order.php">
-									<input type="hidden" name="order_id" value="<?= $order['id']; ?>">
+							<?php elseif ( $order['status'] === 'in_progress' ) : ?>
+								<form method="post" action="update-order.php">
+									<input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
 									<input type="hidden" name="status" value="completed">
-									<button type="submit" class="btn btn-success">Mark as Completed</button>
+									<button type="submit" class="btn btn-success m-2">Mark as Completed</button>
 								</form>
 							<?php endif; ?>
-							<form method="post" action="update_order.php">
-								<input type="hidden" name="order_id" value="<?= $order['id']; ?>">
+							<form method="post" action="update-order.php">
+								<input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
 								<input type="hidden" name="status" value="cancelled">
-								<button type="submit" class="btn btn-danger">Mark as Cancelled</button>
+								<button type="submit" class="btn btn-danger m-2">Mark as Cancelled</button>
 							</form>
-						<?php elseif ($_SESSION["role"] !== 'admin' && $order['status'] === 'pending') :
-							$orderCreationTime = strtotime($order['created_at']) + 7200;
+						<?php elseif ( $_SESSION["role"] !== 'admin' && $order['status'] === 'pending' ) :
+							$orderCreationTime = strtotime( $order['created_at'] ) + 7200;
 							$currentTime = time();
 							$timeDifference = $currentTime - $orderCreationTime;
-							if ($timeDifference <= 3600) : ?>
-								<form method="post" action="delete_order.php">
-									<input type="hidden" name="order_id" value="<?= $order['id']; ?>">
+							if ( $timeDifference <= 3600 ) : ?>
+								<form method="post" action="delete-order.php">
+									<input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
 									<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this order?')">Delete</button>
 								</form>
 							<?php endif;

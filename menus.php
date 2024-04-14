@@ -19,9 +19,18 @@ $menus = $menu->getMenus();
 
 // Fetch all menu items
 $allItems = $menuItems->getAllMenuItems();
+include_once 'includes/partial/alerts.php'
 ?>
 
 <div class="container">
+	<!-- Add menu and menu item buttons -->
+	<div class="d-flex justify-content-end mb-4">
+		<?php if ($_SESSION["role"] === 'admin') : ?>
+			<a href="add-menu.php" class="btn btn-success ms-2">Add Menu</a>
+			<a href="add-item.php" class="btn btn-success ms-2">Add Menu Item</a>
+		<?php endif; ?>
+	</div>
+
 	<!-- Menu tabs -->
 	<ul class="nav nav-tabs mb-4" id="menuTabs" role="tablist">
 		<!-- All tab -->
@@ -30,7 +39,7 @@ $allItems = $menuItems->getAllMenuItems();
 		</li>
 		<?php foreach ( $menus as $menu ) : ?>
 			<li class="nav-item d-flex align-items-center"> <!-- Use flexbox utilities -->
-				<a class="nav-link" id="menuTab<?= $menu['id'] ?>" data-bs-toggle="tab" href="#menu<?= $menu['id'] ?>" role="tab"><?= $menu['name'] ?></a>
+				<a class="nav-link" id="menuTab<?php echo $menu['id'] ?>" data-bs-toggle="tab" href="#menu<?php echo $menu['id'] ?>" role="tab"><?php echo $menu['name'] ?></a>
 				<?php if ($_SESSION["role"] === 'admin') : ?>
 					<!-- Edit Link -->
 					<a href="edit-menu.php?menu_id=<?php echo $menu['id']; ?>" title="Edit" class="me-2 ms-2">
@@ -54,7 +63,7 @@ $allItems = $menuItems->getAllMenuItems();
 
 		<!-- Menu tabs content -->
 		<?php foreach ( $menus as $menu ) : ?>
-			<div class="tab-pane fade" id="menu<?= $menu['id'] ?>" role="tabpanel">
+			<div class="tab-pane fade" id="menu<?php echo $menu['id'] ?>" role="tabpanel">
 				<div class="row">
 					<?php
 					// Fetch menu items for the current menu

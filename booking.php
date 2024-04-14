@@ -12,7 +12,7 @@ include_once 'includes/partial/alerts.php';
 
 <div class="container">
 	<h1>Book a Table</h1>
-	<form method="post" action="submit_booking.php">
+	<form method="post" action="submit-booking.php">
 		<div class="mb-3">
 			<label for="branch" class="form-label">Select Branch:</label>
 			<select class="form-select" id="branch" name="branch" required>

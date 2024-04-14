@@ -14,22 +14,6 @@ class Book {
 
 	public function book( $userId, $branchId, $bookingDate, $bookingTime, $guests ) {
 		try {
-			// Validate booking date
-//			$currentDate = date( 'Y-m-d' );
-//			if ( strtotime( $bookingDate ) < $currentDate ) {
-//				$_SESSION['errors'][] = "Booking date cannot be before the current date.";
-//
-//				return false; // Booking failed
-//			}
-//
-//			// Validate booking time
-//			$currentTime = date( 'H:i:s' );
-//			if ( strtotime( $bookingDate ) == $currentDate && $bookingTime < $currentTime ) {
-//				$_SESSION['errors'][] = "Booking time cannot be before the current time.";
-//
-//				return false; // Booking failed
-//			}
-
 			// Start a transaction
 			$this->db->connection->beginTransaction();
 
@@ -58,12 +42,12 @@ class Book {
 		try {
 			if ( $_SESSION["role"] === 'admin' ) {
 				// If the user is an admin, fetch all bookings without filtering by user_id
-				$query     = "SELECT b.*, br.name AS branch_name FROM bookings b JOIN branches br ON b.branch_id = br.id;";
+				$query     = "SELECT bookings.*, branches.name AS branch_name, users.email FROM bookings JOIN branches ON bookings.branch_id = branches.id LEFT JOIN users ON bookings.user_id = users.id;";
 				$statement = $this->db->connection->prepare( $query );
 				$statement->execute();
 			} else {
 				// If the user is not an admin, fetch bookings only for the current user
-				$query     = "SELECT b.*, br.name AS branch_name FROM bookings b JOIN branches br ON b.branch_id = br.id WHERE b.user_id = ?;";
+				$query     = "SELECT bookings.*, branches.name AS branch_name, users.email FROM bookings JOIN branches ON bookings.branch_id = branches.id LEFT JOIN users ON bookings.user_id = users.id WHERE bookings.user_id = ?;";
 				$statement = $this->db->connection->prepare( $query );
 				$statement->execute( [ $_SESSION['user_id'] ] );
 			}

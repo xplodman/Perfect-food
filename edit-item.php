@@ -70,7 +70,13 @@ $menus = $menu->getMenus();
 include_once 'includes/partial/alerts.php'
 ?>
 <div class="container">
-	<h2>Edit Item</h2>
+	<div class="d-flex justify-content-between">
+		<h2>Edit Item</h2>
+		<form method="post" action="delete-item.php">
+			<input type="hidden" name="item_id" value="<?php echo $itemDetails['id']; ?>">
+			<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+		</form>
+	</div>
 	<!-- Display item details and edit form here -->
 	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 		<input type="hidden" name="item_id" value="<?php echo $itemDetails['id']; ?>">
