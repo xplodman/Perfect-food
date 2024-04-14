@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 13, 2024 at 11:40 PM
+-- Generation Time: Apr 14, 2024 at 03:47 AM
 -- Server version: 8.0.36-0ubuntu0.22.04.1
 -- PHP Version: 8.1.27
 
@@ -391,13 +391,13 @@ ALTER TABLE `evaluations`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `menu_items`
 --
 ALTER TABLE `menu_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `orders`
