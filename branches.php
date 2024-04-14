@@ -5,7 +5,7 @@ use PerfectFood\Classes\Branch;
 include_once 'includes/header.php';
 
 $branch   = new Branch();
-$branches = $branch->getAllBranches(); // Assuming you have a method to retrieve all branches
+$branches = $branch->getAllBranches();
 
 ?>
 
