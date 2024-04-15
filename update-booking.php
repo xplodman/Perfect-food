@@ -27,7 +27,7 @@ if ( ! isset( $_POST['booking_id'] ) ) {
 $booking = new Book();
 
 // Attempt to update the booking
-$booking->updateBooking( $_POST['booking_id'], $_POST['status'] );
+$booking->modifyBookingStatus( $_POST['booking_id'], $_POST['status'] );
 
 // Redirect back to the bookings page
 header( "Location: bookings.php" );

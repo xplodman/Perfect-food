@@ -9,10 +9,10 @@ $menu      = new Menu();
 $menuItems = new MenuItem();
 
 // Fetch menus
-$menus = $menu->getMenus();
+$menus = $menu->retrieveMenus();
 
 // Fetch all menu items
-$allItems = $menuItems->getAllMenuItems();
+$allItems = $menuItems->retrieveAllMenuItems();
 include_once 'includes/partial/alerts.php'
 ?>
 
@@ -61,7 +61,7 @@ include_once 'includes/partial/alerts.php'
 				<div class="row">
 					<?php
 					// Fetch menu items for the current menu
-					$items = $menuItems->getMenuItemsByMenuId( $menu['id'] );
+					$items = $menuItems->retrieveMenuItemsByMenuId( $menu['id'] );
 					foreach ( $items as $item ) : ?>
 						<?php require 'includes/partial/items_card.php' ?>
 					<?php endforeach; ?>

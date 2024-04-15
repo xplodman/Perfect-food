@@ -12,7 +12,12 @@ class Branch {
 		$this->db = new DB();
 	}
 
-	public function getAllBranches() {
+	/**
+	 * Retrieves all branches from the database.
+	 *
+	 * @return array Returns an array containing all branches fetched from the database.
+	 */
+	public function retrieveAllBranches() {
 		try {
 			$query = "SELECT * FROM branches";
 

@@ -8,7 +8,7 @@ $book = new Book();
 if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	$userId = $_SESSION['user_id'];
 
-	$book->book( $userId, $_POST['branch'], $_POST['date'], $_POST['time'], $_POST['guests'] );
+	$book->makeBooking( $userId, $_POST['branch'], $_POST['date'], $_POST['time'], $_POST['guests'] );
 }
 
 // If form is not submitted, redirect to the booking page

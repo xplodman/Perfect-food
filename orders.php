@@ -15,7 +15,7 @@ $evaluation = new Evaluate();
 $userId     = $_SESSION['user_id'];
 
 // Retrieve orders for the logged-in user
-$orders = $orderClass->getOrdersBasedOnUserRole();
+$orders = $orderClass->retrieveOrdersBasedOnUserRole();
 
 include_once 'includes/partial/alerts.php';
 
@@ -57,8 +57,8 @@ include_once 'includes/partial/alerts.php';
 					<td><?php echo $order["created_at"]; ?></td>
 					<td>
 						<?php if ( $order['status'] === 'completed' ) :
-							if ( $evaluation->entityHasRating( $order['id'], 'order' ) ):
-								$rating = $evaluation->getEntityRating( $order['id'], 'order' );
+							if ( $evaluation->hasRatingForEntity( $order['id'], 'order' ) ):
+								$rating = $evaluation->getEntityRatingDetails( $order['id'], 'order' );
 								?>
 								<span class="rating-value"><?php echo $rating['rating']; ?></span>
 								<br>

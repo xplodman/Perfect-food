@@ -14,14 +14,14 @@ $order     = new Order();
 
 if ( isset($_SESSION["user_logged_in"]) && $_SESSION["user_logged_in"] === true ) {
 	// Get counts of orders for each status
-	$orderStatusCounts = $order->getOrderStatusCounts();
+	$orderStatusCounts = $order->retrieveOrderStatusCounts();
 
 	// Get counts of bookings for each status
-	$bookingStatusCounts = $booking->getBookingStatusCounts();
+	$bookingStatusCounts = $booking->retrieveBookingStatusCounts();
 }
 
 // Get random menu items
-$randomMenuItems = $menuItems->getMenuItemsRandomWithLimit( 4 );
+$randomMenuItems = $menuItems->retrieveRandomMenuItemsWithLimit( 4 );
 ?>
 
 <div class="container">

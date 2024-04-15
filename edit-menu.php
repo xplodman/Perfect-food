@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			'active' => $_POST['active'],
 		];
 
-		$success = $menu->updateMenu($_POST['menu_id'], $params);
+		$success = $menu->updateMenuDetails($_POST['menu_id'], $params);
 
 		// Check if the update was successful
 		if ($success) {
@@ -49,7 +49,7 @@ if (!isset($_GET['menu_id']) || !is_numeric($_GET['menu_id'])) {
 }
 
 $itemId = $_GET['menu_id'];
-$menuDetails = $menu->getMenuDetailsById($itemId);
+$menuDetails = $menu->retrieveMenuDetails($itemId);
 
 // Check if item exists
 if (!$menuDetails) {

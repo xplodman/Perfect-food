@@ -12,6 +12,14 @@ class Order {
 		$this->db = new DB();
 	}
 
+	/**
+	 * Places an order with the user's details and cart items.
+	 *
+	 * @param   int    $userId    The ID of the user placing the order.
+	 * @param   array  $postData  The data containing order information.
+	 *
+	 * @return bool Returns true if order was placed successfully, false otherwise.
+	 */
 	public function placeOrder( $userId, $postData ) {
 		try {
 			// Start a transaction
@@ -78,6 +86,72 @@ class Order {
 		}
 	}
 
+	/**
+	 * Retrieves orders based on the user's role.
+	 * @return array|bool Returns an array of orders if successful, false on failure.
+	 */
+	public function retrieveOrdersBasedOnUserRole() {
+		try {
+			if ( $_SESSION["role"] === 'admin' ) {
+				$query     = "
+                SELECT 
+                    orders.*,
+                    users.email,
+                    COUNT(order_items.item_id) AS item_count, 
+                    SUM(order_items.quantity * menu_items.price) AS total_sum
+                FROM 
+                    orders
+                LEFT JOIN 
+                    order_items ON orders.id = order_items.order_id
+                LEFT JOIN 
+                    menu_items ON order_items.item_id = menu_items.id
+                LEFT JOIN 
+                    users ON orders.user_id = users.id
+                GROUP BY 
+                    orders.id
+            ";
+				$statement = $this->db->connection->prepare( $query );
+				$statement->execute();
+			} else {
+				// If the user is not an admin, fetch orders only for the current user
+				$query     = "
+                SELECT 
+                    orders.*,
+                    users.email,
+                    COUNT(order_items.item_id) AS item_count, 
+                    SUM(order_items.quantity * menu_items.price) AS total_sum
+                FROM 
+                    orders
+                LEFT JOIN 
+                    order_items ON orders.id = order_items.order_id
+                LEFT JOIN 
+                    menu_items ON order_items.item_id = menu_items.id
+                LEFT JOIN 
+                    users ON orders.user_id = users.id
+                WHERE 
+                    orders.user_id = ?
+                GROUP BY 
+                    orders.id
+            ";
+				$statement = $this->db->connection->prepare( $query );
+				$statement->execute( [ $_SESSION['user_id'] ] );
+			}
+
+			return $statement->fetchAll( PDO::FETCH_ASSOC );
+		} catch ( PDOException $e ) {
+			$_SESSION['errors'][] = "Error fetching orders: " . $e->getMessage();
+
+			return false;
+		}
+	}
+
+	/**
+	 * Deletes a specific order by order ID.
+	 *
+	 * @param   int  $orderId  The ID of the order to be deleted.
+	 *
+	 * @return void
+	 */
 	public function deleteOrder( $orderId ) {
 		try {
 			$query     = "DELETE FROM orders WHERE id = ?";
@@ -90,7 +164,14 @@ class Order {
 		}
 	}
 
-	public function getTotalPricesByUserId( $userId ) {
+	/**
+	 * Calculates total prices of completed orders for a specific user.
+	 *
+	 * @param   int  $userId  The ID of the user whose total prices are to be calculated.
+	 *
+	 * @return float Returns the total price of completed orders.
+	 */
+	public function calculateTotalPricesByUserId( $userId ) {
 		try {
 			// Prepare the SQL query
 			$query = "SELECT
@@ -123,7 +204,11 @@ class Order {
 		}
 	}
 
-	public function getOrderStatusCounts() {
+	/**
+	 * Retrieves counts of orders by their status.
+	 * @return array Returns an associative array with status as keys and counts as values.
+	 */
+	public function retrieveOrderStatusCounts() {
 		try {
 			$query = "SELECT status, COUNT(*) AS count FROM orders";
 			if ( $_SESSION["role"] !== 'admin' ) {
@@ -148,70 +233,22 @@ class Order {
 		}
 	}
 
-	public function getOrdersBasedOnUserRole() {
-		try {
-			if ( $_SESSION["role"] === 'admin' ) {
-				// If the user is an admin, fetch all bookings without filtering by user_id
-				$query     = "
-                SELECT 
-                    orders.*,
-                    users.email,
-                    COUNT(order_items.item_id) AS item_count, 
-                    SUM(order_items.quantity * menu_items.price) AS total_sum
-                FROM 
-                    orders
-                LEFT JOIN 
-                    order_items ON orders.id = order_items.order_id
-                LEFT JOIN 
-                    menu_items ON order_items.item_id = menu_items.id
-                LEFT JOIN 
-                    users ON orders.user_id = users.id
-                GROUP BY 
-                    orders.id
-            ";
-				$statement = $this->db->connection->prepare( $query );
-				$statement->execute();
-			} else {
-				// If the user is not an admin, fetch bookings only for the current user
-				$query     = "
-                SELECT 
-                    orders.*,
-                    users.email,
-                    COUNT(order_items.item_id) AS item_count, 
-                    SUM(order_items.quantity * menu_items.price) AS total_sum
-                FROM 
-                    orders
-                LEFT JOIN 
-                    order_items ON orders.id = order_items.order_id
-                LEFT JOIN 
-                    menu_items ON order_items.item_id = menu_items.id
-                LEFT JOIN 
-                    users ON orders.user_id = users.id
-                WHERE 
-                    orders.user_id = ?
-                GROUP BY 
-                    orders.id
-            ";
-				$statement = $this->db->connection->prepare( $query );
-				$statement->execute( [ $_SESSION['user_id'] ] );
-			}
-
-			return $statement->fetchAll( PDO::FETCH_ASSOC );
-		} catch ( PDOException $e ) {
-			$_SESSION['errors'][] = "Error fetching orders: " . $e->getMessage();
-
-			return false;
-		}
-	}
-
-	public function updateOrder( $bookingId, $status ) {
+	/**
+	 * Modifies the status of an order.
+	 *
+	 * @param   int     $orderId  The ID of the order whose status is to be updated.
+	 * @param   string  $status   The new status to be set for the order.
+	 *
+	 * @return bool Returns true if the update was successful, false otherwise.
+	 */
+	public function modifyOrderStatus( $orderId, $status ) {
 		try {
 			// Prepare the SQL statement to update the order
 			$stmt = $this->db->connection->prepare( "UPDATE orders SET status = :status WHERE id = :id" );
 
 			// Bind parameters
 			$stmt->bindParam( ':status', $status );
-			$stmt->bindParam( ':id', $bookingId );
+			$stmt->bindParam( ':id', $orderId );
 
 			// Execute the statement
 			$stmt->execute();
@@ -222,6 +259,5 @@ class Order {
 			return false;
 		}
 	}
-
 
 }

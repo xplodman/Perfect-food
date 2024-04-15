@@ -32,14 +32,14 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 		$user = new User();
 
 		// Attempt to register user
-		if ( $user->registerUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber ) ) {
+		if ( $user->registerNewUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber ) ) {
 			// Get the ID of the newly registered user
-			$userId = $user->getLastInsertedId();
+			$userId = $user->getLastUserId();
 
 			// Insert phone numbers into the phone table
 			$phones = $_POST['phones'];
 			foreach ( $phones as $phone ) {
-				$user->addPhone( $userId, $phone );
+				$user->addUserPhoneNumber( $userId, $phone );
 			}
 
 			// Registration successful, create session

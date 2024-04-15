@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			'menu_id' => $_POST['menu_id'],
 		];
 
-		$success = $menuItems->updateMenuItem($_POST['item_id'], $params);
+		$success = $menuItems->updateMenuItemDetails($_POST['item_id'], $params);
 
 		// Check if the update was successful
 		if ($success) {
@@ -53,7 +53,7 @@ if (!isset($_GET['item_id']) || !is_numeric($_GET['item_id'])) {
 
 $itemId = $_GET['item_id'];
 $menuItems = new MenuItem();
-$itemDetails = $menuItems->getItemDetailsById($itemId);
+$itemDetails = $menuItems->retrieveItemDetails($itemId);
 
 // Check if item exists
 if (!$itemDetails) {
@@ -65,7 +65,7 @@ if (!$itemDetails) {
 $menu = new Menu();
 
 // Fetch menus
-$menus = $menu->getMenus();
+$menus = $menu->retrieveMenus();
 
 include_once 'includes/partial/alerts.php'
 ?>

@@ -13,7 +13,7 @@ session_start();
 $user = new User();
 
 // Call the logoutUser method
-$user->logoutUser();
+$user->endUserSession();
 
 // Redirect the user to the homepage or login page
 header( "Location: index.php" );

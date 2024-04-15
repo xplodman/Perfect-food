@@ -27,7 +27,7 @@ if ( ! isset( $_POST['order_id'] ) ) {
 $order = new Order();
 
 // Attempt to update the order
-$order->updateOrder( $_POST['order_id'], $_POST['status'] );
+$order->modifyOrderStatus( $_POST['order_id'], $_POST['status'] );
 
 // Redirect back to the orders page
 header( "Location: orders.php" );

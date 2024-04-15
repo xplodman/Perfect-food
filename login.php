@@ -18,7 +18,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	$password = $_POST['password'];
 
 	// Attempt to login
-	if ( $user->loginUser( $email, $password ) ) {
+	if ( $user->authenticateUser( $email, $password ) ) {
 		// Login successful, create session
 		$_SESSION["user_logged_in"] = true;
 		$_SESSION["email"]              = $email;

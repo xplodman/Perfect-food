@@ -8,17 +8,17 @@ $menu = new Menu();
 $menuItems = new MenuItem();
 
 // Fetch menus
-$menus = $menu->getMenus();
+$menus = $menu->retrieveMenus();
 
 // Fetch all menu items
-$allItems = $menuItems->getAllMenuItems();
+$allItems = $menuItems->retrieveAllMenuItems();
 
 // Handle price filter
 $minPrice = !empty($_GET['min_price']) ? max(0, (float)$_GET['min_price']) : 0; // Ensure min price is not negative
 $maxPrice = !empty($_GET['max_price']) ? max($minPrice, (float)$_GET['max_price']) : PHP_FLOAT_MAX; // Ensure max price is not less than min price
 
 $menuId = $_GET['menu_id'] ?? '';
-$filteredItems = $menuItems->getMenuItemsByPriceRange($minPrice, $maxPrice, $menuId);
+$filteredItems = $menuItems->retrieveMenuItemsByPriceRange($minPrice, $maxPrice, $menuId);
 ?>
 
 <div class="container">

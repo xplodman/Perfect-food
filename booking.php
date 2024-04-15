@@ -11,7 +11,7 @@ if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== t
 }
 
 $branch   = new Branch();
-$branches = $branch->getAllBranches();
+$branches = $branch->retrieveAllBranches();
 
 include_once 'includes/partial/alerts.php';
 ?>

@@ -17,17 +17,17 @@ $userId = $_SESSION['user_id'];
 // Check if the form is submitted
 if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	// Update user details
-	$user->updateUserDetails( $userId, $_POST );
+	$user->updateUserProfile( $userId, $_POST );
 
 	// Update phone numbers
-	$user->updateUserPhones( $userId, $_POST["phones"] );
+	$user->updateUserPhoneList( $userId, $_POST["phones"] );
 
 	// Reload user information
-	$user->reloadUserInfo();
+	$user->refreshSessionUserData();
 }
 
 // Retrieve phone numbers associated with the user ID
-$phoneNumbers = $user->getPhonesByUserId( $userId );
+$phoneNumbers = $user->retrieveUserPhoneNumbers( $userId );
 include_once 'includes/partial/alerts.php'
 ?>
 	<div class="row">

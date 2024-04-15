@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				'menu_id' => $_POST['menu_id'],
 			];
 
-			$success = $menuItems->createMenuItem($params);
+			$success = $menuItems->createNewMenuItem($params);
 
 			// Check if the item creation was successful
 			if ($success) {
@@ -104,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $menu = new Menu();
 
 // Fetch menus
-$menus = $menu->getMenus();
+$menus = $menu->retrieveMenus();
 
 include_once 'includes/partial/alerts.php';
 ?>

@@ -14,7 +14,7 @@ $book       = new Book();
 $evaluation = new Evaluate();
 
 // Retrieve bookings for the logged-in customer
-$bookings = $book->getBookingsBasedOnUserRole();
+$bookings = $book->retrieveBookingsBasedOnUserRole();
 include_once 'includes/partial/alerts.php';
 
 ?>
@@ -58,8 +58,8 @@ include_once 'includes/partial/alerts.php';
 					<td><?php echo $booking['guests']; ?></td>
 					<td>
 						<?php if ( $booking['status'] === 'completed' ) :
-							if ( $evaluation->entityHasRating( $booking['id'], 'booking' ) ) :
-								$rating = $evaluation->getEntityRating( $booking['id'], 'booking' );
+							if ( $evaluation->hasRatingForEntity( $booking['id'], 'booking' ) ) :
+								$rating = $evaluation->getEntityRatingDetails( $booking['id'], 'booking' );
 								?>
 								<span class="rating-value"><?php echo $rating['rating']; ?></span>
 								<br>

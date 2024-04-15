@@ -12,7 +12,7 @@ if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== t
 // Check if the form is submitted
 if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	$evaluate = new Evaluate();
-	$evaluate->submitEvaluation( $_POST['id'], $_POST['type'], $_POST['rating'], $_POST['comment'] );
+	$evaluate->createEntityEvaluation( $_POST['id'], $_POST['type'], $_POST['rating'], $_POST['comment'] );
 }
 
 include_once 'includes/partial/alerts.php'

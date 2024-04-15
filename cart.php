@@ -58,7 +58,7 @@ $totalPrice = 0;
 // Iterate through each item ID in the cart session
 foreach ( $_SESSION['cart'] as $itemId => $quantity ) {
 	// Retrieve item details from the database based on the item ID
-	$itemDetails = $menuItems->getItemDetailsById( $itemId );
+	$itemDetails = $menuItems->retrieveItemDetails( $itemId );
 
 	// Check if item details are found
 	if ( $itemDetails ) {
@@ -79,7 +79,7 @@ foreach ( $_SESSION['cart'] as $itemId => $quantity ) {
 $userId = $_SESSION['user_id'];
 
 // Retrieve phone numbers associated with the user ID
-$phoneNumbers = $user->getPhonesByUserId( $userId );
+$phoneNumbers = $user->retrieveUserPhoneNumbers( $userId );
 
 include_once 'includes/partial/alerts.php';
 ?>

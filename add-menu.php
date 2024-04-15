@@ -30,7 +30,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 		'active' => $_POST['active'],
 	];
 
-	$success = $menu->createMenu( $params );
+	$success = $menu->createNewMenu( $params );
 
 	// Check if the item creation was successful
 	if ( $success ) {

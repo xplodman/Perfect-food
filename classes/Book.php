@@ -12,7 +12,19 @@ class Book {
 		$this->db = new DB();
 	}
 
-	public function book( $userId, $branchId, $bookingDate, $bookingTime, $guests ) {
+
+	/**
+	 * Makes a booking for a user at a branch.
+	 *
+	 * @param   int     $userId       The ID of the user making the booking.
+	 * @param   int     $branchId     The ID of the branch where the booking is made.
+	 * @param   string  $bookingDate  The date of the booking.
+	 * @param   string  $bookingTime  The time of the booking.
+	 * @param   int     $guests       The number of guests for the booking.
+	 *
+	 * @return bool Returns true if the booking is successful, false otherwise.
+	 */
+	public function makeBooking( $userId, $branchId, $bookingDate, $bookingTime, $guests ) {
 		try {
 			// Start a transaction
 			$this->db->connection->beginTransaction();
@@ -38,7 +50,12 @@ class Book {
 		}
 	}
 
-	public function getBookingsBasedOnUserRole() {
+	/**
+	 * Retrieves bookings based on the user's role.
+	 *
+	 * @return array|bool Returns an array containing booking details fetched from the database, or false on failure.
+	 */
+	public function retrieveBookingsBasedOnUserRole() {
 		try {
 			if ( $_SESSION["role"] === 'admin' ) {
 				// If the user is an admin, fetch all bookings without filtering by user_id
@@ -60,6 +77,13 @@ class Book {
 		}
 	}
 
+	/**
+	 * Deletes a booking from the database.
+	 *
+	 * @param   int  $bookingId  The ID of the booking to be deleted.
+	 *
+	 * @return void
+	 */
 	public function deleteBooking( $bookingId ) {
 		try {
 			$query     = "DELETE FROM bookings WHERE id = ?";
@@ -72,7 +96,12 @@ class Book {
 		}
 	}
 
-	public function getBookingStatusCounts() {
+	/**
+	 * Retrieves the counts of bookings based on their status.
+	 *
+	 * @return array An associative array containing the count of bookings for each status.
+	 */
+	public function retrieveBookingStatusCounts() {
 		try {
 			$query = "SELECT status, COUNT(*) AS count FROM bookings";
 			if ( $_SESSION["role"] !== 'admin' ) {
@@ -97,7 +126,15 @@ class Book {
 		}
 	}
 
-	public function updateBooking( $bookingId, $status ) {
+	/**
+	 * Modifies the status of a booking.
+	 *
+	 * @param   int     $bookingId  The ID of the booking to be modified.
+	 * @param   string  $status     The new status of the booking.
+	 *
+	 * @return bool Returns true if the status is successfully modified, false otherwise.
+	 */
+	public function modifyBookingStatus( $bookingId, $status ) {
 		try {
 			// Prepare the SQL statement to update the booking
 			$stmt = $this->db->connection->prepare( "UPDATE bookings SET status = :status WHERE id = :id" );

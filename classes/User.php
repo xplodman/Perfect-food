@@ -12,7 +12,21 @@ class User {
 		$this->db = new DB();
 	}
 
-	public function registerUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber, $role = 'user' ) {
+	/**
+	 * Registers a new user in the database.
+	 *
+	 * @param   string  $email        User's email address.
+	 * @param   string  $password     User's password.
+	 * @param   string  $firstName    User's first name.
+	 * @param   string  $lastName     User's last name.
+	 * @param   string  $city         User's city.
+	 * @param   string  $street       User's street address.
+	 * @param   string  $houseNumber  User's house number.
+	 * @param   string  $role         User's role (default 'user').
+	 *
+	 * @return bool True if registration is successful, false otherwise.
+	 */
+	public function registerNewUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber, $role = 'user' ) {
 		try {
 			// Hash the password before storing it in the database
 			$hashedPassword = password_hash( $password, PASSWORD_DEFAULT );
@@ -21,17 +35,17 @@ class User {
 			$stmt = $this->db->connection->prepare( "INSERT INTO users (first_name, last_name, email, password, city, street, house_number, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)" );
 			$stmt->execute( [ $firstName, $lastName, $email, $hashedPassword, $city, $street, $houseNumber ] );
 
-			$userId = $this->getLastInsertedId();
+			$userId = $this->getLastUserId();
 
 			// Set session variables
-			$_SESSION["city"]               = $city;
+			$_SESSION["city"]           = $city;
 			$_SESSION["user_logged_in"] = true;
-			$_SESSION["email"]              = $email;
-			$_SESSION["first_name"]         = $firstName;
-			$_SESSION["house_number"]       = $houseNumber;
-			$_SESSION["last_name"]          = $lastName;
-			$_SESSION["role"]               = $role;
-			$_SESSION["street"]             = $street;
+			$_SESSION["email"]          = $email;
+			$_SESSION["first_name"]     = $firstName;
+			$_SESSION["house_number"]   = $houseNumber;
+			$_SESSION["last_name"]      = $lastName;
+			$_SESSION["role"]           = $role;
+			$_SESSION["street"]         = $street;
 			$_SESSION['user_id']        = $userId;
 
 			// User registration successful
@@ -44,12 +58,25 @@ class User {
 		}
 	}
 
-	public function getLastInsertedId() {
+	/**
+	 * Retrieves the last user ID inserted into the database.
+	 *
+	 * @return false|string Last inserted user ID.
+	 */
+	public function getLastUserId() {
 		// Retrieve the last inserted ID
 		return $this->db->connection->lastInsertId();
 	}
 
-	public function loginUser( $email, $password ) {
+	/**
+	 * Authenticates a user by checking email and password.
+	 *
+	 * @param   string  $email     User's email.
+	 * @param   string  $password  User's password.
+	 *
+	 * @return bool True if authentication is successful, false otherwise.
+	 */
+	public function authenticateUser( $email, $password ) {
 		try {
 			// Retrieve the hashed password from the database for the given email
 			$stmt = $this->db->connection->prepare( "SELECT * FROM users WHERE email = ? LIMIT 1" );
@@ -62,19 +89,19 @@ class User {
 				$order = new Order();
 
 				// Determine discount based on completed orders count
-				$totalPrices = $order->getTotalPricesByUserId( $user['id'] );
-				$discount    = $this->calculateDiscountDependOnTotalPrice( $totalPrices );
+				$totalPrices = $order->calculateTotalPricesByUserId( $user['id'] );
+				$discount    = $this->calculateDiscountBasedOnTotalPrice( $totalPrices );
 
 				// Set session variables
-				$_SESSION["city"]               = $user['city'];
+				$_SESSION["city"]           = $user['city'];
 				$_SESSION["user_logged_in"] = true;
-				$_SESSION["discount"]           = $discount;
-				$_SESSION["email"]              = $email;
-				$_SESSION["first_name"]         = $user['first_name'];
-				$_SESSION["house_number"]       = $user['house_number'];
-				$_SESSION["last_name"]          = $user['last_name'];
-				$_SESSION["role"]               = $user['role'];
-				$_SESSION["street"]             = $user['street'];
+				$_SESSION["discount"]       = $discount;
+				$_SESSION["email"]          = $email;
+				$_SESSION["first_name"]     = $user['first_name'];
+				$_SESSION["house_number"]   = $user['house_number'];
+				$_SESSION["last_name"]      = $user['last_name'];
+				$_SESSION["role"]           = $user['role'];
+				$_SESSION["street"]         = $user['street'];
 				$_SESSION['user_id']        = $user['id'];
 
 				return true;
@@ -91,7 +118,14 @@ class User {
 		}
 	}
 
-	private function calculateDiscountDependOnTotalPrice( $totalPrice ) {
+	/**
+	 * Calculates a discount rate based on the total price.
+	 *
+	 * @param   float  $totalPrice  Total price of user's purchases.
+	 *
+	 * @return float Discount rate applicable based on predefined tiers.
+	 */
+	private function calculateDiscountBasedOnTotalPrice( $totalPrice ) {
 		// Define discount tiers and corresponding discounts
 		$discountTiers = [ 100, 200, 300 ]; // Total price tiers
 		$discountRates = [ 0.05, 0.10, 0.02 ]; // Corresponding discount rates
@@ -109,7 +143,10 @@ class User {
 		return $discountRate;
 	}
 
-	public function logoutUser() {
+	/**
+	 * Ends and destroys the current user session.
+	 */
+	public function endUserSession() {
 		// Unset all session variables
 		$_SESSION = [];
 
@@ -117,7 +154,13 @@ class User {
 		session_destroy();
 	}
 
-	public function addPhone( $userId, $phoneNumber ) {
+	/**
+	 * Adds a phone number for a specific user.
+	 *
+	 * @param   int     $userId       ID of the user.
+	 * @param   string  $phoneNumber  Phone number to add.
+	 */
+	public function addUserPhoneNumber( $userId, $phoneNumber ) {
 		try {
 			// Prepare the SQL statement to insert phone number into the database
 			$stmt = $this->db->connection->prepare( "INSERT INTO phones (user_id, phone_number) VALUES (?, ?)" );
@@ -129,7 +172,14 @@ class User {
 		}
 	}
 
-	public function getPhonesByUserId( $userId ) {
+	/**
+	 * Retrieves all phone numbers associated with a specific user.
+	 *
+	 * @param   int  $userId  User's ID.
+	 *
+	 * @return array|false Array of phone numbers or false on failure.
+	 */
+	public function retrieveUserPhoneNumbers( $userId ) {
 		try {
 			// Prepare the SQL statement to retrieve phone numbers by user ID
 			$stmt = $this->db->connection->prepare( "SELECT phone_number FROM phones WHERE user_id = ?" );
@@ -144,7 +194,15 @@ class User {
 		}
 	}
 
-	public function updateUserDetails( $userId, $postData ) {
+	/**
+	 * Updates user profile details in the database.
+	 *
+	 * @param   int    $userId    ID of the user to update.
+	 * @param   array  $postData  Data to update (first name, last name, city, street, house number, [password]).
+	 *
+	 * @return bool True if the update is successful, false otherwise.
+	 */
+	public function updateUserProfile( $userId, $postData ) {
 		try {
 			// Prepare the SQL statement to update user details
 			$query = "UPDATE users SET 
@@ -189,7 +247,15 @@ class User {
 		}
 	}
 
-	public function updateUserPhones( $userId, $phoneNumbers ) {
+	/**
+	 * Updates the list of phone numbers for a specific user.
+	 *
+	 * @param   int    $userId        User's ID.
+	 * @param   array  $phoneNumbers  List of new phone numbers to associate with the user.
+	 *
+	 * @return bool True if update is successful, false otherwise.
+	 */
+	public function updateUserPhoneList( $userId, $phoneNumbers ) {
 		try {
 			// Start a transaction
 			$this->db->connection->beginTransaction();
@@ -221,7 +287,12 @@ class User {
 		}
 	}
 
-	public function reloadUserInfo() {
+	/**
+	 * Refreshes session data with current user data from the database.
+	 *
+	 * @return bool True if user data is successfully refreshed, false otherwise.
+	 */
+	public function refreshSessionUserData() {
 		try {
 			// Retrieve the user information from the database based on the session's user_id
 			$stmt = $this->db->connection->prepare( "SELECT * FROM users WHERE id = ?" );
@@ -251,6 +322,11 @@ class User {
 		}
 	}
 
+	/**
+	 * Deletes a user account from the database.
+	 *
+	 * @param   int  $userId  ID of the user whose account is to be deleted.
+	 */
 	public function deleteUserAccount( $userId ) {
 		try {
 			// Prepare the SQL statement to delete the user account
