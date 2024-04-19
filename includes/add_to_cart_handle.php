@@ -1,7 +1,7 @@
 <?php
 // Check if the item id is sent via POST
 if ( ( $_SERVER["REQUEST_METHOD"] === "POST" ) && isset( $_POST['item_id'] ) ) {
-	// Check if the user is already logged in, if yes, redirect to homepage
+	// Check if the user is not logged in, if yes, redirect to login
 	if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {
 		header( "Location: login.php" );
 		exit;

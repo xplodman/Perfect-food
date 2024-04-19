@@ -32,7 +32,7 @@ class User {
 			$hashedPassword = password_hash( $password, PASSWORD_DEFAULT );
 
 			// Prepare the SQL statement to insert user data into the database
-			$stmt = $this->db->connection->prepare( "INSERT INTO users (first_name, last_name, email, password, city, street, house_number, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)" );
+			$stmt = $this->db->connection->prepare( "INSERT INTO users (first_name, last_name, email, password, city, street, house_number) VALUES (?, ?, ?, ?, ?, ?, ?)" );
 			$stmt->execute( [ $firstName, $lastName, $email, $hashedPassword, $city, $street, $houseNumber ] );
 
 			$userId = $this->getLastUserId();
@@ -116,31 +116,6 @@ class User {
 
 			return false;
 		}
-	}
-
-	/**
-	 * Calculates a discount rate based on the total price.
-	 *
-	 * @param   float  $totalPrice  Total price of user's purchases.
-	 *
-	 * @return float Discount rate applicable based on predefined tiers.
-	 */
-	private function calculateDiscountBasedOnTotalPrice( $totalPrice ) {
-		// Define discount tiers and corresponding discounts
-		$discountTiers = [ 100, 200, 300 ]; // Total price tiers
-		$discountRates = [ 0.05, 0.10, 0.02 ]; // Corresponding discount rates
-
-		// Iterate through tiers and find the appropriate discount rate
-		$discountRate = 0; // Default discount rate
-		foreach ( $discountTiers as $index => $tier ) {
-			if ( $totalPrice >= $tier ) {
-				$discountRate = $discountRates[ $index ];
-			} else {
-				break; // Stop iteration if the total price is less than the current tier
-			}
-		}
-
-		return $discountRate;
 	}
 
 	/**
@@ -336,6 +311,31 @@ class User {
 			// Error handling for account deletion
 			$_SESSION['errors'][] = "Error deleting user account: " . $e->getMessage();
 		}
+	}
+
+	/**
+	 * Calculates a discount rate based on the total price.
+	 *
+	 * @param   float  $totalPrice  Total price of user's purchases.
+	 *
+	 * @return float Discount rate applicable based on predefined tiers.
+	 */
+	private function calculateDiscountBasedOnTotalPrice( $totalPrice ) {
+		// Define discount tiers and corresponding discounts
+		$discountTiers = [ 100, 200, 300 ]; // Total price tiers
+		$discountRates = [ 0.05, 0.10, 0.02 ]; // Corresponding discount rates
+
+		// Iterate through tiers and find the appropriate discount rate
+		$discountRate = 0; // Default discount rate
+		foreach ( $discountTiers as $index => $tier ) {
+			if ( $totalPrice >= $tier ) {
+				$discountRate = $discountRates[ $index ];
+			} else {
+				break; // Stop iteration if the total price is less than the current tier
+			}
+		}
+
+		return $discountRate;
 	}
 
 }

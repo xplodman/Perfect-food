@@ -2,7 +2,7 @@
 	<div class="card">
 		<form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
 			<input type="hidden" name="item_id" value="<?php echo $item['id']; ?>">
-			<img src="<?php echo $item['image']; ?>" class="card-img-top" alt="<?php echo $item['name']; ?>">
+			<img src="<?php echo $item['image']; ?>" class="card-img-top img-fluid" style="height: 16rem;object-fit: cover;width: 100%;" alt="<?php echo $item['name']; ?>">
 			<div class="card-body">
 				<h5 class="card-title"><?php echo $item['name']; ?></h5>
 				<p class="card-text"><?php echo $item['description']; ?></p>

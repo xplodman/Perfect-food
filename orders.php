@@ -93,7 +93,7 @@ include_once 'includes/partial/alerts.php';
 								<button type="submit" class="btn btn-danger m-2">Mark as Cancelled</button>
 							</form>
 						<?php elseif ( $_SESSION["role"] !== 'admin' && $order['status'] === 'pending' ) :
-							$orderCreationTime = strtotime( $order['created_at'] ) + 7200;
+							$orderCreationTime = strtotime( $order['created_at'] ) + 3600; // 1 hour.
 							$currentTime = time();
 							$timeDifference = $currentTime - $orderCreationTime;
 							if ( $timeDifference <= 3600 ) : ?>
