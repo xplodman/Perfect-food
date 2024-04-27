@@ -11,7 +11,7 @@ if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== t
 }
 
 $orderClass = new Order();
-$evaluation = new Evaluate();
+$evaluationClass = new Evaluate();
 $userId     = $_SESSION['user_id'];
 
 // Retrieve orders for the logged-in user
@@ -39,7 +39,7 @@ include_once 'includes/partial/alerts.php';
 				<th>Total Items</th>
 				<th>Total Sum</th>
 				<th>Created at</th>
-				<th>Rating</th>
+				<th>Evaluation</th>
 				<th>Actions</th>
 			</tr>
 			</thead>
@@ -57,12 +57,12 @@ include_once 'includes/partial/alerts.php';
 					<td><?php echo $order["created_at"]; ?></td>
 					<td>
 						<?php if ( $order['status'] === 'completed' ) :
-							if ( $evaluation->hasRatingForEntity( $order['id'], 'order' ) ):
-								$rating = $evaluation->getEntityRatingDetails( $order['id'], 'order' );
+							if ( $evaluationClass->hasEvaluationForEntity( $order['id'], 'order' ) ):
+								$evaluation = $evaluationClass->getEntityEvaluationDetails( $order['id'], 'order' );
 								?>
-								<span class="rating-value"><?php echo $rating['rating']; ?></span>
+								<span class="evaluation-value"><?php echo $evaluation['rating']; ?></span>
 								<br>
-								<small class="form-text text-muted"><?php echo $rating['comment']; ?></small>
+								<small class="form-text text-muted"><?php echo $evaluation['comment']; ?></small>
 							<?php elseif ( $_SESSION["role"] !== 'admin' ): ?>
 								<form method="get" action="evaluate.php">
 									<input type="hidden" name="type" value="order">

@@ -11,7 +11,7 @@ if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== t
 }
 
 $book       = new Book();
-$evaluation = new Evaluate();
+$evaluationClass = new Evaluate();
 
 // Retrieve bookings for the logged-in customer
 $bookings = $book->retrieveBookingsBasedOnUserRole();
@@ -38,7 +38,7 @@ include_once 'includes/partial/alerts.php';
 				<th>Date</th>
 				<th>Time</th>
 				<th>Guests</th>
-				<th>Rating</th>
+				<th>Evaluation</th>
 				<th>Actions</th>
 
 			</tr>
@@ -58,12 +58,12 @@ include_once 'includes/partial/alerts.php';
 					<td><?php echo $booking['guests']; ?></td>
 					<td>
 						<?php if ( $booking['status'] === 'completed' ) :
-							if ( $evaluation->hasRatingForEntity( $booking['id'], 'booking' ) ) :
-								$rating = $evaluation->getEntityRatingDetails( $booking['id'], 'booking' );
+							if ( $evaluationClass->hasEvaluationForEntity( $booking['id'], 'booking' ) ) :
+								$evaluation = $evaluationClass->getEntityEvaluationDetails( $booking['id'], 'booking' );
 								?>
-								<span class="rating-value"><?php echo $rating['rating']; ?></span>
+								<span class="evaluation-value"><?php echo $evaluation['rating']; ?></span>
 								<br>
-								<small class="form-text text-muted"><?php echo $rating['comment']; ?></small>
+								<small class="form-text text-muted"><?php echo $evaluation['comment']; ?></small>
 							<?php elseif ( $_SESSION["role"] !== 'admin' ): ?>
 								<form method="get" action="evaluate.php">
 									<input type="hidden" name="type" value="booking">

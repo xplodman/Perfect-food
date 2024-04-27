@@ -17,15 +17,15 @@ class Evaluate {
 	 *
 	 * @param   int     $entityId    The ID of the entity (order or booking) being evaluated.
 	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
-	 * @param   int     $rating      The rating given in the evaluation.
+	 * @param   int     $evaluation      The evaluation given in the evaluation.
 	 * @param   string  $comment     The comment provided in the evaluation.
 	 *
 	 * @return void
 	 */
-	public function createEntityEvaluation( $entityId, $entityType, $rating, $comment ) {
+	public function createEntityEvaluation( $entityId, $entityType, $evaluation, $comment ) {
 		try {
 			// Prepare the SQL statement
-			$sql  = "INSERT INTO evaluations (order_id, booking_id, rating, comment) VALUES (?, ?, ?, ?)";
+			$sql  = "INSERT INTO evaluations (order_id, booking_id, evaluation, comment) VALUES (?, ?, ?, ?)";
 			$stmt = $this->db->connection->prepare( $sql );
 
 			// Determine whether it's an order or booking evaluation and set the appropriate parameters
@@ -43,7 +43,7 @@ class Evaluate {
 			}
 
 			// Bind parameters and execute the statement
-			$stmt->execute( [ $order_id, $booking_id, $rating, $comment ] );
+			$stmt->execute( [ $order_id, $booking_id, $evaluation, $comment ] );
 
 			// Provide feedback to the user
 			$_SESSION['info'][] = "Evaluation successfully inserted.";
@@ -71,7 +71,7 @@ class Evaluate {
 	 *
 	 * @return bool Returns true if the entity has been rated, false otherwise.
 	 */
-	public function hasRatingForEntity( $entityId, $entityType ) {
+	public function hasEvaluationForEntity( $entityId, $entityType ) {
 		try {
 			// Prepare the SQL statement
 			$sql = "SELECT COUNT(*) FROM evaluations WHERE ";
@@ -98,14 +98,14 @@ class Evaluate {
 	}
 
 	/**
-	 * Retrieves the rating details for an entity (order or booking).
+	 * Retrieves the evaluation details for an entity (order or booking).
 	 *
 	 * @param   int     $entityId    The ID of the entity (order or booking).
 	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
 	 *
-	 * @return array|false Returns an associative array containing the rating details if found, or false if not found or error occurs.
+	 * @return array|false Returns an associative array containing the evaluation details if found, or false if not found or error occurs.
 	 */
-	public function getEntityRatingDetails( $entityId, $entityType ) {
+	public function getEntityEvaluationDetails( $entityId, $entityType ) {
 		try {
 			$query = "SELECT * FROM evaluations WHERE ";
 			if ( $entityType === 'order' ) {
@@ -113,14 +113,14 @@ class Evaluate {
 			} elseif ( $entityType === 'booking' ) {
 				$query .= "booking_id = ? AND order_id IS NULL";
 			} else {
-				return 0; // Default to 0 rating if entity type is invalid
+				return 0; // Default to 0 evaluation if entity type is invalid
 			}
 			$statement = $this->db->connection->prepare( $query );
 			$statement->execute( [ $entityId ] );
 
 			return $statement->fetch( PDO::FETCH_ASSOC );
 		} catch ( PDOException $e ) {
-			return 0; // Default to 0 rating if there's an error
+			return 0; // Default to 0 evaluation if there's an error
 		}
 	}
 
