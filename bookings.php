@@ -10,17 +10,28 @@ if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== t
 	exit;
 }
 
-$book       = new Book();
+$book            = new Book();
 $evaluationClass = new Evaluate();
+$showAll         = isset( $_GET['show_all'] ) && $_GET['show_all'] === '1';
 
 // Retrieve bookings for the logged-in customer
-$bookings = $book->retrieveBookingsBasedOnUserRole();
+$bookings = $book->retrieveBookingsBasedOnUserRole( $showAll );
 include_once 'includes/partial/alerts.php';
 
 ?>
 
 <div class="container">
 	<h1><?php echo ( $_SESSION["role"] === 'admin' ) ? 'All Bookings' : 'My Bookings' ?></h1>
+	<!-- Checkbox to toggle showing all Bookings -->
+	<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" value="1" id="showAllCheckbox" name="show_all" <?php echo $showAll ? 'checked' : ''; ?>>
+			<label class="form-check-label" for="showAllCheckbox">
+				Show All Bookings
+			</label>
+		</div>
+		<button type="submit" class="btn btn-primary mt-3">Apply</button>
+	</form>
 
 	<?php if ( empty( $bookings ) ) : ?>
 		<p>No Bookings found.</p>
@@ -74,14 +85,14 @@ include_once 'includes/partial/alerts.php';
 						endif; ?>
 					</td>
 					<td>
-						<?php if ($_SESSION["role"] === 'admin' && ($booking['status'] === 'pending' || $booking['status'] === 'in_progress')) :
-							if ($booking['status'] === 'pending') : ?>
+						<?php if ( $_SESSION["role"] === 'admin' && ( $booking['status'] === 'pending' || $booking['status'] === 'in_progress' ) ) :
+							if ( $booking['status'] === 'pending' ) : ?>
 								<form method="post" action="update-booking.php">
 									<input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>">
 									<input type="hidden" name="status" value="in_progress">
 									<button type="submit" class="btn btn-primary m-2">Mark as In Progress</button>
 								</form>
-							<?php elseif ($booking['status'] === 'in_progress') : ?>
+							<?php elseif ( $booking['status'] === 'in_progress' ) : ?>
 								<form method="post" action="update-booking.php">
 									<input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>">
 									<input type="hidden" name="status" value="completed">
@@ -93,11 +104,11 @@ include_once 'includes/partial/alerts.php';
 								<input type="hidden" name="status" value="cancelled">
 								<button type="submit" class="btn btn-danger m-2">Mark as Cancelled</button>
 							</form>
-						<?php elseif ($_SESSION["role"] !== 'admin' && $booking['status'] === 'pending') :
-							$bookingCreationTime = strtotime($booking['created_at']) + 3600; // 1 hour.
+						<?php elseif ( $_SESSION["role"] !== 'admin' && $booking['status'] === 'pending' ) :
+							$bookingCreationTime = strtotime( $booking['created_at'] ) + 3600; // 1 hour.
 							$currentTime = time();
 							$timeDifference = $currentTime - $bookingCreationTime;
-							if ($timeDifference <= 3600) : ?>
+							if ( $timeDifference <= 3600 ) : ?>
 								<form method="post" action="delete-booking.php">
 									<input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>">
 									<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this booking?')">Delete</button>

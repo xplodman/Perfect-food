@@ -88,59 +88,55 @@ class Order {
 
 	/**
 	 * Retrieves orders based on the user's role.
+	 *
+	 * @param   bool  $showAll  Flag to indicate whether to retrieve all orders or limit the results.
+	 *
 	 * @return array|bool Returns an array of orders if successful, false on failure.
 	 */
-	public function retrieveOrdersBasedOnUserRole() {
+	public function retrieveOrdersBasedOnUserRole( bool $showAll = false)
+	{
 		try {
-			if ( $_SESSION["role"] === 'admin' ) {
-				$query     = "
-                SELECT 
-                    orders.*,
-                    users.email,
-                    COUNT(order_items.item_id) AS item_count, 
-                    SUM(order_items.quantity * menu_items.price) AS total_sum
-                FROM 
-                    orders
-                LEFT JOIN 
-                    order_items ON orders.id = order_items.order_id
-                LEFT JOIN 
-                    menu_items ON order_items.item_id = menu_items.id
-                LEFT JOIN 
-                    users ON orders.user_id = users.id
-                GROUP BY 
-                    orders.id
-            ";
-				$statement = $this->db->connection->prepare( $query );
-				$statement->execute();
-			} else {
-				// If the user is not an admin, fetch orders only for the current user
-				$query     = "
-                SELECT 
-                    orders.*,
-                    users.email,
-                    COUNT(order_items.item_id) AS item_count, 
-                    SUM(order_items.quantity * menu_items.price) AS total_sum
-                FROM 
-                    orders
-                LEFT JOIN 
-                    order_items ON orders.id = order_items.order_id
-                LEFT JOIN 
-                    menu_items ON order_items.item_id = menu_items.id
-                LEFT JOIN 
-                    users ON orders.user_id = users.id
-                WHERE 
-                    orders.user_id = ?
-                GROUP BY 
-                    orders.id
-            ";
-				$statement = $this->db->connection->prepare( $query );
-				$statement->execute( [ $_SESSION['user_id'] ] );
+			$isAdmin = ($_SESSION["role"] === 'admin');
+
+			// Base query to retrieve orders information
+			$query = "
+	            SELECT 
+	                orders.*,
+	                users.email,
+	                COUNT(order_items.item_id) AS item_count, 
+	                SUM(order_items.quantity * menu_items.price) AS total_sum
+	            FROM 
+	                orders
+	            LEFT JOIN 
+	                order_items ON orders.id = order_items.order_id
+	            LEFT JOIN 
+	                menu_items ON order_items.item_id = menu_items.id
+	            LEFT JOIN 
+	                users ON orders.user_id = users.id
+	        ";
+
+			if (!$isAdmin) {
+				$query .= " WHERE orders.user_id = ?";
 			}
 
-			return $statement->fetchAll( PDO::FETCH_ASSOC );
-		} catch ( PDOException $e ) {
-			$_SESSION['errors'][] = "Error fetching orders: " . $e->getMessage();
+			$query .= " GROUP BY orders.id ORDER BY orders.id DESC";
 
+			if (!$showAll) {
+				$query .= " LIMIT 5";
+			}
+
+			$statement = $this->db->connection->prepare($query);
+
+			if (!$isAdmin) {
+				// Bind user ID parameter for non-admin users
+				$statement->execute([$_SESSION['user_id']]);
+			} else {
+				$statement->execute();
+			}
+
+			return $statement->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			$_SESSION['errors'][] = "Error fetching orders: " . $e->getMessage();
 			return false;
 		}
 	}

@@ -17,7 +17,7 @@ class Evaluate {
 	 *
 	 * @param   int     $entityId    The ID of the entity (order or booking) being evaluated.
 	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
-	 * @param   int     $evaluation      The evaluation given in the evaluation.
+	 * @param   int     $evaluation  The evaluation given in the evaluation.
 	 * @param   string  $comment     The comment provided in the evaluation.
 	 *
 	 * @return void
@@ -124,4 +124,115 @@ class Evaluate {
 		}
 	}
 
+	/**
+	 * Retrieves total count of ratings for today.
+	 *
+	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
+	 *
+	 * @return int Returns the total count of ratings for today.
+	 */
+	public function totalRatingsToday( $entityType ) {
+		try {
+			// Prepare the SQL statement
+			$sql = "SELECT COUNT(*) AS totalRatingsToday FROM evaluations WHERE DATE(created_at) = CURDATE()";
+			if ( $entityType === 'order' ) {
+				$sql .= " AND booking_id IS NULL";
+			} elseif ( $entityType === 'booking' ) {
+				$sql .= " AND order_id IS NULL";
+			} else {
+				return 0;
+			}
+			$statement = $this->db->connection->prepare( $sql );
+			$statement->execute();
+			$result = $statement->fetch( PDO::FETCH_ASSOC );
+
+			return (int) $result['totalRatingsToday'];
+		} catch ( PDOException $e ) {
+			return 0;
+		}
+	}
+
+	/**
+	 * Calculates the average rating for today.
+	 *
+	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
+	 *
+	 * @return float Returns the average rating for today.
+	 */
+	public function averageRatingToday( $entityType ) {
+		try {
+			// Prepare the SQL statement
+			$sql = "SELECT AVG(rating) AS averageRatingToday FROM evaluations WHERE DATE(created_at) = CURDATE()";
+			if ( $entityType === 'order' ) {
+				$sql .= " AND booking_id IS NULL";
+			} elseif ( $entityType === 'booking' ) {
+				$sql .= " AND order_id IS NULL";
+			} else {
+				return 0;
+			}
+			$statement = $this->db->connection->prepare( $sql );
+			$statement->execute();
+			$result = $statement->fetch( PDO::FETCH_ASSOC );
+
+			return (int) $result['averageRatingToday'];
+		} catch ( PDOException $e ) {
+			return 0;
+		}
+	}
+
+	/**
+	 * Retrieves total count of ratings for the current month.
+	 *
+	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
+	 *
+	 * @return int Returns the total count of ratings for the current month.
+	 */
+	public function totalRatingsThisMonth( $entityType ) {
+		try {
+			// Prepare the SQL statement
+			$sql = "SELECT COUNT(*) AS totalRatingsThisMonth FROM evaluations WHERE YEAR(created_at) = YEAR(CURDATE()) AND MONTH(created_at) = MONTH(CURDATE())";
+			if ( $entityType === 'order' ) {
+				$sql .= " AND booking_id IS NULL";
+			} elseif ( $entityType === 'booking' ) {
+				$sql .= " AND order_id IS NULL";
+			} else {
+				return 0;
+			}
+			$statement = $this->db->connection->prepare( $sql );
+			$statement->execute();
+			$result = $statement->fetch( PDO::FETCH_ASSOC );
+
+			return (int) $result['totalRatingsThisMonth'];
+		} catch ( PDOException $e ) {
+			return 0;
+		}
+	}
+
+	/**
+	 * Calculates the average rating for the current month.
+	 *
+	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
+	 *
+	 * @return float Returns the average rating for the current month.
+	 */
+	public function averageRatingThisMonth( $entityType ) {
+		try {
+			// Prepare the SQL statement
+			$sql = "SELECT AVG(rating) AS averageRatingThisMonth FROM evaluations WHERE YEAR(created_at) = YEAR(CURDATE()) AND MONTH(created_at) = MONTH(CURDATE())";
+			if ( $entityType === 'order' ) {
+				$sql .= " AND booking_id IS NULL";
+			} elseif ( $entityType === 'booking' ) {
+				$sql .= " AND order_id IS NULL";
+			} else {
+				return 0;
+			}
+			$statement = $this->db->connection->prepare( $sql );
+			$statement->execute();
+			$result = $statement->fetch( PDO::FETCH_ASSOC );
+
+			return (int) $result['averageRatingThisMonth'];
+		} catch ( PDOException $e ) {
+			return 0;
+		}
+	}
 }

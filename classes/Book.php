@@ -53,26 +53,51 @@ class Book {
 	/**
 	 * Retrieves bookings based on the user's role.
 	 *
+	 * @param bool $showAll Flag to indicate whether to retrieve all bookings or limit the results.
+	 *
 	 * @return array|bool Returns an array containing booking details fetched from the database, or false on failure.
 	 */
-	public function retrieveBookingsBasedOnUserRole() {
+	public function retrieveBookingsBasedOnUserRole($showAll = false)
+	{
 		try {
-			if ( $_SESSION["role"] === 'admin' ) {
-				// If the user is an admin, fetch all bookings without filtering by user_id
-				$query     = "SELECT bookings.*, branches.name AS branch_name, users.email FROM bookings JOIN branches ON bookings.branch_id = branches.id LEFT JOIN users ON bookings.user_id = users.id;";
-				$statement = $this->db->connection->prepare( $query );
-				$statement->execute();
-			} else {
-				// If the user is not an admin, fetch bookings only for the current user
-				$query     = "SELECT bookings.*, branches.name AS branch_name, users.email FROM bookings JOIN branches ON bookings.branch_id = branches.id LEFT JOIN users ON bookings.user_id = users.id WHERE bookings.user_id = ?;";
-				$statement = $this->db->connection->prepare( $query );
-				$statement->execute( [ $_SESSION['user_id'] ] );
+			$isAdmin = ($_SESSION["role"] === 'admin');
+
+			// Base query to retrieve bookings information
+			$query = "
+	            SELECT 
+	                bookings.*, 
+	                branches.name AS branch_name, 
+	                users.email 
+	            FROM 
+	                bookings 
+	                JOIN branches ON bookings.branch_id = branches.id 
+	                LEFT JOIN users ON bookings.user_id = users.id
+	        ";
+
+			// Add WHERE clause based on user role
+			if (!$isAdmin) {
+				$query .= " WHERE bookings.user_id = ?";
 			}
 
-			return $statement->fetchAll( PDO::FETCH_ASSOC );
-		} catch ( PDOException $e ) {
-			$_SESSION['errors'][] = "Error fetching bookings: " . $e->getMessage();
+			$query .= " ORDER BY bookings.id DESC";
 
+			// Limit the number of results if showAll is false
+			if (!$showAll) {
+				$query .= " LIMIT 5";
+			}
+
+			$statement = $this->db->connection->prepare($query);
+
+			if (!$isAdmin) {
+				// Bind user ID parameter for non-admin users
+				$statement->execute([$_SESSION['user_id']]);
+			} else {
+				$statement->execute();
+			}
+
+			return $statement->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			$_SESSION['errors'][] = "Error fetching bookings: " . $e->getMessage();
 			return false;
 		}
 	}

@@ -10,12 +10,12 @@ if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== t
 	exit;
 }
 
-$orderClass = new Order();
+$orderClass      = new Order();
 $evaluationClass = new Evaluate();
-$userId     = $_SESSION['user_id'];
+$showAll         = isset( $_GET['show_all'] ) && $_GET['show_all'] === '1';
 
 // Retrieve orders for the logged-in user
-$orders = $orderClass->retrieveOrdersBasedOnUserRole();
+$orders = $orderClass->retrieveOrdersBasedOnUserRole( $showAll );
 
 include_once 'includes/partial/alerts.php';
 
@@ -23,6 +23,16 @@ include_once 'includes/partial/alerts.php';
 
 <div class="container">
 	<h1>Orders</h1>
+	<!-- Checkbox to toggle showing all orders -->
+	<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" value="1" id="showAllCheckbox" name="show_all" <?php echo $showAll ? 'checked' : ''; ?>>
+			<label class="form-check-label" for="showAllCheckbox">
+				Show All Orders
+			</label>
+		</div>
+		<button type="submit" class="btn btn-primary mt-3">Apply</button>
+	</form>
 
 	<?php if ( empty( $orders ) ) : ?>
 		<p>No orders found.</p>
