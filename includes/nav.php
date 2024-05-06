@@ -16,6 +16,10 @@
 
 				// Conditionally add additional navigation items based on the user's role
 				if ( isset($_SESSION["role"]) && $_SESSION["role"] === 'admin' ) {
+					$navItems[] = [ 'All users', 'users.php', 'people' ];
+					$navItems[] = [ 'All bookings', 'bookings.php', 'calendar' ];
+					$navItems[] = [ 'All orders', 'orders.php', 'list' ];
+				}elseif ( isset($_SESSION["role"]) && $_SESSION["role"] === 'staff' ) {
 					$navItems[] = [ 'All bookings', 'bookings.php', 'calendar' ];
 					$navItems[] = [ 'All orders', 'orders.php', 'list' ];
 				}else{

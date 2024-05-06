@@ -256,4 +256,37 @@ class Order {
 		}
 	}
 
+	public function retrieveOrdersByUserId( $userId ) {
+		try {
+			// Base query to retrieve orders information
+			$query = "
+	            SELECT 
+	                orders.*,
+	                users.email,
+	                COUNT(order_items.item_id) AS item_count, 
+	                SUM(order_items.quantity * menu_items.price) AS total_sum
+	            FROM 
+	                orders
+	            LEFT JOIN 
+	                order_items ON orders.id = order_items.order_id
+	            LEFT JOIN 
+	                menu_items ON order_items.item_id = menu_items.id
+	            LEFT JOIN 
+	                users ON orders.user_id = users.id
+             	WHERE orders.user_id = ?
+				GROUP BY orders.id ORDER BY orders.id DESC
+	        ";
+
+			$statement = $this->db->connection->prepare($query);
+
+			// Bind user ID parameter
+			$statement->execute([$userId]);
+
+			return $statement->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			$_SESSION['errors'][] = "Error fetching orders: " . $e->getMessage();
+			return false;
+		}
+	}
+
 }

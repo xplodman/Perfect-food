@@ -23,13 +23,15 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	$street      = $_POST['street'];
 	$houseNumber = $_POST['house_number'];
 	$phones      = $_POST['phones'];
+	// Create a new User object
+	$user = new User();
 
 	// Validate input dat
 	if ( empty( $email ) || empty( $password ) || empty( $firstName ) || empty( $lastName ) || empty( $city ) || empty( $street ) || empty( $houseNumber ) || empty( array_filter( $phones ) ) ) {
 		$_SESSION['errors'][] = "All fields are required.";
+	} elseif ( $user->isEmailExists( $email ) ) {
+		$_SESSION['errors'][] = "Email is already registered.";
 	} else {
-		// Create a new User object
-		$user = new User();
 
 		// Attempt to register user
 		if ( $user->registerNewUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber ) ) {
@@ -57,7 +59,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 include_once 'includes/partial/alerts.php'
 ?>
 	<div class="row">
-		<div class="col-md-6 offset-md-3 form-container">
+		<div class="col-md-6 offset-md-3">
 			<h2 class="mb-4">Registration Form</h2>
 			<form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ); ?>">
 				<div class="mb-3">
@@ -71,11 +73,11 @@ include_once 'includes/partial/alerts.php'
 				<div class="row mb-3">
 					<div class="col">
 						<label for="first_name" class="form-label">First Name</label>
-						<input type="text" class="form-control" id="first_name" name="first_name" required>
+						<input pattern="[A-Za-z][A-Za-z\s]*" type="text" class="form-control" id="first_name" name="first_name" required>
 					</div>
 					<div class="col">
 						<label for="last_name" class="form-label">Last Name</label>
-						<input type="text" class="form-control" id="last_name" name="last_name" required>
+						<input pattern="[A-Za-z][A-Za-z\s]*" type="text" class="form-control" id="last_name" name="last_name" required>
 					</div>
 				</div>
 				<div class="row mb-3">
@@ -96,15 +98,15 @@ include_once 'includes/partial/alerts.php'
 				<div class="row mb-3">
 					<div class="col-4">
 						<label for="phone_1" class="form-label">Phone #1</label>
-						<input type="text" class="form-control" id="phone_1" name="phones[]" required>
+						<input pattern="\d+" type="text" class="form-control" id="phone_1" name="phones[]" required>
 					</div>
 					<div class="col-4">
 						<label for="phone_2" class="form-label">Phone #2</label>
-						<input type="text" class="form-control" id="phone_2" name="phones[]" required>
+						<input pattern="\d+" type="text" class="form-control" id="phone_2" name="phones[]" required>
 					</div>
 					<div class="col-4">
 						<label for="phone_3" class="form-label">Phone #3</label>
-						<input type="text" class="form-control" id="phone_3" name="phones[]" required>
+						<input pattern="\d+" type="text" class="form-control" id="phone_3" name="phones[]" required>
 					</div>
 				</div>
 				<button type="submit" class="btn btn-primary">Register</button>

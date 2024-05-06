@@ -13,6 +13,21 @@ class User {
 	}
 
 	/**
+	 * Retrieves all users from the database.
+	 *
+	 * @return array Returns an array containing all users fetched from the database.
+	 */
+	public function retrieveAllUsers() {
+		try {
+			$query = "SELECT * FROM users";
+
+			return $this->db->connection->query( $query )->fetchAll( PDO::FETCH_ASSOC );
+		} catch ( PDOException $e ) {
+			return [];
+		}
+	}
+
+	/**
 	 * Registers a new user in the database.
 	 *
 	 * @param   string  $email        User's email address.
@@ -185,6 +200,7 @@ class User {
                   last_name = :last_name, 
                   city = :city, 
                   street = :street, 
+                  role = :role, 
                   house_number = :house_number";
 
 			// Check if password is provided and not empty
@@ -202,6 +218,7 @@ class User {
 			$stmt->bindParam( ':city', $postData['city'] );
 			$stmt->bindParam( ':street', $postData['street'] );
 			$stmt->bindParam( ':house_number', $postData['house_number'] );
+			$stmt->bindParam( ':role', $postData['role'] );
 			$stmt->bindParam( ':id', $userId );
 
 			// Bind password parameter if provided
@@ -277,12 +294,14 @@ class User {
 			// Check if user information is found
 			if ( $user ) {
 				// Update session variables with the new user information
+				$_SESSION['user_id']      = $user['id'];
 				$_SESSION['email']        = $user['email'];
 				$_SESSION['first_name']   = $user['first_name'];
 				$_SESSION['last_name']    = $user['last_name'];
 				$_SESSION['city']         = $user['city'];
 				$_SESSION['street']       = $user['street'];
 				$_SESSION['house_number'] = $user['house_number'];
+				$_SESSION['role']         = $user['role'];
 
 				return true;
 			}
@@ -336,6 +355,34 @@ class User {
 		}
 
 		return $discountRate;
+	}
+
+	public function retrieveUserDetails( $userId ) {
+		$query     = "SELECT * FROM users WHERE id = :id";
+		$statement = $this->db->connection->prepare( $query );
+		$statement->bindParam( ':id', $userId );
+		$statement->execute();
+
+		return $statement->fetch( PDO::FETCH_ASSOC );
+	}
+
+	public function isEmailExists( $email ) {
+		try {
+			$stmt = $this->db->connection->prepare( "SELECT * FROM users WHERE email = ? LIMIT 1" );
+			$stmt->execute( [ $email ] );
+			$user = $stmt->fetch();
+
+			if ( $user ) {
+				return true;
+			}
+
+			// Login failed
+			return false;
+		} catch ( PDOException $e ) {
+			$_SESSION['errors'][] = $e->getMessage();
+
+			return false;
+		}
 	}
 
 }

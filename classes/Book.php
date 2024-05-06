@@ -81,6 +81,18 @@ class Book {
 
 			$query .= " ORDER BY bookings.id DESC";
 
+			/**
+			 * TODO
+			 *
+			 * -Add an actor to receive the order from the admin
+			 * -Add customer history
+			 * -Add validation on first name and last name for text only
+			 * -Add validation on numbers
+			 * -Add multi address in account
+			 * -Correcting the error if registering with a previously registered email
+			 */
+
+
 			// Limit the number of results if showAll is false
 			if (!$showAll) {
 				$query .= " LIMIT 5";

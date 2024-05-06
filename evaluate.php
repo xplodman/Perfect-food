@@ -18,7 +18,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 include_once 'includes/partial/alerts.php'
 ?>
 	<div class="row">
-		<div class="col-md-6 offset-md-3 form-container">
+		<div class="col-md-6 offset-md-3">
 			<h2 class="mb-4">Evaluation Form</h2>
 			<form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ); ?>">
 				<input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
