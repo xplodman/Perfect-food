@@ -12,7 +12,6 @@ class Book {
 		$this->db = new DB();
 	}
 
-
 	/**
 	 * Makes a booking for a user at a branch.
 	 *

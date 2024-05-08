@@ -90,7 +90,7 @@ include_once 'includes/partial/alerts.php';
 									<input type="hidden" name="status" value="in_progress">
 									<button type="submit" class="btn btn-primary m-2">Mark as In Progress</button>
 								</form>
-							<?php elseif ( $order['status'] === 'in_progress' ) : ?>
+							<?php elseif ( $_SESSION["role"] === 'branch_manager' && $order['status'] === 'in_progress' ) : ?>
 								<form method="post" action="update-order.php">
 									<input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
 									<input type="hidden" name="status" value="completed">

@@ -92,7 +92,7 @@ include_once 'includes/partial/alerts.php';
 									<input type="hidden" name="status" value="in_progress">
 									<button type="submit" class="btn btn-primary m-2">Mark as In Progress</button>
 								</form>
-							<?php elseif ( $booking['status'] === 'in_progress' ) : ?>
+							<?php elseif ( $_SESSION["role"] === 'branch_manager' && $booking['status'] === 'in_progress' ) : ?>
 								<form method="post" action="update-booking.php">
 									<input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>">
 									<input type="hidden" name="status" value="completed">

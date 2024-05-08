@@ -357,6 +357,12 @@ class User {
 		return $discountRate;
 	}
 
+	/**
+	 * Retrieves detailed information for a specific user by user ID.
+	 *
+	 * @param int $userId The ID of the user whose details are to be retrieved.
+	 * @return array|false An associative array of user details if found, false otherwise.
+	 */
 	public function retrieveUserDetails( $userId ) {
 		$query     = "SELECT * FROM users WHERE id = :id";
 		$statement = $this->db->connection->prepare( $query );
@@ -366,6 +372,12 @@ class User {
 		return $statement->fetch( PDO::FETCH_ASSOC );
 	}
 
+	/**
+	 * Checks if an email address already exists in the database.
+	 *
+	 * @param string $email The email address to check.
+	 * @return bool True if the email exists, false otherwise.
+	 */
 	public function isEmailExists( $email ) {
 		try {
 			$stmt = $this->db->connection->prepare( "SELECT * FROM users WHERE email = ? LIMIT 1" );
