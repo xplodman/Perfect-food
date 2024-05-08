@@ -81,14 +81,6 @@ class Book {
 
 			$query .= " ORDER BY bookings.id DESC";
 
-			/**
-			 * TODO
-			 *
-			 * -Add an actor to receive the order from the admin
-			 * -Add multi address in account
-			 */
-
-
 			// Limit the number of results if showAll is false
 			if (!$showAll) {
 				$query .= " LIMIT 5";
