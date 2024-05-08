@@ -19,7 +19,7 @@
 					$navItems[] = [ 'All users', 'users.php', 'people' ];
 					$navItems[] = [ 'All bookings', 'bookings.php', 'calendar' ];
 					$navItems[] = [ 'All orders', 'orders.php', 'list' ];
-				}elseif ( isset($_SESSION["role"]) && $_SESSION["role"] === 'staff' ) {
+				}elseif ( isset($_SESSION["role"]) && $_SESSION["role"] === 'branch_manager' ) {
 					$navItems[] = [ 'All bookings', 'bookings.php', 'calendar' ];
 					$navItems[] = [ 'All orders', 'orders.php', 'list' ];
 				}else{

@@ -19,7 +19,7 @@ include_once 'includes/partial/alerts.php'
 <div class="container">
 	<!-- Add menu and menu item buttons -->
 	<div class="d-flex justify-content-end mb-4">
-		<?php if (isset($_SESSION["role"]) && $_SESSION["role"] === 'admin') : ?>
+		<?php if (isset($_SESSION["role"]) && ($_SESSION["role"] === 'admin' || $_SESSION["role"] === 'branch_manager')) : ?>
 			<a href="add-menu.php" class="btn btn-success ms-2">Add Menu</a>
 			<a href="add-item.php" class="btn btn-success ms-2">Add Menu Item</a>
 		<?php endif; ?>
@@ -34,7 +34,7 @@ include_once 'includes/partial/alerts.php'
 		<?php foreach ( $menus as $menu ) : ?>
 			<li class="nav-item d-flex align-items-center"> <!-- Use flexbox utilities -->
 				<a class="nav-link" id="menuTab<?php echo $menu['id'] ?>" data-bs-toggle="tab" href="#menu<?php echo $menu['id'] ?>" role="tab"><?php echo $menu['name'] ?></a>
-				<?php if (isset($_SESSION["role"]) &&  $_SESSION["role"] === 'admin') : ?>
+				<?php if (isset($_SESSION["role"]) && ($_SESSION["role"] === 'admin' || $_SESSION["role"] === 'branch_manager')) : ?>
 					<!-- Edit Link -->
 					<a href="edit-menu.php?menu_id=<?php echo $menu['id']; ?>" title="Edit" class="me-2 ms-2">
 						<i class="bi bi-pencil-square"></i>

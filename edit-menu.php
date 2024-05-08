@@ -4,7 +4,7 @@ use PerfectFood\Classes\Menu;
 include_once 'includes/header.php';
 
 // Check if the user is an admin
-if ($_SESSION["role"] !== 'admin') {
+if ( $_SESSION["role"] !== 'admin' && $_SESSION["role"] !== 'branch_manager' ) {
 	$_SESSION['errors'][] = 'You do not have access to this page';
 	header('Location: index.php');
 	exit();

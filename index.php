@@ -64,9 +64,7 @@ $randomMenuItems = $menuItems->retrieveRandomMenuItemsWithLimit( 4 );
 				</div>
 			</div>
 		</div>
-	<?php endif; ?>
-
-	<?php if ( isset( $_SESSION["user_logged_in"] ) && $_SESSION["user_logged_in"] === true && $_SESSION["role"] === 'admin'): ?>
+		<?php if ( $_SESSION["role"] === 'admin' || $_SESSION["role"] === 'branch_manager' ): ?>
 		<div class="row">
 			<div class="col-md-6">
 				<div class="card mb-3">
@@ -95,6 +93,7 @@ $randomMenuItems = $menuItems->retrieveRandomMenuItemsWithLimit( 4 );
 				</div>
 			</div>
 		</div>
+	<?php endif; ?>
 	<?php endif; ?>
 </div>
 

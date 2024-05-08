@@ -81,7 +81,7 @@ include_once 'includes/partial/alerts.php';
 
 					<select id="role" name="role" class="form-select">
 						<option <?php echo $userDetails["role"] == 'admin' ? 'selected' : ''; ?> value="admin">Admin</option>
-						<option <?php echo $userDetails["role"] == 'staff' ? 'selected' : ''; ?> value="staff">Staff</option>
+						<option <?php echo $userDetails["role"] == 'branch_manager' ? 'selected' : ''; ?> value="branch_manager">Branch manager</option>
 						<option <?php echo $userDetails["role"] == 'user' ? 'selected' : ''; ?> value="user">user</option>
 					</select>
 				<?php endif; ?>

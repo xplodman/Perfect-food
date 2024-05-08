@@ -97,6 +97,7 @@ class Order {
 	{
 		try {
 			$isAdmin = ($_SESSION["role"] === 'admin');
+			$isBranchAdmin = ($_SESSION["role"] === 'branch_manager');
 
 			// Base query to retrieve orders information
 			$query = "
@@ -115,8 +116,12 @@ class Order {
 	                users ON orders.user_id = users.id
 	        ";
 
-			if (!$isAdmin) {
+			if (!$isAdmin && !$isBranchAdmin) {
 				$query .= " WHERE orders.user_id = ?";
+			}
+
+			if ($isBranchAdmin) {
+				$query .= " WHERE orders.status = 'in_progress'";
 			}
 
 			$query .= " GROUP BY orders.id ORDER BY orders.id DESC";

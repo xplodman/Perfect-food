@@ -21,7 +21,7 @@ include_once 'includes/partial/alerts.php';
 ?>
 
 <div class="container">
-	<h1><?php echo ( $_SESSION["role"] === 'admin' ) ? 'All Bookings' : 'My Bookings' ?></h1>
+	<h1>Bookings</h1>
 	<!-- Checkbox to toggle showing all Bookings -->
 	<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 		<div class="form-check">
@@ -85,7 +85,7 @@ include_once 'includes/partial/alerts.php';
 						endif; ?>
 					</td>
 					<td>
-						<?php if ( $_SESSION["role"] === 'admin' && ( $booking['status'] === 'pending' || $booking['status'] === 'in_progress' ) ) :
+						<?php if (($_SESSION["role"] === 'admin' || $_SESSION["role"] === 'branch_manager') && ( $booking['status'] === 'pending' || $booking['status'] === 'in_progress' ) ) :
 							if ( $booking['status'] === 'pending' ) : ?>
 								<form method="post" action="update-booking.php">
 									<input type="hidden" name="booking_id" value="<?php echo $booking['id']; ?>">

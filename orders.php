@@ -83,7 +83,7 @@ include_once 'includes/partial/alerts.php';
 						<?php endif; ?>
 					</td>
 					<td>
-						<?php if ( $_SESSION["role"] === 'admin' && ( $order['status'] === 'pending' || $order['status'] === 'in_progress' ) ) :
+						<?php if ( ($_SESSION["role"] === 'admin' || $_SESSION["role"] === 'branch_manager') && ( $order['status'] === 'pending' || $order['status'] === 'in_progress' ) ) :
 							if ( $order['status'] === 'pending' ) : ?>
 								<form method="post" action="update-order.php">
 									<input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
