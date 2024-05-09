@@ -37,11 +37,11 @@ class User {
 	 * @param   string  $city         User's city.
 	 * @param   string  $street       User's street address.
 	 * @param   string  $houseNumber  User's house number.
-	 * @param   string  $role         User's role (default 'user').
+	 * @param   string  $role         User's role (default 'customer').
 	 *
 	 * @return bool True if registration is successful, false otherwise.
 	 */
-	public function registerNewUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber, $role = 'user' ) {
+	public function registerNewUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber, $role = 'customer' ) {
 		try {
 			// Hash the password before storing it in the database
 			$hashedPassword = password_hash( $password, PASSWORD_DEFAULT );
