@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Apr 14, 2024 at 03:47 AM
--- Server version: 8.0.36-0ubuntu0.22.04.1
--- PHP Version: 8.1.27
+-- Host: 127.0.0.1:3306
+-- Generation Time: May 09, 2024 at 05:00 PM
+-- Server version: 10.11.7-MariaDB-cll-lve
+-- PHP Version: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `perfect_food`
+-- Database: `u832659007_perfect_food`
 --
 
 -- --------------------------------------------------------
@@ -28,15 +28,15 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `bookings` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `branch_id` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `branch_id` int(11) NOT NULL,
   `booking_date` date NOT NULL,
   `booking_time` time NOT NULL,
-  `guests` int NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `guests` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
   `status` varchar(50) NOT NULL DEFAULT 'pending'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `bookings`
@@ -53,7 +53,16 @@ INSERT INTO `bookings` (`id`, `user_id`, `branch_id`, `booking_date`, `booking_t
 (10, 16, 3, '1990-03-10', '06:14:00', 432, '2024-04-13 20:23:23', 'pending'),
 (11, 16, 5, '1976-09-11', '03:50:00', 822, '2024-04-13 20:23:27', 'pending'),
 (12, 16, 3, '2000-05-30', '09:44:00', 173, '2024-04-13 20:23:58', 'pending'),
-(13, 16, 2, '1979-12-29', '03:03:00', 614, '2024-04-13 20:24:14', 'pending');
+(13, 16, 2, '1979-12-29', '03:03:00', 614, '2024-04-13 20:24:14', 'pending'),
+(14, 16, 1, '2008-05-12', '18:06:00', 693, '2024-04-14 10:05:58', 'cancelled'),
+(15, 16, 4, '2024-04-16', '17:43:00', 13, '2024-04-16 15:44:12', 'pending'),
+(16, 16, 2, '2024-04-30', '21:20:00', 11, '2024-04-17 16:19:42', 'pending'),
+(19, 16, 4, '2024-05-10', '15:32:00', 55, '2024-04-23 19:25:49', 'pending'),
+(20, 16, 5, '2024-04-28', '20:30:00', 23, '2024-04-23 19:26:22', 'pending'),
+(21, 16, 4, '2024-05-06', '13:29:00', 26, '2024-04-23 19:26:48', 'pending'),
+(22, 16, 4, '2024-04-26', '17:00:00', 10, '2024-04-24 11:57:08', 'pending'),
+(23, 16, 1, '2024-04-26', '16:00:00', 15, '2024-04-24 11:57:32', 'pending'),
+(24, 16, 2, '2024-05-01', '15:00:00', 5, '2024-04-24 11:57:54', 'pending');
 
 -- --------------------------------------------------------
 
@@ -62,11 +71,11 @@ INSERT INTO `bookings` (`id`, `user_id`, `branch_id`, `booking_date`, `booking_t
 --
 
 CREATE TABLE `branches` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `location` varchar(255) NOT NULL,
   `contact_info` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `branches`
@@ -86,13 +95,13 @@ INSERT INTO `branches` (`id`, `name`, `location`, `contact_info`) VALUES
 --
 
 CREATE TABLE `evaluations` (
-  `id` int NOT NULL,
-  `order_id` int DEFAULT NULL,
-  `booking_id` int DEFAULT NULL,
-  `rating` int DEFAULT NULL,
-  `comment` text,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `id` int(11) NOT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `booking_id` int(11) DEFAULT NULL,
+  `rating` int(11) DEFAULT NULL,
+  `comment` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `evaluations`
@@ -101,7 +110,9 @@ CREATE TABLE `evaluations` (
 INSERT INTO `evaluations` (`id`, `order_id`, `booking_id`, `rating`, `comment`, `created_at`) VALUES
 (1, NULL, 3, 1, 'Voluptas rem sapient', '2024-04-12 20:53:50'),
 (2, 11, NULL, 5, 'Dolore ut temporibus', '2024-04-12 21:04:25'),
-(3, 10, NULL, 5, 'cc', '2024-04-13 20:14:41');
+(3, 10, NULL, 5, 'cc', '2024-04-13 20:14:41'),
+(4, NULL, 5, 1, 'it is very nice', '2024-04-16 15:40:29'),
+(5, 15, NULL, 5, '', '2024-04-23 19:01:48');
 
 -- --------------------------------------------------------
 
@@ -110,11 +121,11 @@ INSERT INTO `evaluations` (`id`, `order_id`, `booking_id`, `rating`, `comment`, 
 --
 
 CREATE TABLE `menus` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `description` text,
-  `active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `description` text DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `menus`
@@ -136,14 +147,14 @@ INSERT INTO `menus` (`id`, `name`, `description`, `active`) VALUES
 --
 
 CREATE TABLE `menu_items` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `description` text,
+  `description` text DEFAULT NULL,
   `image` varchar(255) NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `menu_id` int NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `menu_id` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `menu_items`
@@ -165,7 +176,8 @@ INSERT INTO `menu_items` (`id`, `name`, `description`, `image`, `price`, `menu_i
 (13, 'Vegetable Stir-Fry', 'Assorted vegetables stir-fried in a savory sauce', 'assets/images/13.jpg', '9.99', 6, 1),
 (14, 'Chicken Tenders', 'Breaded and fried chicken tenders served with dipping sauce', 'assets/images/14.jpg', '6.99', 7, 1),
 (15, 'Macaroni and Cheese', 'Creamy macaroni pasta with melted cheese', 'assets/images/15.jpg', '5.99', 7, 1),
-(16, 'Cheese Pizza', 'Classic cheese pizza with tomato sauce and mozzarella cheese', 'assets/images/16.webp', '8.99', 7, 1);
+(16, 'Cheese Pizza', 'Classic cheese pizza with tomato sauce and mozzarella cheese', 'assets/images/16.webp', '8.99', 7, 1),
+(21, 'fruits saled', 'leorm132\r\n', 'assets/images/hero.png', '34.00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -174,8 +186,8 @@ INSERT INTO `menu_items` (`id`, `name`, `description`, `image`, `price`, `menu_i
 --
 
 CREATE TABLE `orders` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -185,22 +197,27 @@ CREATE TABLE `orders` (
   `phone_1` varchar(20) NOT NULL,
   `phone_2` varchar(20) DEFAULT NULL,
   `phone_3` varchar(20) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
   `status` varchar(50) NOT NULL DEFAULT 'pending'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `first_name`, `last_name`, `email`, `city`, `street`, `house_number`, `phone_1`, `phone_2`, `phone_3`, `created_at`, `status`) VALUES
-(10, 16, 'Erin', 'Finley', 'hexi@testing-mail.com', 'Eius et quisquam ani', 'Ut quos eum error qu', '370', '+1 (338) 683-1141', '+1 (623) 468-7946', '+1 (935) 879-7977', '2024-04-11 18:08:59', 'pending'),
+(10, 16, 'Erin', 'Finley', 'hexi@testing-mail.com', 'Eius et quisquam ani', 'Ut quos eum error qu', '370', '+1 (338) 683-1141', '+1 (623) 468-7946', '+1 (935) 879-7977', '2024-04-11 18:08:59', 'in_progress'),
 (11, 16, 'Erin', 'Finley', 'hexi@testing-mail.com', 'Eius et quisquam ani', 'Ut quos eum error qu', '370', '+1 (338) 683-1141', '+1 (623) 468-7946', '+1 (935) 879-7977', '2024-04-11 18:59:41', 'pending'),
 (12, 16, 'Erin', 'Finley', 'hexi@testing-mail.com', 'Eius et quisquam ani', 'Ut quos eum error qu', '370', '+1 (338) 683-1141', '+1 (623) 468-7946', '+1 (935) 879-7977', '2024-04-11 19:01:39', 'in_progress'),
 (13, 16, 'Erin', 'Finley', 'hexi@testing-mail.com', 'Eius et quisquam ani', 'Ut quos eum error qu', '370', '+1 (338) 683-1141', '+1 (623) 468-7946', '+1 (935) 879-7977', '2024-04-11 19:18:57', 'cancelled'),
 (14, 16, 'Clayton', 'Duncan', 'hexi@testing-mail.com', 'Magni cupidatat sequ', 'Provident a reicien', '889', '+1 (951) 904-4956', '+1 (579) 847-7154', '+1 (807) 544-9348', '2024-04-11 23:02:01', 'cancelled'),
 (15, 16, 'Clayton', 'Duncan', 'hexi@testing-mail.com', 'Magni cupidatat sequ', 'Provident a reicien', '889', '+1 (951) 904-4956', '+1 (579) 847-7154', '+1 (807) 544-9348', '2024-04-12 02:19:19', 'completed'),
-(16, 17, 'Jeremy', 'Carpenter', 'pykat@testing-mail.com', 'Id consectetur dolo', 'Exercitation fuga O', '310', '+1 (374) 125-1132', '+1 (785) 933-4578', '+1 (952) 879-5332', '2024-04-12 19:41:05', 'in_progress');
+(16, 17, 'Jeremy', 'Carpenter', 'pykat@testing-mail.com', 'Id consectetur dolo', 'Exercitation fuga O', '310', '+1 (374) 125-1132', '+1 (785) 933-4578', '+1 (952) 879-5332', '2024-04-12 19:41:05', 'in_progress'),
+(18, 16, 'Clayton', 'Duncan', 'customer@perfect-food.com', 'Magni cupidatat sequ', 'Provident a reicien', '889', '+1 (951) 904-4956', '+1 (579) 847-7154', '+1 (807) 544-9348', '2024-04-18 20:40:33', 'pending'),
+(19, 16, 'Clayton', 'Duncan', 'customer@perfect-food.com', 'Magni cupidatat sequ', 'Provident a reicien', '889', '+1 (951) 904-4956', '+1 (579) 847-7154', '+1 (807) 544-9348', '2024-04-19 09:47:00', 'pending'),
+(20, 16, 'Clayton', 'Duncan', 'customer@perfect-food.com', 'Magni cupidatat sequ', 'Provident a reicien', '889', '+1 (951) 904-4956', '+1 (579) 847-7154', '+1 (807) 544-9348', '2024-04-19 09:59:14', 'pending'),
+(21, 16, 'Clayton', 'Duncan', 'customer@perfect-food.com', 'Magni cupidatat sequ', 'Provident a reicien', '889', '+1 (951) 904-4956', '+1 (579) 847-7154', '+1 (807) 544-9348', '2024-04-25 12:10:00', 'pending'),
+(22, 16, 'Clayton', 'Duncan', 'customer@perfect-food.com', 'Magni cupidatat sequ', 'Provident a reicien', '889', '+1 (951) 904-4956', '+1 (579) 847-7154', '+1 (807) 544-9348', '2024-04-25 12:10:02', 'pending');
 
 -- --------------------------------------------------------
 
@@ -209,11 +226,11 @@ INSERT INTO `orders` (`id`, `user_id`, `first_name`, `last_name`, `email`, `city
 --
 
 CREATE TABLE `order_items` (
-  `id` int NOT NULL,
-  `order_id` int NOT NULL,
-  `item_id` int NOT NULL,
-  `quantity` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `order_items`
@@ -244,7 +261,12 @@ INSERT INTO `order_items` (`id`, `order_id`, `item_id`, `quantity`) VALUES
 (37, 16, 1, 1),
 (38, 16, 2, 1),
 (39, 16, 4, 1),
-(40, 16, 8, 1);
+(40, 16, 8, 1),
+(43, 18, 10, 1),
+(44, 19, 8, 1),
+(45, 20, 4, 1),
+(46, 21, 2, 1),
+(47, 22, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -253,10 +275,10 @@ INSERT INTO `order_items` (`id`, `order_id`, `item_id`, `quantity`) VALUES
 --
 
 CREATE TABLE `phones` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `phone_number` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `phones`
@@ -277,7 +299,7 @@ INSERT INTO `phones` (`id`, `user_id`, `phone_number`) VALUES
 --
 
 CREATE TABLE `users` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `role` varchar(255) NOT NULL DEFAULT 'user',
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
@@ -286,15 +308,15 @@ CREATE TABLE `users` (
   `city` varchar(50) NOT NULL,
   `street` varchar(100) NOT NULL,
   `house_number` varchar(20) NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `created_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `role`, `first_name`, `last_name`, `email`, `password`, `city`, `street`, `house_number`, `created_at`) VALUES
-(16, 'user', 'Clayton', 'Duncan', 'customer@perfect-food.com', '$2y$10$XOWEqR4H50n.Caplzd8HmumSqooRUIJE9jjIHWaD/7fg9AheN0Z5S', 'Magni cupidatat sequ', 'Provident a reicien', '889', '2024-04-11 15:37:17'),
+(16, 'customer', 'Clayton', 'Duncan', 'customer@perfect-food.com', '$2y$10$XOWEqR4H50n.Caplzd8HmumSqooRUIJE9jjIHWaD/7fg9AheN0Z5S', 'Magni cupidatat sequ', 'Provident a reicien', '889', '2024-04-11 15:37:17'),
 (17, 'admin', 'Jeremy', 'Carpenter', 'admin@perfect-food.com', '$2y$10$TeJvNE3D.LZA7BKML4OGGeuDic9cdY44VILdHLRBvQO4lZAhGQS8C', 'Id consectetur dolo', 'Exercitation fuga O', '310', '2024-04-12 19:36:04');
 
 --
@@ -373,55 +395,55 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `branches`
 --
 ALTER TABLE `branches`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `evaluations`
 --
 ALTER TABLE `evaluations`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `menu_items`
 --
 ALTER TABLE `menu_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `phones`
 --
 ALTER TABLE `phones`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Constraints for dumped tables
@@ -438,20 +460,20 @@ ALTER TABLE `bookings`
 -- Constraints for table `evaluations`
 --
 ALTER TABLE `evaluations`
-  ADD CONSTRAINT `evaluations_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `evaluations_ibfk_2` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `evaluations_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  ADD CONSTRAINT `evaluations_ibfk_2` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`);
 
 --
 -- Constraints for table `menu_items`
 --
 ALTER TABLE `menu_items`
-  ADD CONSTRAINT `menu_items_ibfk_1` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `menu_items_ibfk_1` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`);
 
 --
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `order_items`
