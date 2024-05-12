@@ -12,7 +12,7 @@ if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== t
 // Check if the form is submitted
 if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	$evaluate = new Evaluate();
-	$evaluate->createEntityEvaluation( $_POST['id'], $_POST['type'], $_POST['evaluation'], $_POST['comment'] );
+	$evaluate->createEntityEvaluation( $_POST['id'], $_POST['type'], $_POST['rating'], $_POST['comment'] );
 }
 
 include_once 'includes/partial/alerts.php'
@@ -23,9 +23,9 @@ include_once 'includes/partial/alerts.php'
 			<form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ); ?>">
 				<input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
 				<input type="hidden" name="type" value="<?php echo $_GET['type']; ?>">
-				<!-- Evaluation input -->
-				<label for="evaluation">Evaluation:</label>
-				<select name="evaluation" id="evaluation" required>
+				<!-- Rating input -->
+				<label for="rating">Evaluation:</label>
+				<select name="rating" id="rating" required>
 					<option value="1">1</option>
 					<option value="2">2</option>
 					<option value="3">3</option>

@@ -17,15 +17,15 @@ class Evaluate {
 	 *
 	 * @param   int     $entityId    The ID of the entity (order or booking) being evaluated.
 	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
-	 * @param   int     $evaluation  The evaluation given in the evaluation.
+	 * @param   int     $rating      The evaluation given in the evaluation.
 	 * @param   string  $comment     The comment provided in the evaluation.
 	 *
 	 * @return void
 	 */
-	public function createEntityEvaluation( $entityId, $entityType, $evaluation, $comment ) {
+	public function createEntityEvaluation( $entityId, $entityType, $rating, $comment ) {
 		try {
 			// Prepare the SQL statement
-			$sql  = "INSERT INTO evaluations (order_id, booking_id, evaluation, comment) VALUES (?, ?, ?, ?)";
+			$sql  = "INSERT INTO evaluations (order_id, booking_id, rating, comment) VALUES (?, ?, ?, ?)";
 			$stmt = $this->db->connection->prepare( $sql );
 
 			// Determine whether it's an order or booking evaluation and set the appropriate parameters
@@ -43,7 +43,7 @@ class Evaluate {
 			}
 
 			// Bind parameters and execute the statement
-			$stmt->execute( [ $order_id, $booking_id, $evaluation, $comment ] );
+			$stmt->execute( [ $order_id, $booking_id, $rating, $comment ] );
 
 			// Provide feedback to the user
 			$_SESSION['info'][] = "Evaluation successfully inserted.";
