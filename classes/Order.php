@@ -132,7 +132,7 @@ class Order {
 
 			$statement = $this->db->connection->prepare($query);
 
-			if (!$isAdmin) {
+			if (!$isAdmin && !$isBranchAdmin) {
 				// Bind user ID parameter for non-admin users
 				$statement->execute([$_SESSION['user_id']]);
 			} else {
