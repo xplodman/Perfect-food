@@ -33,13 +33,14 @@ include_once 'includes/partial/alerts.php';
 		<div class="row mb-3">
 			<div class="col">
 				<label for="password" class="form-label">New Password</label>
-				<input type="password" class="form-control" id="password" name="password">
+				<input type="password" class="form-control" id="password" name="password" pattern=".{8,}" >
 			</div>
 			<div class="col">
 				<label for="confirm_password" class="form-label">Confirm Password</label>
 				<input type="password" class="form-control" id="confirm_password" name="confirm_password">
 			</div>
 			<small class="form-text text-muted">Leave blank to keep the current password.</small>
+			<small class="form-text text-muted">Password must be at least 8 characters.</small>
 		</div>
 		<div class="row mb-3">
 			<div class="col">
