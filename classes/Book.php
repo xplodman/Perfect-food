@@ -60,8 +60,9 @@ class Book {
 	{
 		try {
 			$isAdmin = ($_SESSION["role"] === 'admin');
+			$isBranchAdmin = ($_SESSION["role"] === 'branch_manager');
 
-			// Base query to retrieve bookings information
+			// Base query to retrieve orders information
 			$query = "
 	            SELECT 
 	                bookings.*, 
@@ -73,21 +74,23 @@ class Book {
 	                LEFT JOIN users ON bookings.user_id = users.id
 	        ";
 
-			// Add WHERE clause based on user role
-			if (!$isAdmin) {
+			if (!$isAdmin && !$isBranchAdmin) {
 				$query .= " WHERE bookings.user_id = ?";
 			}
 
-			$query .= " ORDER BY bookings.id DESC";
+			if ($isBranchAdmin) {
+				$query .= " WHERE bookings.status = 'in_progress'";
+			}
 
-			// Limit the number of results if showAll is false
+			$query .= " GROUP BY bookings.id ORDER BY bookings.id DESC";
+
 			if (!$showAll) {
 				$query .= " LIMIT 5";
 			}
 
 			$statement = $this->db->connection->prepare($query);
 
-			if (!$isAdmin) {
+			if (!$isAdmin && !$isBranchAdmin) {
 				// Bind user ID parameter for non-admin users
 				$statement->execute([$_SESSION['user_id']]);
 			} else {
