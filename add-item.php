@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 	// If there are any validation errors, display them
 	if (!empty($errors)) {
-		$_SESSION['errors'] = array_merge($_SESSION['errors'], $errors);
+		$_SESSION['errors'] = array_merge($_SESSION['errors'] ?? [], $errors);
 		header("Location: " . $_SERVER["PHP_SELF"]);
 		exit;
 	}
