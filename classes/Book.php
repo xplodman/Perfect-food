@@ -25,6 +25,16 @@ class Book {
 	 */
 	public function makeBooking( $userId, $branchId, $bookingDate, $bookingTime, $guests ) {
 		try {
+			// Combine booking date and time into a single DateTime object
+			$bookingDateTime = new \DateTime("$bookingDate $bookingTime");
+			$currentDateTime = new \DateTime();
+
+			// Check if the booking date and time are in the future
+			if ($bookingDateTime <= $currentDateTime) {
+				$_SESSION['errors'][] = "Booking date and time must be in the future.";
+				return false; // Booking failed
+			}
+
 			// Start a transaction
 			$this->db->connection->beginTransaction();
 
