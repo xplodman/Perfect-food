@@ -24,8 +24,8 @@ include_once 'includes/partial/alerts.php';
 			<select class="form-select" id="branch" name="branch" required>
 				<option value="" disabled selected>Select Branch</option>
 				<?php foreach ( $branches as $branch ): ?>
-					<option value="<?php echo $branch['id']; ?>">
-						<?php echo $branch['name']; ?> - <?php echo $branch['location']; ?> - <?php echo $branch['contact_info']; ?>
+					<option data-max-guests="<?php echo $branch['max_guests'] ?>" value="<?php echo $branch['id']; ?>">
+						<?php echo $branch['name'] . ' - ' . $branch['location'] . ' - ' . $branch['contact_info'] . ' (Max guests: '.$branch['max_guests'].')'; ?>
 					</option>
 				<?php endforeach; ?>
 
@@ -41,10 +41,23 @@ include_once 'includes/partial/alerts.php';
 		</div>
 		<div class="mb-3">
 			<label for="guests" class="form-label">Number of Guests:</label>
-			<input type="number" class="form-control" id="guests" name="guests" required>
+			<input type="number" class="form-control" id="guests" name="guests" required max="">
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
 </div>
 
 <?php include_once 'includes/footer.php' ?>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const branchSelect = document.getElementById('branch');
+        const guestsInput = document.getElementById('guests');
+
+        branchSelect.addEventListener('change', function() {
+            const selectedBranch = branchSelect.options[branchSelect.selectedIndex];
+            const maxGuests = selectedBranch.getAttribute('data-max-guests');
+            guestsInput.setAttribute('max', maxGuests);
+        });
+    });
+</script>

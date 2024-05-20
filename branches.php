@@ -18,6 +18,7 @@ $branches = $branch->retrieveAllBranches();
 			<th>Name</th>
 			<th>Location</th>
 			<th>Contact Info</th>
+			<th>Max Guests</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -27,6 +28,7 @@ $branches = $branch->retrieveAllBranches();
 				<td><?php echo $branch['name']; ?></td>
 				<td><?php echo $branch['location']; ?></td>
 				<td><?php echo $branch['contact_info']; ?></td>
+				<td><?php echo $branch['max_guests']; ?></td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>
