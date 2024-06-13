@@ -23,8 +23,10 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 			'description' => $_POST['description'],
 			'price'       => $_POST['price'],
 			'menu_id'     => $_POST['menu_id'],
+			'image'       => $_POST['current_image'],
 		];
-		if(!empty($_FILES["image"])){
+
+		if ( ! empty( $_FILES["image"]["name"] ) ) {
 			// Handle image upload
 			$targetDir     = "assets/images/";
 			$targetFile    = $targetDir . basename( $_FILES["image"]["name"] );
@@ -62,9 +64,9 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 			// If everything is ok, try to upload file
 			if ( $uploadOk == 0 ) {
 				$errors[] = "Sorry, your file was not uploaded.";
-			}elseif(move_uploaded_file( $_FILES["image"]["tmp_name"], $targetFile )){
+			} elseif ( move_uploaded_file( $_FILES["image"]["tmp_name"], $targetFile ) ) {
 				$params['image'] = $targetFile;
-			}else{
+			} else {
 				$_SESSION['errors'][] = "Sorry, there was an error uploading your file.";
 			}
 		}
@@ -129,6 +131,7 @@ include_once 'includes/partial/alerts.php'
 				<label for="current_image" class="form-label">Current Image</label>
 				<br>
 				<img src="<?php echo $itemDetails['image']; ?>" class="img-fluid mb-3" alt="Current Image">
+				<input type="hidden" name="current_image" value="<?php echo $itemDetails['image'] ?>">
 				<input type="file" class="form-control" id="image" name="image">
 			</div>
 			<div class="col-8">
