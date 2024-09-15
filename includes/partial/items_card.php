@@ -1,5 +1,5 @@
 <div class="col-md-3 mb-4">
-	<div class="card">
+	<div class="card h-100">
 		<form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
 			<input type="hidden" name="item_id" value="<?php echo $item['id']; ?>">
 			<img src="<?php echo $item['image']; ?>" class="card-img-top img-fluid" style="height: 16rem;object-fit: cover;width: 100%;" alt="<?php echo $item['name']; ?>">

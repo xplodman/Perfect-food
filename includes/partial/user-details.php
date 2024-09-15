@@ -88,12 +88,12 @@ include_once 'includes/partial/alerts.php';
 				<?php endif; ?>
 			</div>
 		</div>
-		<button type="submit" class="btn btn-primary">Save</button>
+		<button type="submit" class="btn btn-primary mb-3">Save</button>
 	</form>
 
 	<?php if ( $userDetails["role"] !== 'admin' ) : ?>
 		<!-- Delete Account Form -->
-		<form method="post" action="delete-account.php" class="mt-3">
+		<form method="post" action="delete-account.php" class="mt-3 mb-3">
 			<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete your account?')">Delete Account</button>
 		</form>
 	<?php endif; ?>
