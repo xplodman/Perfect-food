@@ -91,7 +91,7 @@ class Order {
 	 *
 	 * @param   bool  $showAll  Flag to indicate whether to retrieve all orders or limit the results.
 	 *
-	 * @return array|bool Returns an array of orders if successful, false on failure.
+	 * @return array Returns an array of orders if successful, empty array on failure.
 	 */
 	public function retrieveOrdersBasedOnUserRole( bool $showAll = false)
 	{
@@ -142,7 +142,7 @@ class Order {
 			return $statement->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			$_SESSION['errors'][] = "Error fetching orders: " . $e->getMessage();
-			return false;
+			return [];
 		}
 	}
 
@@ -290,7 +290,7 @@ class Order {
 			return $statement->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			$_SESSION['errors'][] = "Error fetching orders: " . $e->getMessage();
-			return false;
+			return [];
 		}
 	}
 

@@ -64,7 +64,7 @@ class Book {
 	 *
 	 * @param bool $showAll Flag to indicate whether to retrieve all bookings or limit the results.
 	 *
-	 * @return array|bool Returns an array containing booking details fetched from the database, or false on failure.
+	 * @return array Returns an array containing booking details fetched from the database, or empty array on failure.
 	 */
 	public function retrieveBookingsBasedOnUserRole($showAll = false)
 	{
@@ -110,7 +110,7 @@ class Book {
 			return $statement->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			$_SESSION['errors'][] = "Error fetching bookings: " . $e->getMessage();
-			return false;
+			return [];
 		}
 	}
 

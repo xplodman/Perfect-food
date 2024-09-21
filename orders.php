@@ -63,16 +63,17 @@ include_once 'includes/partial/alerts.php';
 					<?php endif; ?>
 					<td><?php echo $order["status"]; ?></td>
 					<td><?php echo $order["item_count"]; ?></td>
-					<td>$<?php echo number_format( $order["total_sum"] ?? 0, 2 ); ?></td>
+					<td><?php echo number_format( $order["total_sum"] ?? 0, 2 ); ?> EGP</td>
 					<td><?php echo $order["created_at"]; ?></td>
 					<td>
 						<?php if ( $order['status'] === 'completed' ) :
 							if ( $evaluationClass->hasEvaluationForEntity( $order['id'], 'order' ) ):
 								$evaluation = $evaluationClass->getEntityEvaluationDetails( $order['id'], 'order' );
-								?>
-								<span class="evaluation-value"><?php echo $evaluation['rating']; ?></span>
-								<br>
-								<small class="form-text text-muted"><?php echo $evaluation['comment']; ?></small>
+								if ( ! empty( $evaluation ) ): ?>
+									<span class="evaluation-value"><?php echo $evaluation['rating']; ?></span>
+									<br>
+									<small class="form-text text-muted"><?php echo $evaluation['comment']; ?></small>
+								<?php endif; ?>
 							<?php elseif ( $_SESSION["role"] !== 'admin' ): ?>
 								<form method="get" action="evaluate.php">
 									<input type="hidden" name="type" value="order">

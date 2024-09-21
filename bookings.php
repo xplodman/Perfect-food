@@ -71,10 +71,11 @@ include_once 'includes/partial/alerts.php';
 						<?php if ( $booking['status'] === 'completed' ) :
 							if ( $evaluationClass->hasEvaluationForEntity( $booking['id'], 'booking' ) ) :
 								$evaluation = $evaluationClass->getEntityEvaluationDetails( $booking['id'], 'booking' );
-								?>
-								<span class="evaluation-value"><?php echo $evaluation['rating']; ?></span>
-								<br>
-								<small class="form-text text-muted"><?php echo $evaluation['comment']; ?></small>
+								if ( ! empty( $evaluation ) ): ?>
+									<span class="evaluation-value"><?php echo $evaluation['rating']; ?></span>
+									<br>
+									<small class="form-text text-muted"><?php echo $evaluation['comment']; ?></small>
+								<?php endif; ?>
 							<?php elseif ( $_SESSION["role"] !== 'admin' ): ?>
 								<form method="get" action="evaluate.php">
 									<input type="hidden" name="type" value="booking">

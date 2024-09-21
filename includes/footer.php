@@ -4,10 +4,10 @@
           class="text-center text-lg-start text-white"
           style="background-color: #0d6efd ; margin-top: auto"
           >
-    <div class="container">
+    <div class="container mt-3">
       <section>
         <div class="row">
-          <div class="col-md-5 col-lg-5 col-xl-5 mx-auto mt-3">
+          <div class="col-md-6 col-lg-6 col-xl-5 mx-auto ">
             <h5 class="text-uppercase mb-0 font-weight-bold fw-bold">
                Perfect Food
             </h5>
@@ -16,35 +16,39 @@
                 style="width: 60px; background-color: #FFFFFF; height: 2px"
                 />
             <p>
-             Welcome to Perfect Food, At our restaurant, we pride ourselves on serving exquisite dishes crafted from the freshest ingredients and presented with flair. our diverse menu and attentive service ensure a memorable dining experience every time. Discover a place where great food meets warm hospitality, and let us make your dining moments truly perfect.          </div>
-
-          <hr class="w-100 clearfix d-md-none" />
-
-          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-            <h5 class="text-uppercase mb-0 font-weight-bold fw-bold">Links</h5>
-            <hr
-                class="mb-1 mt-0 d-inline-block mx-auto"
-                style="width: 60px; background-color: #FFFFFF; height: 2px"
-                />
-            <p class="m-1">
-              <a href="index.php" class="text-white fs-5">Home</a>
-            </p>
-            <p class="m-1">
-              <a href="menus.php" class="text-white fs-5">Menus</a>
-            </p>
-            <p class="m-1">
-              <a href="search.php" class="text-white fs-5 ">Search</a>
-            </p>
-            <p class="m-1">
-              <a href="branches.php" class="text-white fs-5">Branches</a>
+             Welcome to Perfect Food, At our restaurant, we pride ourselves on serving exquisite dishes crafted 
+             from the freshest ingredients and presented with flair. our diverse menu and attentive service ensure
+             a memorable dining experience every time. Discover a place where great food meets warm hospitality, 
+             and let us make your dining moments truly perfect. 
             </p>
           </div>
 
           <hr class="w-100 clearfix d-md-none" />
 
+          <div class="col-md-3 col-lg-1 col-xl-1 mx-auto">
+            <h5 class="text-uppercase mb-0 font-weight-bold fw-bold">Links</h5>
+            <hr
+                class="mb-1 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #FFFFFF; height: 2px"
+                />
+            <p class="mb-1">
+              <a href="index.php" class="text-white fs-5">Home</a>
+            </p>
+            <p class="mb-1">
+              <a href="menus.php" class="text-white fs-5">Menus</a>
+            </p>
+            <p class="mb-1">
+              <a href="search.php" class="text-white fs-5 ">Search</a>
+            </p>
+            <p class="mb-1">
+              <a href="branches.php" class="text-white fs-5">Branches</a>
+            </p>
+          </div>
+
+          
           <hr class="w-100 clearfix d-md-none" />
 
-          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+          <div class="col-md-3 col-lg-3 col-xl-3 mx-auto">
             <h5 class="text-uppercase mb-0 font-weight-bold fw-bold">Contact</h5>
             <hr
                 class="mb-1 mt-0 d-inline-block mx-auto"

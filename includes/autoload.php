@@ -1,9 +1,9 @@
 <?php
-include_once 'classes/DB.php';
-include_once 'classes/User.php';
-include_once 'classes/Menu.php';
-include_once 'classes/MenuItem.php';
-include_once 'classes/Order.php';
-include_once 'classes/Branch.php';
-include_once 'classes/Book.php';
-include_once 'classes/Evaluate.php';
+require_once 'classes/DB.php';
+require_once 'classes/User.php';
+require_once 'classes/Menu.php';
+require_once 'classes/MenuItem.php';
+require_once 'classes/Order.php';
+require_once 'classes/Branch.php';
+require_once 'classes/Book.php';
+require_once 'classes/Evaluate.php';

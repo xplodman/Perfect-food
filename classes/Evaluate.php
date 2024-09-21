@@ -103,7 +103,7 @@ class Evaluate {
 	 * @param   int     $entityId    The ID of the entity (order or booking).
 	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
 	 *
-	 * @return array|false Returns an associative array containing the evaluation details if found, or false if not found or error occurs.
+	 * @return array Returns an associative array containing the evaluation details if found, or an empty array if not found or error occurs.
 	 */
 	public function getEntityEvaluationDetails( $entityId, $entityType ) {
 		try {
@@ -113,14 +113,16 @@ class Evaluate {
 			} elseif ( $entityType === 'booking' ) {
 				$query .= "booking_id = ? AND order_id IS NULL";
 			} else {
-				return 0; // Default to 0 evaluation if entity type is invalid
+				return []; // Return an empty array for invalid entity type
 			}
+
 			$statement = $this->db->connection->prepare( $query );
 			$statement->execute( [ $entityId ] );
 
-			return $statement->fetch( PDO::FETCH_ASSOC );
+			$result = $statement->fetch( PDO::FETCH_ASSOC );
+			return $result ?: []; // Return the result if found, otherwise an empty array
 		} catch ( PDOException $e ) {
-			return 0; // Default to 0 evaluation if there's an error
+			return []; // Return an empty array in case of error
 		}
 	}
 

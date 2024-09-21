@@ -171,7 +171,7 @@ include_once 'includes/partial/alerts.php';
 					</div>
 				<?php endfor; ?>
 			</div>
-			<button type="submit" class="btn btn-primary">Checkout</button>
+			<button type="submit" class="btn btn-primary mb-3">Checkout</button>
 		</form>
 	</div>
 </div>

@@ -9,11 +9,11 @@
 				<p class="card-text">
 					<?php if ( isset( $_SESSION["discount"] ) && $_SESSION["discount"] > 0 ) : ?>
 						<strong>Price:</strong>
-						<del><?php echo $item['price']; ?></del>
+						<del><?php echo $item['price']; ?> EGP</del>
 						<br>
-						<strong>Discounted Price:</strong> <?php echo $item['price'] - $_SESSION["discount"]; ?>
+						<strong>Discounted Price:</strong> <?php echo $item['price'] - $_SESSION["discount"]." EGP"; ?>
 					<?php else : ?>
-						<strong>Price:</strong> <?php echo $item['price']; ?>
+						<strong>Price:</strong> <?php echo $item['price']." EGP"; ?>
 					<?php endif; ?>
 				</p>
 				<button type="submit" class="btn btn-primary">Add to Cart</button>
