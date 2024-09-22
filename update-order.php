@@ -29,6 +29,9 @@ $order = new Order();
 // Attempt to update the order
 $order->modifyOrderStatus( $_POST['order_id'], $_POST['status'] );
 
+// Construct the redirect URL and preserve 'show_all' if set
+$redirectURL = 'orders.php' . ( isset( $_POST['show_all'] ) && $_POST['show_all'] === '1' ? '?show_all=1' : '' );
+
 // Redirect back to the orders page
-header( "Location: orders.php" );
+header( "Location: $redirectURL" );
 exit;

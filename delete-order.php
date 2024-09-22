@@ -25,6 +25,9 @@ $orderID = $_POST['order_id'];
 // Attempt to delete the order
 $order->deleteOrder( $orderID );
 
+// Construct the redirect URL and preserve 'show_all' if set
+$redirectURL = 'orders.php' . ( isset( $_POST['show_all'] ) && $_POST['show_all'] === '1' ? '?show_all=1' : '' );
+
 // Redirect back to the orders page
-header( "Location: orders.php" );
+header( "Location: $redirectURL" );
 exit;
