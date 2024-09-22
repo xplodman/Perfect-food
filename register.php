@@ -102,11 +102,11 @@ include_once 'includes/partial/alerts.php'
 					</div>
 					<div class="col-4">
 						<label for="phone_2" class="form-label">Phone #2</label>
-						<input pattern="\d+" type="text" class="form-control" id="phone_2" name="phones[]" required>
+						<input pattern="\d+" type="text" class="form-control" id="phone_2" name="phones[]">
 					</div>
 					<div class="col-4">
 						<label for="phone_3" class="form-label">Phone #3</label>
-						<input pattern="\d+" type="text" class="form-control" id="phone_3" name="phones[]" required>
+						<input pattern="\d+" type="text" class="form-control" id="phone_3" name="phones[]">
 					</div>
 				</div>
 				<button type="submit" class="btn btn-primary">Register</button>
