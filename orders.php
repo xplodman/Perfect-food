@@ -57,13 +57,22 @@ include_once 'includes/partial/alerts.php';
 			<?php foreach ( $orders as $index => $order ) : ?>
 				<tr>
 					<td><?php echo $index + 1; ?></td>
-					<td><?php echo $order["id"]; ?></td>
+					<td><a href="show-order.php?order_id=<?php echo $order['id']; ?>"><?php echo $order['id']; ?></a></td>
 					<?php if ( $_SESSION["role"] === 'admin' ): ?>
 						<td><?php echo $order['email']; ?></td>
 					<?php endif; ?>
 					<td><?php echo $order["status"]; ?></td>
 					<td><?php echo $order["item_count"]; ?></td>
-					<td><?php echo number_format( $order["total_sum"] ?? 0, 2 ); ?> EGP</td>
+					<td>
+						<?php
+						// Price before discount
+						$priceBefore = number_format($order["price"] ?? 0, 2);
+						echo $priceBefore . " EGP";
+						?>
+						<?php if (isset($order["price_after_discount"]) && $order["price_after_discount"] < $order["price"]) : ?>
+							<span class="text-danger">(Discounted)</span>
+						<?php endif; ?>
+					</td>
 					<td><?php echo $order["created_at"]; ?></td>
 					<td>
 						<?php if ( $order['status'] === 'completed' ) :

@@ -17,6 +17,9 @@ if ( empty( $_SESSION['cart'] ) ) {
 	exit;
 }
 
+$menuItems = new MenuItem();
+$user  = new User();
+
 // Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 	// Check if the action is to delete an item
@@ -29,6 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			if ( isset($_SESSION['cart'][$itemIdToDelete]) ) {
 				// Remove the item from the cart session
 				unset($_SESSION['cart'][$itemIdToDelete]);
+				$user->recalculateDiscount();
+
 				// Optionally, you can display a success message
 				$_SESSION['info'][] = 'Item removed from cart.';
 				header( "Location: cart.php" );
@@ -46,9 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 		exit;
 	}
 }
-
-$menuItems = new MenuItem();
-$user  = new User();
 
 // Initialize an array to store cart items with their details
 $cartItems = array();
@@ -74,6 +76,11 @@ foreach ( $_SESSION['cart'] as $itemId => $quantity ) {
 		$totalPrice += $itemDetails['price'] * $quantity;
 	}
 }
+$totalPriceAfterDiscount = $totalPrice;
+if(isset($_SESSION["discount"]) && $_SESSION["discount"]){
+	$discountAmount = $totalPrice * $_SESSION["discount"];
+	$totalPriceAfterDiscount = $totalPrice - $discountAmount;
+}
 
 // Retrieve user ID from session
 $userId = $_SESSION['user_id'];
@@ -95,11 +102,6 @@ include_once 'includes/partial/alerts.php';
 			<th>Quantity</th>
 			<th>Subtotal</th>
 			<th>Action</th>
-			<?php
-			/**
-			 * 1. make random items work without login, menus and search
-			 */
-			?>
 		</tr>
 		</thead>
 		<tbody>
@@ -108,9 +110,9 @@ include_once 'includes/partial/alerts.php';
 			<tr>
 				<td><?php echo $index + 1; ?></td>
 				<td><?php echo $cartItem["name"]; ?></td>
-				<td>$<?php echo $cartItem["price"]; ?></td>
+				<td>$<?php echo number_format($cartItem["price"], 2); ?></td>
 				<td><?php echo $cartItem["quantity"]; ?></td>
-				<td>$<?php echo $cartItem["subtotal"]; ?></td>
+				<td>$<?php echo number_format($cartItem["subtotal"], 2); ?></td>
 				<td>
 					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 						<input type="hidden" name="action" value="delete">
@@ -124,8 +126,18 @@ include_once 'includes/partial/alerts.php';
 		<tfoot>
 		<tr>
 			<td colspan="4" class="text-end"><strong>Total:</strong></td>
-			<td>$<?php echo $totalPrice; ?></td>
+			<td>$<?php echo number_format($totalPrice, 2); ?></td>
 		</tr>
+		<?php if($totalPriceAfterDiscount !== $totalPrice): ?>
+		<tr>
+			<td colspan="4" class="text-end"><strong>Discount (<?php echo ($_SESSION["discount"] * 100) . '%'; ?>):</strong></td>
+			<td>-$<?php echo number_format($totalPrice - $totalPriceAfterDiscount, 2); ?></td>
+		</tr>
+		<tr>
+			<td colspan="4" class="text-end"><strong>Total After Discount:</strong></td>
+			<td>$<?php echo number_format($totalPriceAfterDiscount, 2); ?></td>
+		</tr>
+		<?php endif; ?>
 		</tfoot>
 	</table>
 </div>

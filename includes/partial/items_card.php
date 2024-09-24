@@ -11,7 +11,13 @@
 						<strong>Price:</strong>
 						<del><?php echo $item['price']; ?> EGP</del>
 						<br>
-						<strong>Discounted Price:</strong> <?php echo $item['price'] - $_SESSION["discount"]." EGP"; ?>
+						<strong>Discounted Price:</strong>
+						<?php
+						// Calculate the discount amount
+						$discountAmount = ($item['price'] * $_SESSION["discount"]);
+
+						echo number_format($item['price'] - $discountAmount, 2)." EGP";
+						?>
 					<?php else : ?>
 						<strong>Price:</strong> <?php echo $item['price']." EGP"; ?>
 					<?php endif; ?>

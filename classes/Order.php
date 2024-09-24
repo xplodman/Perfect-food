@@ -60,17 +60,39 @@ class Order {
 			// Insert order items into the database
 			// Loop through the $cart array and insert each item into the order_items table
 			$cart      = $_SESSION['cart'];
-			$query     = "INSERT INTO order_items (order_id, item_id, quantity) VALUES (?, ?, ?)";
-			$statement = $this->db->connection->prepare( $query );
-			foreach ( $cart as $itemId => $quantity ) {
-				$statement->execute( [ $orderId, $itemId, $quantity ] );
+
+			// Prepare the SQL statement for inserting order items
+			$query = "INSERT INTO order_items (order_id, item_id, quantity, price, price_after_discount) VALUES (?, ?, ?, ?, ?)";
+			$statement = $this->db->connection->prepare($query);
+
+			foreach ($cart as $itemId => $quantity) {
+				$item = (new MenuItem())->retrieveItemDetails( $itemId );
+
+				// Check if the item was found
+				$priceBeforeDiscount = $priceAfterDiscount = $item['price'];
+
+				// Calculate the discounted price
+				$discountPercentage = isset($_SESSION["discount"]) ? $_SESSION["discount"] : 0;
+				if($discountPercentage){
+					$discountAmount = $priceBeforeDiscount * $discountPercentage;
+					$priceAfterDiscount = $priceBeforeDiscount - $discountAmount;
+				}
+
+				// Execute the insert statement with the retrieved and calculated values
+				$statement->execute([
+					$orderId,
+					$itemId,
+					$quantity,
+					$priceBeforeDiscount,
+					$priceAfterDiscount,
+				]);
 			}
 
 			// Commit the transaction
 			$this->db->connection->commit();
 
-			// Clear the cart session after placing the order
-			unset( $_SESSION['cart'] );
+			// Clear the cart, discount session after placing the order
+			unset( $_SESSION['cart'], $_SESSION['discount'] );
 
 			// After successfully placing the order, set a success message and redirect to the index page
 			$_SESSION['info'][] = "Order successfully placed.";
@@ -105,13 +127,12 @@ class Order {
 	                orders.*,
 	                users.email,
 	                COUNT(order_items.item_id) AS item_count, 
-	                SUM(order_items.quantity * menu_items.price) AS total_sum
+	                SUM(order_items.price) AS price,
+	                SUM(order_items.price_after_discount) AS price_after_discount
 	            FROM 
 	                orders
 	            LEFT JOIN 
 	                order_items ON orders.id = order_items.order_id
-	            LEFT JOIN 
-	                menu_items ON order_items.item_id = menu_items.id
 	            LEFT JOIN 
 	                users ON orders.user_id = users.id
 	        ";
@@ -290,6 +311,50 @@ class Order {
 			return $statement->fetchAll(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			$_SESSION['errors'][] = "Error fetching orders: " . $e->getMessage();
+			return [];
+		}
+	}
+
+	public function retrieveOrderById( $orderId ) {
+		try {
+			// Base query to retrieve orders information
+			$query = "
+            SELECT 
+                orders.id AS order_id, 
+                orders.first_name, 
+                orders.last_name, 
+                orders.email, 
+                orders.city, 
+                orders.street, 
+                orders.house_number, 
+                orders.phone_1, 
+                orders.phone_2, 
+                orders.phone_3, 
+                orders.created_at, 
+                orders.status, 
+                order_items.item_id, 
+                order_items.quantity, 
+                order_items.price, 
+                order_items.price_after_discount,
+                menu_items.name
+            FROM 
+                orders
+            LEFT JOIN 
+                order_items ON orders.id = order_items.order_id
+            LEFT JOIN 
+                menu_items ON order_items.item_id = menu_items.id
+            WHERE 
+                orders.id = ?
+	        ";
+
+			$statement = $this->db->connection->prepare($query);
+
+			// Bind user ID parameter
+			$statement->execute([$orderId]);
+
+			return $statement->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			$_SESSION['errors'][] = "Error fetching order: " . $e->getMessage();
 			return [];
 		}
 	}

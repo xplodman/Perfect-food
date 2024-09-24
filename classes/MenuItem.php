@@ -188,4 +188,32 @@ class MenuItem {
 		}
 	}
 
+	/**
+	 * Retrieves the price of menu items based on an array of item IDs.
+	 *
+	 * @param   array  $itemIds  The array of item IDs.
+	 *
+	 * @return array Returns an associative array of item IDs and their corresponding prices.
+	 */
+	public function retrievePricesByItemIds(array $itemIds) {
+		try {
+			// Prepare placeholders for the query
+			$placeholders = implode(',', array_fill(0, count($itemIds), '?'));
+
+			// Prepare the SQL query
+			$query = "SELECT id, price FROM menu_items WHERE id IN ($placeholders)";
+
+			// Prepare the statement
+			$statement = $this->db->connection->prepare($query);
+
+			// Execute the query with item IDs as the parameters
+			$statement->execute($itemIds);
+
+			// Fetch and return the prices of the items
+			return $statement->fetchAll(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			return [];
+		}
+	}
+
 }

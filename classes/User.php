@@ -100,17 +100,9 @@ class User {
 
 			// Verify the password
 			if ( $user && password_verify( $password, $user['password'] ) ) {
-				// Login successful
-				$order = new Order();
-
-				// Determine discount based on completed orders count
-				$totalPrices = $order->calculateTotalPricesByUserId( $user['id'] );
-				$discount    = $this->calculateDiscountBasedOnTotalPrice( $totalPrices );
-
 				// Set session variables
 				$_SESSION["city"]           = $user['city'];
 				$_SESSION["user_logged_in"] = true;
-				$_SESSION["discount"]       = $discount;
 				$_SESSION["email"]          = $email;
 				$_SESSION["first_name"]     = $user['first_name'];
 				$_SESSION["house_number"]   = $user['house_number'];
@@ -339,7 +331,7 @@ class User {
 	 *
 	 * @return float Discount rate applicable based on predefined tiers.
 	 */
-	private function calculateDiscountBasedOnTotalPrice( $totalPrice ) {
+	public function calculateDiscountBasedOnTotalPrice( $totalPrice ) {
 		// Define discount tiers and corresponding discounts
 		$discountTiers = [ 100, 200, 300 ]; // Total price tiers
 		$discountRates = [ 0.05, 0.10, 0.20 ]; // Corresponding discount rates
@@ -395,6 +387,31 @@ class User {
 
 			return false;
 		}
+	}
+
+	public function recalculateDiscount() {
+		// Get the item IDs from the session cart
+		$itemIds = array_keys($_SESSION['cart']);
+		$discount = 0;
+
+		if (!empty($itemIds)) {
+			// Use the retrievePricesByItemIds method to get prices
+			$prices = (new MenuItem())->retrievePricesByItemIds($itemIds);
+
+			// Initialize the total price
+			$totalPrice = 0;
+
+			// Calculate the total price using the cart quantities
+			foreach ($prices as $priceData) {
+				$itemId = $priceData['id'];
+				$price = $priceData['price'];
+				$quantity = $_SESSION['cart'][$itemId];
+				$totalPrice += $price * $quantity;
+			}
+
+			$discount    = $this->calculateDiscountBasedOnTotalPrice( $totalPrice );
+		}
+		$_SESSION["discount"] = $discount;
 	}
 
 }
