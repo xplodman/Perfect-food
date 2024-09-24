@@ -248,8 +248,8 @@ class Order {
 			$stmt = $this->db->connection->prepare( "UPDATE orders SET status = :status WHERE id = :id" );
 
 			// Bind parameters
-			$stmt->bindParam( ':status', $status );
-			$stmt->bindParam( ':id', $orderId );
+			$stmt->bindParam( ':status', $status, PDO::PARAM_STR );
+			$stmt->bindParam( ':id', $orderId, PDO::PARAM_INT );
 
 			// Execute the statement
 			$stmt->execute();

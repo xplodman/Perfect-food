@@ -27,11 +27,11 @@ $filteredItems = $menuItems->retrieveMenuItemsByPriceRange($minPrice, $maxPrice,
 		<div class="row">
 			<div class="col-md-4">
 				<label for="min_price" class="form-label">Minimum Price:</label>
-				<input type="number" id="min_price" name="min_price" class="form-control" value="<?php echo isset( $_GET['min_price'] ) ? htmlspecialchars( $_GET['min_price'] ) : ''; ?>" placeholder="Enter minimum price">
+				<input type="number" id="min_price" name="min_price" class="form-control" step="0.01" value="<?php echo isset( $_GET['min_price'] ) ?  $_GET['min_price']  : ''; ?>" placeholder="Enter minimum price">
 			</div>
 			<div class="col-md-4">
 				<label for="max_price" class="form-label">Maximum Price:</label>
-				<input type="number" id="max_price" name="max_price" class="form-control" value="<?php echo isset( $_GET['max_price'] ) ? htmlspecialchars( $_GET['max_price'] ) : ''; ?>" placeholder="Enter maximum price">
+				<input type="number" id="max_price" name="max_price" class="form-control" step="0.01" value="<?php echo isset( $_GET['max_price'] ) ? $_GET['max_price']  : ''; ?>" placeholder="Enter maximum price">
 			</div>
 			<div class="col-md-4">
 				<label for="menu_id" class="form-label">Menu:</label>
