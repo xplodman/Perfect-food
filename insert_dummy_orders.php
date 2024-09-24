@@ -55,7 +55,25 @@ function createRandomOrders($conn, $user_id, $faker, $discountTiers, $discountRa
 	// Insert an evaluation for the order in Arabic
 	$ratingsComments = [
 		[ 'rating' => '5', 'comment' => "خدمة استثنائية وطعام رائع! مكان يجب زيارته في القاهرة." ],
-		// Add more comments here...
+		[ 'rating' => '4', 'comment' => "تجربة جيدة جدًا، لكن الانتظار كان طويلاً قليلاً." ],
+		[ 'rating' => '3', 'comment' => "تجربة عادية، لا شيء مميز حقًا." ],
+		[ 'rating' => '2', 'comment' => "مخيبة للآمال. الخدمة كانت بطيئة والطعام كان بارداً." ],
+		[ 'rating' => '1', 'comment' => "سيء جدًا! كان لدي آمال كبيرة، لكن كان خيبة أمل كاملة." ],
+		[ 'rating' => '5', 'comment' => "أحببتها تمامًا! الأجواء والموظفون كانوا ممتازين." ],
+		[ 'rating' => '4', 'comment' => "موقع رائع وأطباق لذيذة، سأعود مرة أخرى!" ],
+		[ 'rating' => '3', 'comment' => "كانت تجربة جيدة، لكنني توقعت المزيد من التعليقات." ],
+		[ 'rating' => '2', 'comment' => "لم يكن كما تخيلت؛ شعرت أنه أكثر كفخ للسيّاح." ],
+		[ 'rating' => '1', 'comment' => "لن أعود مرة أخرى! خدمة العملاء سيئة وطعام رديء." ],
+		[ 'rating' => '5', 'comment' => "تجربة رائعة! أفضل شيشة في المدينة!" ],
+		[ 'rating' => '4', 'comment' => "قيمة جيدة مقابل المال، استمتعت بالأجواء المحلية." ],
+		[ 'rating' => '3', 'comment' => "جيد، لكنني وجدت خيارات أفضل في الجوار." ],
+		[ 'rating' => '2', 'comment' => "كانت زيارة مخيبة. تحتاج إلى تحسين." ],
+		[ 'rating' => '1', 'comment' => "أسوأ تجربة تناول طعام مررت بها في مصر." ],
+		[ 'rating' => '5', 'comment' => "مساء مثالي! الموسيقى الحية أضافت الكثير للأجواء." ],
+		[ 'rating' => '4', 'comment' => "تجربة جيدة، لكن الطعام كان يحتاج إلى مزيد من النكهة." ],
+		[ 'rating' => '3', 'comment' => "مكان متوسط، الخدمة كانت مقبولة." ],
+		[ 'rating' => '2', 'comment' => "الأجواء كانت جميلة، لكن الطعام لم يكن جيدًا." ],
+		[ 'rating' => '1', 'comment' => "خدمة العملاء كانت سيئة للغاية، لم أستمتع بزيارتي." ],
 	];
 
 	// Fetch menu items
@@ -128,7 +146,7 @@ function createRandomOrders($conn, $user_id, $faker, $discountTiers, $discountRa
 }
 
 // Create 4 customers and assign random orders to each
-for ($i = 0; $i < 4; $i++) {
+for ($i = 0; $i < 6; $i++) {
 	$first_name = $faker->firstName;
 	$last_name = $faker->lastName;
 	$email = "customer" . ($i + 1) . "@perfect-food.com";
