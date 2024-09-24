@@ -179,7 +179,7 @@ include_once 'includes/partial/alerts.php';
 				<?php for ( $i = 1; $i <= 3; $i ++ ): ?>
 					<div class="col-4">
 						<label for="phone_<?php echo $i; ?>" class="form-label">Phone #<?php echo $i; ?></label>
-						<input type="text" class="form-control" id="phone_<?php echo $i; ?>" name="phones[]" value="<?php echo $phoneNumbers[ $i - 1 ]; ?>">
+						<input pattern="\d+" type="text" class="form-control" id="phone_<?php echo $i; ?>" name="phones[]" value="<?php echo $phoneNumbers[ $i - 1 ] ?? ''; ?>">
 					</div>
 				<?php endfor; ?>
 			</div>

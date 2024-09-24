@@ -47,7 +47,7 @@ include_once 'includes/partial/alerts.php';
 				<?php endif; ?>
 				<th>Status</th>
 				<th>Total Items</th>
-				<th>Total Sum</th>
+				<th>Total Price</th>
 				<th>Created at</th>
 				<th>Evaluation</th>
 				<th>Actions</th>
@@ -70,7 +70,7 @@ include_once 'includes/partial/alerts.php';
 						echo $priceBefore . " EGP";
 						?>
 						<?php if (isset($order["price_after_discount"]) && $order["price_after_discount"] < $order["price"]) : ?>
-							<span class="text-danger">(Discounted)</span>
+							<span class="text-danger">After discount (<?php echo $order["price_after_discount"] ?>)</span>
 						<?php endif; ?>
 					</td>
 					<td><?php echo $order["created_at"]; ?></td>

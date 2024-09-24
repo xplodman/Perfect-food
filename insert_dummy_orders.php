@@ -79,12 +79,13 @@ function createRandomOrders($conn, $user_id, $faker, $discountTiers, $discountRa
 		$city = $faker->city;
 		$street = $faker->streetName;
 		$house_number = rand(1, 100);
+		$phone = '01' . $faker->randomElement(['0', '1', '2', '5']) . $faker->numerify('########');
 
 		// Randomly select an order status
 		$status = $statusOptions[array_rand($statusOptions)];
 
 		$orderQuery = "INSERT INTO orders (user_id, first_name, last_name, email, city, street, house_number, phone_1, status, created_at) 
-                   VALUES ($user_id, '$first_name', '$last_name', '$email', '$city', '$street', '$house_number', '0123456789', '$status', NOW())";
+                   VALUES ($user_id, '$first_name', '$last_name', '$email', '$city', '$street', '$house_number', $phone, '$status', NOW())";
 		$conn->query($orderQuery);
 		$order_id = $conn->insert_id;
 
@@ -130,8 +131,8 @@ function createRandomOrders($conn, $user_id, $faker, $discountTiers, $discountRa
 for ($i = 0; $i < 4; $i++) {
 	$first_name = $faker->firstName;
 	$last_name = $faker->lastName;
-	$email = $faker->email;
-	$password = 'password123'; // Default password
+	$email = "customer" . ($i + 1) . "@perfect-food.com";
+	$password = 'Pa$$w0rd!';
 	$city = $faker->city;
 	$street = $faker->streetName;
 	$house_number = rand(1, 100);
