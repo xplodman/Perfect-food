@@ -74,7 +74,7 @@ include_once 'includes/partial/alerts.php';
 									<br>
 									<small class="form-text text-muted"><?php echo $evaluation['comment']; ?></small>
 								<?php endif; ?>
-							<?php elseif ( $_SESSION["role"] !== 'admin' ): ?>
+							<?php elseif ( $_SESSION['user_id'] === $order['user_id'] ): ?>
 								<form method="get" action="evaluate.php">
 									<input type="hidden" name="type" value="order">
 									<input type="hidden" name="id" value="<?php echo $order['id']; ?>">
