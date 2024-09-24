@@ -334,7 +334,7 @@ class User {
 	public function calculateDiscountBasedOnTotalPrice( $totalPrice ) {
 		// Define discount tiers and corresponding discounts
 		$discountTiers = [ 100, 200, 300 ]; // Total price tiers
-		$discountRates = [ 0.05, 0.10, 0.20 ]; // Corresponding discount rates
+		$discountRates = [ 0.05, 0.10, 0.20 ]; // Corresponding discount percentage rates
 
 		// Iterate through tiers and find the appropriate discount rate
 		$discountRate = 0; // Default discount rate

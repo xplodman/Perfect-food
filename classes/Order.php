@@ -123,19 +123,17 @@ class Order {
 
 			// Base query to retrieve orders information
 			$query = "
-	            SELECT 
-	                orders.*,
-	                users.email,
-	                COUNT(order_items.item_id) AS item_count, 
-	                SUM(order_items.price) AS price,
-	                SUM(order_items.price_after_discount) AS price_after_discount
-	            FROM 
-	                orders
-	            LEFT JOIN 
-	                order_items ON orders.id = order_items.order_id
-	            LEFT JOIN 
-	                users ON orders.user_id = users.id
-	        ";
+			    SELECT 
+			        orders.*,
+			        COUNT(order_items.item_id) AS item_count, 
+			        SUM(order_items.price * order_items.quantity) AS price,  -- Sum price * quantity for each item
+			        SUM(order_items.price_after_discount * order_items.quantity) AS price_after_discount  -- Sum discounted price * quantity
+			    FROM 
+			        orders
+			    LEFT JOIN 
+			        order_items ON orders.id = order_items.order_id
+			";
+
 
 			if (!$isAdmin && !$isBranchAdmin) {
 				$query .= " WHERE orders.user_id = ?";

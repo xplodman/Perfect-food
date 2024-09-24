@@ -1,3 +1,5 @@
 /.idea/
 /required_scripts
 /deploy_rsync.sh
+/vendor
+/composer.lock
