@@ -135,7 +135,7 @@ for ($i = 0; $i < 4; $i++) {
 	$city = $faker->city;
 	$street = $faker->streetName;
 	$house_number = rand(1, 100);
-	$phone_number = $faker->phoneNumber;
+	$phone_number = '01' . $faker->randomElement(['0', '1', '2', '5']) . $faker->numerify('########');
 
 	// Insert new user and get user ID
 	$user_id = insertUser($conn, $first_name, $last_name, $email, $password, $city, $street, $house_number, $phone_number);
