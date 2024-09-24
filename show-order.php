@@ -30,6 +30,39 @@ $orderMainDetails = $orderDetails[0];
 ?>
 
 <div class="container">
+	<div class="d-flex justify-content-end mb-4">
+		<?php if ( ($_SESSION["role"] === 'admin' || $_SESSION["role"] === 'branch_manager') && ( $orderMainDetails['status'] === 'pending' || $orderMainDetails['status'] === 'in_progress' ) ) :
+			if ( $orderMainDetails['status'] === 'pending' ) : ?>
+				<form method="post" action="update-order.php">
+					<input type="hidden" name="order_id" value="<?php echo $orderMainDetails['order_id']; ?>">
+					<input type="hidden" name="status" value="in_progress">
+					<button type="submit" class="btn btn-primary m-2">Mark as In Progress</button>
+				</form>
+			<?php elseif ( $_SESSION["role"] === 'branch_manager' && $orderMainDetails['status'] === 'in_progress' ) : ?>
+				<form method="post" action="update-order.php">
+					<input type="hidden" name="order_id" value="<?php echo $orderMainDetails['order_id']; ?>">
+					<input type="hidden" name="status" value="completed">
+					<button type="submit" class="btn btn-success m-2">Mark as Completed</button>
+				</form>
+			<?php endif; ?>
+			<form method="post" action="update-order.php">
+				<input type="hidden" name="order_id" value="<?php echo $orderMainDetails['order_id']; ?>">
+				<input type="hidden" name="status" value="cancelled">
+				<button type="submit" class="btn btn-danger m-2">Mark as Cancelled</button>
+			</form>
+		<?php elseif ( $_SESSION["role"] !== 'admin' && $orderMainDetails['status'] === 'pending' ) :
+			$orderCreationTime = strtotime( $orderMainDetails['created_at'] ) + 3600; // 1 hour.
+			$currentTime = time();
+			$timeDifference = $currentTime - $orderCreationTime;
+			if ( $timeDifference <= 3600 ) : ?>
+				<form method="post" action="delete-order.php">
+					<input type="hidden" name="order_id" value="<?php echo $orderMainDetails['order_id']; ?>">
+					<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this order?')">Delete</button>
+				</form>
+			<?php endif;
+		endif; ?>
+	</div>
+
 	<h1>Order Details #<?php echo $orderMainDetails['order_id'] ?></h1>
 	<p><strong>Order ID:</strong> <?php echo $orderMainDetails['order_id']; ?></p>
 	<p><strong>Customer Name:</strong> <?php echo $orderMainDetails['first_name'] . " " . $orderMainDetails['last_name']; ?></p>
@@ -77,37 +110,6 @@ $orderMainDetails = $orderDetails[0];
 	<h3>Total Price Before Discount: <?php echo number_format($totalPriceBefore, 2); ?> EGP</h3>
 	<h3>Total Price After Discount: <?php echo number_format($totalPriceAfter, 2); ?> EGP</h3>
 
-	<div class="d-flex justify-content-between">
-		<?php if ( ($_SESSION["role"] === 'admin' || $_SESSION["role"] === 'branch_manager') && ( $orderMainDetails['status'] === 'pending' || $orderMainDetails['status'] === 'in_progress' ) ) :
-			if ( $orderMainDetails['status'] === 'pending' ) : ?>
-				<form method="post" action="update-order.php">
-					<input type="hidden" name="order_id" value="<?php echo $orderMainDetails['order_id']; ?>">
-					<input type="hidden" name="status" value="in_progress">
-					<button type="submit" class="btn btn-primary m-2">Mark as In Progress</button>
-				</form>
-			<?php elseif ( $_SESSION["role"] === 'branch_manager' && $orderMainDetails['status'] === 'in_progress' ) : ?>
-				<form method="post" action="update-order.php">
-					<input type="hidden" name="order_id" value="<?php echo $orderMainDetails['order_id']; ?>">
-					<input type="hidden" name="status" value="completed">
-					<button type="submit" class="btn btn-success m-2">Mark as Completed</button>
-				</form>
-			<?php endif; ?>
-			<form method="post" action="update-order.php">
-				<input type="hidden" name="order_id" value="<?php echo $orderMainDetails['order_id']; ?>">
-				<input type="hidden" name="status" value="cancelled">
-				<button type="submit" class="btn btn-danger m-2">Mark as Cancelled</button>
-			</form>
-		<?php elseif ( $_SESSION["role"] !== 'admin' && $orderMainDetails['status'] === 'pending' ) :
-			$orderCreationTime = strtotime( $orderMainDetails['created_at'] ) + 3600; // 1 hour.
-			$currentTime = time();
-			$timeDifference = $currentTime - $orderCreationTime;
-			if ( $timeDifference <= 3600 ) : ?>
-				<form method="post" action="delete-order.php">
-					<input type="hidden" name="order_id" value="<?php echo $orderMainDetails['order_id']; ?>">
-					<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this order?')">Delete</button>
-				</form>
-			<?php endif;
-		endif; ?>
-	</div>
-</div>
 
+</div>
+<?php include_once 'includes/footer.php' ?>
