@@ -185,46 +185,6 @@ class Order {
 	}
 
 	/**
-	 * Calculates total prices of completed orders for a specific user.
-	 *
-	 * @param   int  $userId  The ID of the user whose total prices are to be calculated.
-	 *
-	 * @return float Returns the total price of completed orders.
-	 */
-	public function calculateTotalPricesByUserId( $userId ) {
-		try {
-			// Prepare the SQL query
-			$query = "SELECT
-                    SUM(order_items.quantity * menu_items.price) AS total_price
-                  FROM
-                    orders
-                  JOIN
-                    order_items ON orders.id = order_items.order_id
-                  JOIN
-                    menu_items ON order_items.item_id = menu_items.id
-                  WHERE
-                    orders.user_id = ?
-                  AND
-                    orders.status = 'completed'";
-
-			// Prepare and execute the statement
-			$statement = $this->db->connection->prepare( $query );
-			$statement->execute( [ $userId ] );
-
-			// Fetch the total price
-			$result = $statement->fetch( PDO::FETCH_ASSOC );
-
-			// Return the total price
-			return $result['total_price'] ?? 0; // If no result is found, return 0
-		} catch ( PDOException $e ) {
-			// Handle database errors
-			$_SESSION['errors'][] = "Error retrieving total prices: " . $e->getMessage();
-
-			return 0; // Return 0 in case of an error
-		}
-	}
-
-	/**
 	 * Retrieves counts of orders by their status.
 	 * @return array Returns an associative array with status as keys and counts as values.
 	 */
