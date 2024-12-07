@@ -1,9 +1,6 @@
 </div>
-
-<footer
-          class="text-center text-lg-start text-white bg-success"
-          style="margin-top: 50px;"
-          >
+<div class="mb-5"></div>
+<footer class="text-center text-lg-start text-white bg-success" style="margin-top: auto;">
     <div class="container mt-3">
       <section>
         <div class="row">
