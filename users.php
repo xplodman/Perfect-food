@@ -51,6 +51,7 @@ include_once 'includes/partial/alerts.php';
 				<td><?php echo $user['id']; ?></td>
 				<td><?php echo $user['role']; ?></td>
 				<td><?php echo $user['first_name']; ?></td>
+				<td><?php echo $user['middle_name']; ?></td>
 				<td><?php echo $user['last_name']; ?></td>
 				<td><?php echo $user['email']; ?></td>
 				<td><?php echo $user['city']; ?></td>

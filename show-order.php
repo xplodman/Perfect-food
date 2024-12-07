@@ -65,7 +65,7 @@ $orderMainDetails = $orderDetails[0];
 
 	<h1>Order Details #<?php echo $orderMainDetails['order_id'] ?></h1>
 	<p><strong>Order ID:</strong> <?php echo $orderMainDetails['order_id']; ?></p>
-	<p><strong>Customer Name:</strong> <?php echo $orderMainDetails['first_name'] . " " . $orderMainDetails['last_name']; ?></p>
+	<p><strong>Customer Name:</strong> <?php echo $orderMainDetails['first_name'] . " " . $orderMainDetails['middle_name'] . " " . $orderMainDetails['last_name']; ?></p>
 	<p><strong>Email:</strong> <?php echo $orderMainDetails['email']; ?></p>
 	<p><strong>City:</strong> <?php echo $orderMainDetails['city']; ?></p>
 	<p><strong>Street:</strong> <?php echo $orderMainDetails['street']; ?>, House No: <?php echo $orderMainDetails['house_number']; ?></p>

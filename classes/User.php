@@ -33,6 +33,7 @@ class User {
 	 * @param   string  $email        User's email address.
 	 * @param   string  $password     User's password.
 	 * @param   string  $firstName    User's first name.
+	 * @param   string  $middleName   User's middle name.
 	 * @param   string  $lastName     User's last name.
 	 * @param   string  $city         User's city.
 	 * @param   string  $street       User's street address.
@@ -41,14 +42,14 @@ class User {
 	 *
 	 * @return bool True if registration is successful, false otherwise.
 	 */
-	public function registerNewUser( $email, $password, $firstName, $lastName, $city, $street, $houseNumber, $role = 'customer' ) {
+	public function registerNewUser( $email, $password, $firstName, $middleName, $lastName, $city, $street, $houseNumber, $role = 'customer' ) {
 		try {
 			// Hash the password before storing it in the database
 			$hashedPassword = password_hash( $password, PASSWORD_DEFAULT );
 
 			// Prepare the SQL statement to insert user data into the database
-			$stmt = $this->db->connection->prepare( "INSERT INTO users (first_name, last_name, email, password, city, street, house_number) VALUES (?, ?, ?, ?, ?, ?, ?)" );
-			$stmt->execute( [ $firstName, $lastName, $email, $hashedPassword, $city, $street, $houseNumber ] );
+			$stmt = $this->db->connection->prepare( "INSERT INTO users (first_name, middle_name, last_name, email, password, city, street, house_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)" );
+			$stmt->execute( [ $firstName, $middleName, $lastName, $email, $hashedPassword, $city, $street, $houseNumber ] );
 
 			$userId = $this->getLastUserId();
 
@@ -57,6 +58,7 @@ class User {
 			$_SESSION["user_logged_in"] = true;
 			$_SESSION["email"]          = $email;
 			$_SESSION["first_name"]     = $firstName;
+			$_SESSION["middle_name"]     = $middleName;
 			$_SESSION["house_number"]   = $houseNumber;
 			$_SESSION["last_name"]      = $lastName;
 			$_SESSION["role"]           = $role;
@@ -106,6 +108,7 @@ class User {
 				$_SESSION["email"]          = $email;
 				$_SESSION["first_name"]     = $user['first_name'];
 				$_SESSION["house_number"]   = $user['house_number'];
+				$_SESSION["middle_name"]      = $user['middle_name'];
 				$_SESSION["last_name"]      = $user['last_name'];
 				$_SESSION["role"]           = $user['role'];
 				$_SESSION["street"]         = $user['street'];
@@ -189,6 +192,7 @@ class User {
 			// Prepare the SQL statement to update user details
 			$query = "UPDATE users SET 
                   first_name = :first_name, 
+                  middle_name = :middle_name, 
                   last_name = :last_name, 
                   city = :city, 
                   street = :street, 
@@ -207,6 +211,7 @@ class User {
 			// Bind parameters
 			$stmt->bindParam( ':first_name', $postData['first_name'] );
 			$stmt->bindParam( ':last_name', $postData['last_name'] );
+			$stmt->bindParam( ':middle_name', $postData['middle_name'] );
 			$stmt->bindParam( ':city', $postData['city'] );
 			$stmt->bindParam( ':street', $postData['street'] );
 			$stmt->bindParam( ':house_number', $postData['house_number'] );
@@ -289,6 +294,7 @@ class User {
 				$_SESSION['user_id']      = $user['id'];
 				$_SESSION['email']        = $user['email'];
 				$_SESSION['first_name']   = $user['first_name'];
+				$_SESSION['middle_name']   = $user['middle_name'];
 				$_SESSION['last_name']    = $user['last_name'];
 				$_SESSION['city']         = $user['city'];
 				$_SESSION['street']       = $user['street'];

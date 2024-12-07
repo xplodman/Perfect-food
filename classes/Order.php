@@ -28,6 +28,7 @@ class Order {
 			// Retrieve user details from the $postData array
 			$userData = [
 				'first_name'   => $postData['first_name'],
+				'middle_name'   => $postData['middle_name'],
 				'last_name'    => $postData['last_name'],
 				'email'        => $postData['email'],
 				'city'         => $postData['city'],
@@ -39,11 +40,12 @@ class Order {
 			];
 
 			// Insert order details into the database
-			$query     = "INSERT INTO orders (user_id, first_name, last_name, email, city, street, house_number, phone_1, phone_2, phone_3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			$query     = "INSERT INTO orders (user_id, first_name, middle_name, last_name, email, city, street, house_number, phone_1, phone_2, phone_3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			$statement = $this->db->connection->prepare( $query );
 			$statement->execute( [
 				$userId,
 				$userData['first_name'],
+				$userData['middle_name'],
 				$userData['last_name'],
 				$userData['email'],
 				$userData['city'],
@@ -275,6 +277,7 @@ class Order {
             SELECT 
                 orders.id AS order_id, 
                 orders.first_name, 
+                orders.middle_name, 
                 orders.last_name, 
                 orders.email, 
                 orders.city, 

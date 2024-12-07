@@ -48,6 +48,10 @@ include_once 'includes/partial/alerts.php';
 				<input pattern="[A-Za-z][A-Za-z\s]*" type="text" class="form-control" id="first_name" name="first_name" required value="<?php echo $userDetails["first_name"]; ?>">
 			</div>
 			<div class="col">
+				<label for="middle_name" class="form-label">Middle Name</label>
+				<input pattern="[A-Za-z][A-Za-z\s]*" type="text" class="form-control" id="middle_name" name="middle_name" required value="<?php echo $userDetails["middle_name"]; ?>">
+			</div>
+			<div class="col">
 				<label for="last_name" class="form-label">Last Name</label>
 				<input pattern="[A-Za-z][A-Za-z\s]*" type="text" class="form-control" id="last_name" name="last_name" required value="<?php echo $userDetails["last_name"]; ?>">
 			</div>

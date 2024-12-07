@@ -33,7 +33,7 @@ CONST CUSTOMER_ID = 2;
 // Database connection (adjust the credentials as necessary)
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "root";
 $dbname = "family_restaurant";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -118,6 +118,7 @@ function createRandomOrders($conn, $faker, $discountTiers, $discountRates) {
 	for ($i = 0; $i < ORDER_COUNT; $i++) {
 		// Insert a new order
 		$first_name = $faker->firstName;
+		$middle_name = $faker->firstName;
 		$last_name = $faker->lastName;
 		$email = $faker->email;
 		$city = $faker->city;
@@ -128,8 +129,8 @@ function createRandomOrders($conn, $faker, $discountTiers, $discountRates) {
 		// Randomly select an order status
 		$status = $statusOptions[array_rand($statusOptions)];
 
-		$orderQuery = "INSERT INTO orders (user_id, first_name, last_name, email, city, street, house_number, phone_1, status, created_at) 
-                   VALUES ('$user_id', '$first_name', '$last_name', '$email', '$city', '$street', '$house_number', $phone, '$status', NOW())";
+		$orderQuery = "INSERT INTO orders (user_id, first_name, middle_name, last_name, email, city, street, house_number, phone_1, status, created_at) 
+                   VALUES ('$user_id', '$first_name', '$middle_name', '$last_name', '$email', '$city', '$street', '$house_number', $phone, '$status', NOW())";
 		$conn->query($orderQuery);
 		$order_id = $conn->insert_id;
 

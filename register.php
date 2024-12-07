@@ -18,6 +18,7 @@ if ( $_SERVER["REQUEST_METHOD"] === "POST" ) {
 	$email       = $_POST['email'];
 	$password    = $_POST['password'];
 	$firstName   = $_POST['first_name'];
+	$middleName   = $_POST['middle_name'];
 	$lastName    = $_POST['last_name'];
 	$city        = $_POST['city'];
 	$street      = $_POST['street'];
@@ -74,6 +75,10 @@ include_once 'includes/partial/alerts.php'
 					<div class="col">
 						<label for="first_name" class="form-label">First Name</label>
 						<input pattern="[A-Za-z][A-Za-z\s]*" type="text" class="form-control" id="first_name" name="first_name" required>
+					</div>
+					<div class="col">
+						<label for="middle_name" class="form-label">Middle Name</label>
+						<input pattern="[A-Za-z][A-Za-z\s]*" type="text" class="form-control" id="middle_name" name="middle_name" required>
 					</div>
 					<div class="col">
 						<label for="last_name" class="form-label">Last Name</label>

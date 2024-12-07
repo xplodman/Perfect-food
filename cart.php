@@ -157,6 +157,10 @@ include_once 'includes/partial/alerts.php';
 					<input type="text" class="form-control" id="first_name" name="first_name" required value="<?php echo $_SESSION["first_name"]; ?>">
 				</div>
 				<div class="col">
+					<label for="middle_name" class="form-label">Middle Name</label>
+					<input type="text" class="form-control" id="middle_name" name="middle_name" required value="<?php echo $_SESSION["middle_name"]; ?>">
+				</div>
+				<div class="col">
 					<label for="last_name" class="form-label">Last Name</label>
 					<input type="text" class="form-control" id="last_name" name="last_name" required value="<?php echo $_SESSION["last_name"]; ?>">
 				</div>

@@ -10,7 +10,7 @@ class DB {
 	private $db_host = 'localhost';
 	private $db_name = 'family_restaurant';
 	private $db_username = 'root';
-	private $db_password = '';
+	private $db_password = 'root';
 
 	public function __construct() {
 		try {

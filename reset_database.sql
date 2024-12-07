@@ -151,6 +151,7 @@ CREATE TABLE `orders` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
   `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `city` varchar(50) NOT NULL,
@@ -200,6 +201,7 @@ CREATE TABLE `users` (
   `id` int NOT NULL,
   `role` varchar(255) NOT NULL DEFAULT 'user',
   `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -213,9 +215,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `role`, `first_name`, `last_name`, `email`, `password`, `city`, `street`, `house_number`, `created_at`) VALUES
-(1, 'admin', 'Ahmed', 'Essam', 'admin@family-restaurant.com', '$2y$10$XOWEqR4H50n.Caplzd8HmumSqooRUIJE9jjIHWaD/7fg9AheN0Z5S', 'cairo', 'Al Qasr Al Aini ', '78', '2024-04-12 19:36:04'),
-(2, 'customer', 'ibrahim', 'kamal', 'customer@family-restaurant.com', '$2y$10$XOWEqR4H50n.Caplzd8HmumSqooRUIJE9jjIHWaD/7fg9AheN0Z5S', 'cairo', 'Alazhar', '27', '2024-05-11 10:18:27');
+INSERT INTO `users` (`id`, `role`, `first_name`, `middle_name`, `last_name`, `email`, `password`, `city`, `street`, `house_number`, `created_at`) VALUES
+(1, 'admin', 'Ahmed', 'mohamed elsayed', 'fathy', 'admin@family-restaurant.com', '$2y$10$XOWEqR4H50n.Caplzd8HmumSqooRUIJE9jjIHWaD/7fg9AheN0Z5S', 'cairo', 'Al Qasr Al Aini ', '78', '2024-04-12 19:36:04'),
+(2, 'customer', 'ibrahim', 'ahmed mohamed', 'kamal', 'customer@family-restaurant.com', '$2y$10$XOWEqR4H50n.Caplzd8HmumSqooRUIJE9jjIHWaD/7fg9AheN0Z5S', 'cairo', 'Alazhar', '27', '2024-05-11 10:18:27');
 
 --
 -- Indexes for dumped tables
