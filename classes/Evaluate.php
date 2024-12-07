@@ -1,6 +1,6 @@
 <?php
 
-namespace PerfectFood\Classes;
+namespace FamilyRestaurant\Classes;
 
 use PDO;
 use PDOException;
@@ -13,10 +13,10 @@ class Evaluate {
 	}
 
 	/**
-	 * Creates a new evaluation for an entity (order or booking) with the provided details.
+	 * Creates a new evaluation for an entity (order or reservation) with the provided details.
 	 *
-	 * @param   int     $entityId    The ID of the entity (order or booking) being evaluated.
-	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
+	 * @param   int     $entityId    The ID of the entity (order or reservation) being evaluated.
+	 * @param   string  $entityType  The type of the entity ('order' or 'reservation').
 	 * @param   int     $rating      The evaluation given in the evaluation.
 	 * @param   string  $comment     The comment provided in the evaluation.
 	 *
@@ -25,16 +25,16 @@ class Evaluate {
 	public function createEntityEvaluation( $entityId, $entityType, $rating, $comment ) {
 		try {
 			// Prepare the SQL statement
-			$sql  = "INSERT INTO evaluations (order_id, booking_id, rating, comment) VALUES (?, ?, ?, ?)";
+			$sql  = "INSERT INTO evaluations (order_id, reservation_id, rating, comment) VALUES (?, ?, ?, ?)";
 			$stmt = $this->db->connection->prepare( $sql );
 
-			// Determine whether it's an order or booking evaluation and set the appropriate parameters
+			// Determine whether it's an order or reservation evaluation and set the appropriate parameters
 			if ( $entityType === 'order' ) {
 				$order_id   = $entityId;
-				$booking_id = null;
-			} elseif ( $entityType === 'booking' ) {
+				$reservation_id = null;
+			} elseif ( $entityType === 'reservation' ) {
 				$order_id   = null;
-				$booking_id = $entityId;
+				$reservation_id = $entityId;
 			} else {
 				// Handle invalid entity type
 				$_SESSION['errors'][] = "Invalid entity type.";
@@ -43,7 +43,7 @@ class Evaluate {
 			}
 
 			// Bind parameters and execute the statement
-			$stmt->execute( [ $order_id, $booking_id, $rating, $comment ] );
+			$stmt->execute( [ $order_id, $reservation_id, $rating, $comment ] );
 
 			// Provide feedback to the user
 			$_SESSION['info'][] = "Evaluation successfully inserted.";
@@ -54,8 +54,8 @@ class Evaluate {
 				exit();
 			}
 
-			if ( $entityType === 'booking' ) {
-				header( "Location: bookings.php" );
+			if ( $entityType === 'reservation' ) {
+				header( "Location: reservations.php" );
 				exit();
 			}
 		} catch ( PDOException $e ) {
@@ -64,10 +64,10 @@ class Evaluate {
 	}
 
 	/**
-	 * Checks if an entity (order or booking) has already been rated.
+	 * Checks if an entity (order or reservation) has already been rated.
 	 *
-	 * @param   int     $entityId    The ID of the entity (order or booking) to check.
-	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
+	 * @param   int     $entityId    The ID of the entity (order or reservation) to check.
+	 * @param   string  $entityType  The type of the entity ('order' or 'reservation').
 	 *
 	 * @return bool Returns true if the entity has been rated, false otherwise.
 	 */
@@ -76,9 +76,9 @@ class Evaluate {
 			// Prepare the SQL statement
 			$sql = "SELECT COUNT(*) FROM evaluations WHERE ";
 			if ( $entityType === 'order' ) {
-				$sql .= "order_id = ? AND booking_id IS NULL";
-			} elseif ( $entityType === 'booking' ) {
-				$sql .= "booking_id = ? AND order_id IS NULL";
+				$sql .= "order_id = ? AND reservation_id IS NULL";
+			} elseif ( $entityType === 'reservation' ) {
+				$sql .= "reservation_id = ? AND order_id IS NULL";
 			} else {
 				return false;
 			}
@@ -90,7 +90,7 @@ class Evaluate {
 			// Fetch the result
 			$result = $stmt->fetchColumn();
 
-			// Check if any evaluations exist for the order or booking
+			// Check if any evaluations exist for the order or reservation
 			return $result > 0;
 		} catch ( PDOException $e ) {
 			return false;
@@ -98,10 +98,10 @@ class Evaluate {
 	}
 
 	/**
-	 * Retrieves the evaluation details for an entity (order or booking).
+	 * Retrieves the evaluation details for an entity (order or reservation).
 	 *
-	 * @param   int     $entityId    The ID of the entity (order or booking).
-	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
+	 * @param   int     $entityId    The ID of the entity (order or reservation).
+	 * @param   string  $entityType  The type of the entity ('order' or 'reservation').
 	 *
 	 * @return array Returns an associative array containing the evaluation details if found, or an empty array if not found or error occurs.
 	 */
@@ -109,9 +109,9 @@ class Evaluate {
 		try {
 			$query = "SELECT * FROM evaluations WHERE ";
 			if ( $entityType === 'order' ) {
-				$query .= "order_id = ? AND booking_id IS NULL";
-			} elseif ( $entityType === 'booking' ) {
-				$query .= "booking_id = ? AND order_id IS NULL";
+				$query .= "order_id = ? AND reservation_id IS NULL";
+			} elseif ( $entityType === 'reservation' ) {
+				$query .= "reservation_id = ? AND order_id IS NULL";
 			} else {
 				return []; // Return an empty array for invalid entity type
 			}
@@ -129,7 +129,7 @@ class Evaluate {
 	/**
 	 * Retrieves total count of ratings for today.
 	 *
-	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
+	 * @param   string  $entityType  The type of the entity ('order' or 'reservation').
 	 *
 	 * @return int Returns the total count of ratings for today.
 	 */
@@ -138,8 +138,8 @@ class Evaluate {
 			// Prepare the SQL statement
 			$sql = "SELECT COUNT(*) AS totalRatingsToday FROM evaluations WHERE DATE(created_at) = CURDATE()";
 			if ( $entityType === 'order' ) {
-				$sql .= " AND booking_id IS NULL";
-			} elseif ( $entityType === 'booking' ) {
+				$sql .= " AND reservation_id IS NULL";
+			} elseif ( $entityType === 'reservation' ) {
 				$sql .= " AND order_id IS NULL";
 			} else {
 				return 0;
@@ -157,7 +157,7 @@ class Evaluate {
 	/**
 	 * Calculates the average rating for today.
 	 *
-	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
+	 * @param   string  $entityType  The type of the entity ('order' or 'reservation').
 	 *
 	 * @return float Returns the average rating for today.
 	 */
@@ -166,8 +166,8 @@ class Evaluate {
 			// Prepare the SQL statement
 			$sql = "SELECT AVG(rating) AS averageRatingToday FROM evaluations WHERE DATE(created_at) = CURDATE()";
 			if ( $entityType === 'order' ) {
-				$sql .= " AND booking_id IS NULL";
-			} elseif ( $entityType === 'booking' ) {
+				$sql .= " AND reservation_id IS NULL";
+			} elseif ( $entityType === 'reservation' ) {
 				$sql .= " AND order_id IS NULL";
 			} else {
 				return 0;
@@ -185,7 +185,7 @@ class Evaluate {
 	/**
 	 * Retrieves total count of ratings for the current month.
 	 *
-	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
+	 * @param   string  $entityType  The type of the entity ('order' or 'reservation').
 	 *
 	 * @return int Returns the total count of ratings for the current month.
 	 */
@@ -194,8 +194,8 @@ class Evaluate {
 			// Prepare the SQL statement
 			$sql = "SELECT COUNT(*) AS totalRatingsThisMonth FROM evaluations WHERE YEAR(created_at) = YEAR(CURDATE()) AND MONTH(created_at) = MONTH(CURDATE())";
 			if ( $entityType === 'order' ) {
-				$sql .= " AND booking_id IS NULL";
-			} elseif ( $entityType === 'booking' ) {
+				$sql .= " AND reservation_id IS NULL";
+			} elseif ( $entityType === 'reservation' ) {
 				$sql .= " AND order_id IS NULL";
 			} else {
 				return 0;
@@ -213,7 +213,7 @@ class Evaluate {
 	/**
 	 * Calculates the average rating for the current month.
 	 *
-	 * @param   string  $entityType  The type of the entity ('order' or 'booking').
+	 * @param   string  $entityType  The type of the entity ('order' or 'reservation').
 	 *
 	 * @return float Returns the average rating for the current month.
 	 */
@@ -222,8 +222,8 @@ class Evaluate {
 			// Prepare the SQL statement
 			$sql = "SELECT AVG(rating) AS averageRatingThisMonth FROM evaluations WHERE YEAR(created_at) = YEAR(CURDATE()) AND MONTH(created_at) = MONTH(CURDATE())";
 			if ( $entityType === 'order' ) {
-				$sql .= " AND booking_id IS NULL";
-			} elseif ( $entityType === 'booking' ) {
+				$sql .= " AND reservation_id IS NULL";
+			} elseif ( $entityType === 'reservation' ) {
 				$sql .= " AND order_id IS NULL";
 			} else {
 				return 0;

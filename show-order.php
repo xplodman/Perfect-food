@@ -1,6 +1,6 @@
 <?php
 
-use PerfectFood\Classes\Order;
+use FamilyRestaurant\Classes\Order;
 
 include_once 'includes/header.php';
 
@@ -16,7 +16,7 @@ if ( ! isset( $_GET['order_id'] ) ) {
 	exit;
 }
 
-// Create an instance of the Book class
+// Create an instance of the Reserve class
 $orderCLass = new Order();
 
 // Attempt to update the order
@@ -31,14 +31,14 @@ $orderMainDetails = $orderDetails[0];
 
 <div class="container">
 	<div class="d-flex justify-content-end mb-4">
-		<?php if ( ($_SESSION["role"] === 'admin' || $_SESSION["role"] === 'branch_manager') && ( $orderMainDetails['status'] === 'pending' || $orderMainDetails['status'] === 'in_progress' ) ) :
+		<?php if ( $_SESSION["role"] === 'admin' && ( $orderMainDetails['status'] === 'pending' || $orderMainDetails['status'] === 'in_progress' ) ) :
 			if ( $orderMainDetails['status'] === 'pending' ) : ?>
 				<form method="post" action="update-order.php">
 					<input type="hidden" name="order_id" value="<?php echo $orderMainDetails['order_id']; ?>">
 					<input type="hidden" name="status" value="in_progress">
 					<button type="submit" class="btn btn-primary m-2">Mark as In Progress</button>
 				</form>
-			<?php elseif ( $_SESSION["role"] === 'branch_manager' && $orderMainDetails['status'] === 'in_progress' ) : ?>
+			<?php elseif ( $orderMainDetails['status'] === 'in_progress' ) : ?>
 				<form method="post" action="update-order.php">
 					<input type="hidden" name="order_id" value="<?php echo $orderMainDetails['order_id']; ?>">
 					<input type="hidden" name="status" value="completed">

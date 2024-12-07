@@ -2,8 +2,8 @@
 // Database connection (adjust the credentials as necessary)
 $servername = "localhost";
 $username = "root";
-$password = "root";
-$dbname = "perfect_food";
+$password = "";
+$dbname = "family_restaurant";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

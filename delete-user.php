@@ -1,6 +1,6 @@
 <?php
 
-use PerfectFood\Classes\User;
+use FamilyRestaurant\Classes\User;
 
 include_once 'includes/header.php';
 

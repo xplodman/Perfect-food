@@ -1,8 +1,8 @@
 <?php
 include_once 'includes/header.php';
 
-use PerfectFood\Classes\Evaluate;
-use PerfectFood\Classes\Order;
+use FamilyRestaurant\Classes\Evaluate;
+use FamilyRestaurant\Classes\Order;
 
 // Check if the user is already logged in, if not, redirect to login page
 if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {
@@ -93,7 +93,7 @@ include_once 'includes/partial/alerts.php';
 						<?php endif; ?>
 					</td>
 					<td>
-						<?php if ( ($_SESSION["role"] === 'admin' || $_SESSION["role"] === 'branch_manager') && ( $order['status'] === 'pending' || $order['status'] === 'in_progress' ) ) :
+						<?php if ( $_SESSION["role"] === 'admin' && ( $order['status'] === 'pending' || $order['status'] === 'in_progress' ) ) :
 							if ( $order['status'] === 'pending' ) : ?>
 								<form method="post" action="update-order.php">
 									<input type="hidden" name="show_all" value="<?php echo $showAll ? '1' : '0'; ?>">
@@ -101,7 +101,7 @@ include_once 'includes/partial/alerts.php';
 									<input type="hidden" name="status" value="in_progress">
 									<button type="submit" class="btn btn-primary m-2">Mark as In Progress</button>
 								</form>
-							<?php elseif ( $_SESSION["role"] === 'branch_manager' && $order['status'] === 'in_progress' ) : ?>
+							<?php elseif ( $order['status'] === 'in_progress' ) : ?>
 								<form method="post" action="update-order.php">
 									<input type="hidden" name="show_all" value="<?php echo $showAll ? '1' : '0'; ?>">
 									<input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">

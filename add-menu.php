@@ -1,13 +1,13 @@
 <?php
 
-use PerfectFood\Classes\Menu;
+use FamilyRestaurant\Classes\Menu;
 
 include_once 'includes/header.php';
 
 $menu = new Menu();
 
 // Check if the user is an admin
-if ( $_SESSION["role"] !== 'admin' && $_SESSION["role"] !== 'branch_manager' ) {
+if ( $_SESSION["role"] !== 'admin' ) {
 	$_SESSION['errors'][] = 'You do not have access to this page';
 	header( 'Location: index.php' );
 	exit();

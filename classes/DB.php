@@ -1,6 +1,6 @@
 <?php
 
-namespace PerfectFood\Classes;
+namespace FamilyRestaurant\Classes;
 
 use PDO;
 use PDOException;
@@ -8,9 +8,9 @@ use PDOException;
 class DB {
 	public $connection;
 	private $db_host = 'localhost';
-	private $db_name = 'perfect_food';
+	private $db_name = 'family_restaurant';
 	private $db_username = 'root';
-	private $db_password = 'root';
+	private $db_password = '';
 
 	public function __construct() {
 		try {

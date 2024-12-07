@@ -18,21 +18,21 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `perfect_food`
+-- Database: `family_restaurant`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bookings`
+-- Table structure for table `reservations`
 --
 
-CREATE TABLE `bookings` (
+CREATE TABLE `reservations` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
   `branch_id` int NOT NULL,
-  `booking_date` date NOT NULL,
-  `booking_time` time NOT NULL,
+  `reservation_date` date NOT NULL,
+  `reservation_time` time NOT NULL,
   `guests` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(50) NOT NULL DEFAULT 'pending'
@@ -72,7 +72,7 @@ INSERT INTO `branches` (`id`, `name`, `location`, `contact_info`, `max_guests`) 
 CREATE TABLE `evaluations` (
   `id` int NOT NULL,
   `order_id` int DEFAULT NULL,
-  `booking_id` int DEFAULT NULL,
+  `reservation_id` int DEFAULT NULL,
   `rating` int DEFAULT NULL,
   `comment` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
@@ -96,14 +96,13 @@ CREATE TABLE `menus` (
 --
 
 INSERT INTO `menus` (`id`, `name`, `description`, `active`) VALUES
-(1, 'Breakfast Menu', 'Delicious breakfast options to start your day', 1),
-(2, 'Lunch Menu', 'Satisfying lunch options for a midday meal', 1),
-(3, 'Dinner Menu', 'Delectable dinner options for a hearty meal', 1),
-(4, 'Drinks Menu', 'Refreshing beverages to quench your thirst', 1),
-(5, 'Dessert Menu', 'Indulgent treats to satisfy your sweet tooth', 1),
-(6, 'Vegetarian Menu', 'Delicious plant-based options for vegetarians', 1),
-(7, 'Kids Menu', 'Kid-friendly meals that are sure to please', 1);
-
+(1, 'قائمة الإفطار', 'خيارات إفطار شهية لبدء يومك', 1),
+(2, 'قائمة الغداء', 'خيارات غداء مُشبِعة لوجبة منتصف النهار', 1),
+(3, 'قائمة العشاء', 'خيارات عشاء لذيذة لوجبة مشبعة', 1),
+(4, 'قائمة المشروبات', 'مشروبات منعشة تروي عطشك', 1),
+(5, 'قائمة الحلويات', 'حلويات شهية تُرضي شغفك بالسكر', 1),
+(6, 'قائمة الطعام النباتي', 'خيارات نباتية لذيذة للنباتيين', 1),
+(7, 'قائمة الأطفال', 'وجبات مناسبة للأطفال ستنال إعجابهم', 1);
 -- --------------------------------------------------------
 
 --
@@ -125,22 +124,22 @@ CREATE TABLE `menu_items` (
 --
 
 INSERT INTO `menu_items` (`id`, `name`, `description`, `image`, `price`, `menu_id`, `active`) VALUES
-(1, 'Classic Pancakes', 'Fluffy pancakes served with maple syrup', 'assets/images/1.jpg', '33.00', 1, 1),
-(2, 'Avocado Toast', 'Sliced avocado on toasted bread with poached eggs', 'assets/images/2.jpeg', '30.00', 1, 1),
-(3, 'Club Sandwich', 'Triple-decker sandwich with turkey, bacon, lettuce, and tomato', 'assets/images/3.jpg', '31.00', 2, 1),
-(4, 'Caesar Salad', 'Romaine lettuce, croutons, Parmesan cheese, and Caesar dressing', 'assets/images/4.jpg', '45.00', 2, 1),
-(5, 'Grilled Salmon', 'Fresh Atlantic salmon fillet grilled to perfection', 'assets/images/5.jpg', '49.00', 3, 1),
-(6, 'Ribeye Steak', 'Juicy ribeye steak cooked to your liking', 'assets/images/6.jpg', '31.00', 3, 1),
-(7, 'Iced Coffee', 'Chilled coffee served over ice with milk or cream', 'assets/images/7.jpg', '20.00', 4, 1),
-(8, 'Fresh Orange Juice', 'Cold-pressed orange juice made from freshly squeezed oranges', 'assets/images/8.webp', '48.00', 4, 1),
-(9, 'Chocolate Brownie', 'Rich and fudgy chocolate brownie topped with vanilla ice cream', 'assets/images/9.webp', '35.00', 5, 1),
-(10, 'New York Cheesecake', 'Creamy cheesecake with a graham cracker crust', 'assets/images/10.jpg', '45.00', 5, 1),
-(11, 'Mango Sorbet', 'Refreshing mango sorbet made with ripe mangoes', 'assets/images/11.jpg', '39.00', 5, 1),
-(12, 'Quinoa Salad', 'Healthy salad with quinoa, mixed greens, and veggies', 'assets/images/12.jpeg', '38.00', 6, 1),
-(13, 'Vegetable Stir-Fry', 'Assorted vegetables stir-fried in a savory sauce', 'assets/images/13.jpg', '22.00', 6, 1),
-(14, 'Chicken Tenders', 'Breaded and fried chicken tenders served with dipping sauce', 'assets/images/14.jpg', '41.00', 7, 1),
-(15, 'Macaroni and Cheese', 'Creamy macaroni pasta with melted cheese', 'assets/images/15.jpg', '25.00', 7, 1),
-(16, 'Cheese Pizza', 'Classic cheese pizza with tomato sauce and mozzarella cheese', 'assets/images/16.webp', '46.00', 7, 1);
+(1, 'فول مدمس', 'طبق مصري تقليدي من الفول مع زيت الزيتون والليمون', 'assets/images/1.jpg', '20.00', 1, 1),
+(2, 'طعمية (فلافل)', 'أقراص مقلية من الحمص والفول مغطاة بالسمسم', 'assets/images/2.jpeg', '15.00', 1, 1),
+(3, 'كشري', 'طبق مصري شهير مكون من الأرز والمعكرونة والعدس', 'assets/images/3.jpg', '25.00', 2, 1),
+(4, 'ملوخية بالأرز', 'شوربة الملوخية الشهيرة مع الأرز والدجاج', 'assets/images/4.jpg', '30.00', 2, 1),
+(5, 'فراخ مشوية', 'دجاج مشوي متبل بالأعشاب والبهارات المصرية', 'assets/images/5.jpg', '45.00', 3, 1),
+(6, 'كباب وكفتة', 'لحم مشوي متبل على الفحم يقدم مع الأرز والخضروات', 'assets/images/6.jpeg', '55.00', 3, 1),
+(7, 'عصير قصب', 'عصير القصب الطازج المنعش', 'assets/images/7.jpg', '10.00', 4, 1),
+(8, 'كركديه مثلج', 'مشروب الكركديه المصري المثلج', 'assets/images/8.jpeg', '12.00', 4, 1),
+(9, 'أم علي', 'حلوى تقليدية مصرية مكونة من الخبز والحليب والمكسرات', 'assets/images/9.webp', '25.00', 5, 1),
+(10, 'بسبوسة', 'حلوى سميد تقليدية مشبعة بالشربات', 'assets/images/10.jpeg', '20.00', 5, 1),
+(11, 'زلابية', 'قطع مقلية من العجين الحلو مغطاة بالعسل أو السكر', 'assets/images/11.webp', '18.00', 5, 1),
+(12, 'سلطة بلدي', 'سلطة مصرية طازجة مكونة من الطماطم والخيار والبصل', 'assets/images/12.jpg', '15.00', 6, 1),
+(13, 'مسقعة', 'شرائح باذنجان مطبوخة مع الطماطم والفلفل الحار', 'assets/images/13.jpg', '22.00', 6, 1),
+(14, 'برجر صغير', 'ساندوتش برجر صغير مع البطاطس المقلية', 'assets/images/14.jpg', '25.00', 7, 1),
+(15, 'قطع دجاج مقلية', 'قطع دجاج مقلية مقرمشة مع صوص الغمس', 'assets/images/15.jpeg', '22.00', 7, 1),
+(16, 'ميني بيتزا', 'ميني بيتزا بالجبن والطماطم', 'assets/images/16.jpg', '20.00', 7, 1);
 
 -- --------------------------------------------------------
 
@@ -215,17 +214,17 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `role`, `first_name`, `last_name`, `email`, `password`, `city`, `street`, `house_number`, `created_at`) VALUES
-(1, 'admin', 'Ahmed', 'Essam', 'admin@perfect-food.com', '$2y$10$XOWEqR4H50n.Caplzd8HmumSqooRUIJE9jjIHWaD/7fg9AheN0Z5S', 'cairo', 'Al Qasr Al Aini ', '78', '2024-04-12 19:36:04'),
-(2, 'branch_manager', 'ibrahim', 'kamal', 'branch_manager@perfect-food.com', '$2y$10$XOWEqR4H50n.Caplzd8HmumSqooRUIJE9jjIHWaD/7fg9AheN0Z5S', 'cairo', 'Alazhar', '27', '2024-05-11 10:18:27');
+(1, 'admin', 'Ahmed', 'Essam', 'admin@family-restaurant.com', '$2y$10$XOWEqR4H50n.Caplzd8HmumSqooRUIJE9jjIHWaD/7fg9AheN0Z5S', 'cairo', 'Al Qasr Al Aini ', '78', '2024-04-12 19:36:04'),
+(2, 'customer', 'ibrahim', 'kamal', 'customer@family-restaurant.com', '$2y$10$XOWEqR4H50n.Caplzd8HmumSqooRUIJE9jjIHWaD/7fg9AheN0Z5S', 'cairo', 'Alazhar', '27', '2024-05-11 10:18:27');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `bookings`
+-- Indexes for table `reservations`
 --
-ALTER TABLE `bookings`
+ALTER TABLE `reservations`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `branch_id` (`branch_id`);
@@ -242,7 +241,7 @@ ALTER TABLE `branches`
 ALTER TABLE `evaluations`
   ADD PRIMARY KEY (`id`),
   ADD KEY `order_id` (`order_id`),
-  ADD KEY `booking_id` (`booking_id`);
+  ADD KEY `reservation_id` (`reservation_id`);
 
 --
 -- Indexes for table `menus`
@@ -291,9 +290,9 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `bookings`
+-- AUTO_INCREMENT for table `reservations`
 --
-ALTER TABLE `bookings`
+ALTER TABLE `reservations`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
@@ -349,18 +348,18 @@ ALTER TABLE `users`
 --
 
 --
--- Constraints for table `bookings`
+-- Constraints for table `reservations`
 --
-ALTER TABLE `bookings`
-  ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+ALTER TABLE `reservations`
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `evaluations`
 --
 ALTER TABLE `evaluations`
   ADD CONSTRAINT `evaluations_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
-  ADD CONSTRAINT `evaluations_ibfk_2` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`);
+  ADD CONSTRAINT `evaluations_ibfk_2` FOREIGN KEY (`reservation_id`) REFERENCES `reservations` (`id`);
 
 --
 -- Constraints for table `menu_items`

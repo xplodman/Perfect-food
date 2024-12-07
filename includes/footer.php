@@ -1,22 +1,22 @@
 </div>
 
 <footer
-          class="text-center text-lg-start text-white"
-          style="background-color: #0d6efd ; margin-top: auto"
+          class="text-center text-lg-start text-white bg-success"
+          style="margin-top: 50px;"
           >
     <div class="container mt-3">
       <section>
         <div class="row">
           <div class="col-md-6 col-lg-6 col-xl-5 mx-auto ">
             <h5 class="text-uppercase mb-0 font-weight-bold fw-bold">
-               Perfect Food
+               Family Restaurant
             </h5>
             <hr
                 class="mb-1 mt-0 d-inline-block mx-auto"
                 style="width: 60px; background-color: #FFFFFF; height: 2px"
                 />
             <p>
-             Welcome to Perfect Food, At our restaurant, we pride ourselves on serving exquisite dishes crafted 
+             Welcome to Family Restaurant, At our restaurant, we pride ourselves on serving exquisite dishes crafted 
              from the freshest ingredients and presented with flair. our diverse menu and attentive service ensure
              a memorable dining experience every time. Discover a place where great food meets warm hospitality, 
              and let us make your dining moments truly perfect. 
@@ -55,7 +55,7 @@
                 style="width: 60px; background-color: #FFFFFF; height: 2px"
                 />
             <p><i class="fas fa-home mr-3"></i> Cairo Central, 13 El-Gomhoreya Street, Downtown</p>
-            <p><i class="fas fa-envelope mr-3"></i> info@perfect-food.com</p>
+            <p><i class="fas fa-envelope mr-3"></i> info@family-restaurant.com</p>
             <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
           </div>
         </div>
@@ -69,7 +69,7 @@
             <div>
               © 2024
               <a class="text-white" href="index.php"
-                 >Perfect food. All rights reserved. </a>
+                 >Family Restaurant. All rights reserved. </a>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 <?php
 
-use PerfectFood\Classes\Order;
+use FamilyRestaurant\Classes\Order;
 
 include_once 'includes/header.php';
 
@@ -11,7 +11,7 @@ if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== t
 }
 
 // Check if the user is an admin
-if ( $_SESSION["role"] !== 'admin' && $_SESSION["role"] !== 'branch_manager' ) {
+if ( $_SESSION["role"] !== 'admin' ) {
 	$_SESSION['errors'][] = 'You do not have access to this page';
 	header('Location: index.php');
 	exit();
@@ -23,7 +23,7 @@ if ( ! isset( $_POST['order_id'] ) ) {
 	exit;
 }
 
-// Create an instance of the Book class
+// Create an instance of the Reserve class
 $order = new Order();
 
 // Attempt to update the order

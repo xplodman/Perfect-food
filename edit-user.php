@@ -1,7 +1,7 @@
 <?php
 
-use PerfectFood\Classes\Order;
-use PerfectFood\Classes\User;
+use FamilyRestaurant\Classes\Order;
+use FamilyRestaurant\Classes\User;
 
 include_once 'includes/header.php';
 

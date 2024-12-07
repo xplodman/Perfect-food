@@ -25,7 +25,7 @@
 				<button type="submit" class="btn btn-primary">Add to Cart</button>
 			</div>
 		</form>
-		<?php if ( isset($_SESSION["role"]) && ($_SESSION["role"] === 'admin' || $_SESSION["role"] === 'branch_manager') ): ?>
+		<?php if ( isset($_SESSION["role"]) && $_SESSION["role"] === 'admin' ): ?>
 			<!-- Edit Link -->
 			<a class="edit-link position-absolute bottom-0 end-0 p-2" href="edit-item.php?item_id=<?php echo $item['id']; ?>" title="Edit">
 				<i class="bi bi-pencil-square"></i>

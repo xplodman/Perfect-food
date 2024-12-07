@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+<nav class="navbar navbar-expand-lg navbar-dark bg-success mb-4">
 	<div class="container">
-		<a class="navbar-brand" href="index.php">Perfect Food</a>
+		<a class="navbar-brand" href="index.php">Family Restaurant</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -17,14 +17,11 @@
 				// Conditionally add additional navigation items based on the user's role
 				if ( isset($_SESSION["role"]) && $_SESSION["role"] === 'admin' ) {
 					$navItems[] = [ 'All users', 'users.php', 'people' ];
-					$navItems[] = [ 'All bookings', 'bookings.php', 'calendar' ];
-					$navItems[] = [ 'All orders', 'orders.php', 'list' ];
-				}elseif ( isset($_SESSION["role"]) && $_SESSION["role"] === 'branch_manager' ) {
-					$navItems[] = [ 'All bookings', 'bookings.php', 'calendar' ];
+					$navItems[] = [ 'All reservations', 'reservations.php', 'calendar' ];
 					$navItems[] = [ 'All orders', 'orders.php', 'list' ];
 				}else{
 					// Additional navigation items for non-admin users
-					$navItems[] = [ 'Booking', 'booking.php', 'calendar' ];
+					$navItems[] = [ 'Reservation', 'reservation.php', 'calendar' ];
 				}
 
 				// Convert to constant if needed
@@ -50,7 +47,7 @@
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<li><a class="dropdown-item" href="account.php">Account</a></li>
 							<?php if ( $_SESSION["role"] !== 'admin' ): ?>
-								<li><a class="dropdown-item" href="bookings.php">My Bookings</a></li>
+								<li><a class="dropdown-item" href="reservations.php">My Reservations</a></li>
 								<li><a class="dropdown-item" href="orders.php">My Orders</a></li>
 							<?php endif; ?>
 							<li>

@@ -1,6 +1,6 @@
 <?php
 // Include the User class
-use PerfectFood\Classes\User;
+use FamilyRestaurant\Classes\User;
 
 // Include the autoload.php file
 require_once 'includes/autoload.php';

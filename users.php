@@ -1,9 +1,9 @@
 <?php
 include_once 'includes/header.php';
 
-use PerfectFood\Classes\Book;
-use PerfectFood\Classes\Evaluate;
-use PerfectFood\Classes\User;
+use FamilyRestaurant\Classes\Reserve;
+use FamilyRestaurant\Classes\Evaluate;
+use FamilyRestaurant\Classes\User;
 
 // Check if the user is already logged in, if not, redirect to login page
 if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {
@@ -20,7 +20,7 @@ if ( $_SESSION["role"] !== 'admin' ) {
 
 $userClass = new User();
 
-// Retrieve bookings for the logged-in customer
+// Retrieve reservations for the logged-in customer
 $users = $userClass->retrieveAllUsers();
 include_once 'includes/partial/alerts.php';
 

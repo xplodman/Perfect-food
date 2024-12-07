@@ -1,6 +1,6 @@
 <?php
 
-namespace PerfectFood\Classes;
+namespace FamilyRestaurant\Classes;
 
 use PDO;
 use PDOException;
@@ -119,7 +119,6 @@ class Order {
 	{
 		try {
 			$isAdmin = ($_SESSION["role"] === 'admin');
-			$isBranchAdmin = ($_SESSION["role"] === 'branch_manager');
 
 			// Base query to retrieve orders information
 			$query = "
@@ -135,12 +134,8 @@ class Order {
 			";
 
 
-			if (!$isAdmin && !$isBranchAdmin) {
+			if (!$isAdmin) {
 				$query .= " WHERE orders.user_id = ?";
-			}
-
-			if ($isBranchAdmin) {
-				$query .= " WHERE orders.status = 'in_progress'";
 			}
 
 			$query .= " GROUP BY orders.id ORDER BY orders.id DESC";
@@ -151,7 +146,7 @@ class Order {
 
 			$statement = $this->db->connection->prepare($query);
 
-			if (!$isAdmin && !$isBranchAdmin) {
+			if (!$isAdmin) {
 				// Bind user ID parameter for non-admin users
 				$statement->execute([$_SESSION['user_id']]);
 			} else {

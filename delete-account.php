@@ -1,7 +1,7 @@
 <?php
 include_once 'includes/header.php';
 
-use PerfectFood\Classes\User;
+use FamilyRestaurant\Classes\User;
 
 // Check if the user is already logged in, if yes, redirect to homepage
 if ( ! isset( $_SESSION["user_logged_in"] ) || $_SESSION["user_logged_in"] !== true ) {

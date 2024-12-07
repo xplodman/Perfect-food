@@ -1,6 +1,6 @@
 <?php
 
-namespace PerfectFood\Classes;
+namespace FamilyRestaurant\Classes;
 
 use PDO;
 use PDOException;

@@ -1,7 +1,7 @@
 <?php
 // Check if the item id is sent via POST
-use PerfectFood\Classes\Order;
-use PerfectFood\Classes\User;
+use FamilyRestaurant\Classes\Order;
+use FamilyRestaurant\Classes\User;
 
 $order = new Order();
 $user = new User();

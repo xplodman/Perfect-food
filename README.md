@@ -4,7 +4,7 @@
     - Users can register, login, and logout securely.
 
 2. **Dashboard Overview:**
-    - Users and admins have separate dashboards displaying order and booking counts with their respective statuses.
+    - Users and admins have separate dashboards displaying order and reservation counts with their respective statuses.
 
 3. **Interactive Menu:**
     - The dashboard showcases four random items to engage users with the menu.
@@ -32,15 +32,15 @@
 10. **Rating Orders:**
     - Users can rate completed orders on a scale of 1 to 5 and provide optional comments.
 
-11. **Booking Feature:**
+11. **Reservation Feature:**
     - Users can make reservations by providing branch location, date, time, and number of guests.
 
-12. **Booking History:**
-    - Users can view a history of all their bookings, including booking ID, branch, status, date, time, number of guests, and rating.
-    - Bookings can be deleted within one hour of creation.
+12. **Reservation History:**
+    - Users can view a history of all their reservations, including reservation ID, branch, status, date, time, number of guests, and rating.
+    - Reservations can be deleted within one hour of creation.
 
-13. **Rating Bookings:**
-    - Users can rate completed bookings on a scale of 1 to 5 and provide optional comments.
+13. **Rating Reservations:**
+    - Users can rate completed reservations on a scale of 1 to 5 and provide optional comments.
 
 14. **Account Management:**
     - Users can update their account details, including password, name, address, and contact numbers.
@@ -68,7 +68,7 @@
     - Admins can cancel orders except those in complete status.
     - Ratings of completed orders are also displayed.
 
-4. **Booking Management:**
-    - Admins can view a list of all bookings, change booking statuses from pending to in progress and from in progress to complete.
-    - Admins can cancel bookings except those in complete status.
-    - Ratings of completed bookings are also displayed.
+4. **Reservation Management:**
+    - Admins can view a list of all reservations, change reservation statuses from pending to in progress and from in progress to complete.
+    - Admins can cancel reservations except those in complete status.
+    - Ratings of completed reservations are also displayed.

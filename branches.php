@@ -1,6 +1,6 @@
 <?php
 
-use PerfectFood\Classes\Branch;
+use FamilyRestaurant\Classes\Branch;
 
 include_once 'includes/header.php';
 

@@ -1,6 +1,6 @@
 <?php
 
-use PerfectFood\Classes\Menu;
+use FamilyRestaurant\Classes\Menu;
 
 include_once 'includes/header.php';
 

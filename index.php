@@ -1,16 +1,16 @@
 <?php
 
-use PerfectFood\Classes\Book;
-use PerfectFood\Classes\Evaluate;
-use PerfectFood\Classes\MenuItem;
-use PerfectFood\Classes\Order;
+use FamilyRestaurant\Classes\Reserve;
+use FamilyRestaurant\Classes\Evaluate;
+use FamilyRestaurant\Classes\MenuItem;
+use FamilyRestaurant\Classes\Order;
 
 include_once 'includes/header.php';
 include_once 'includes/partial/alerts.php';
 
 // Initialize classes
 $menuItems = new MenuItem();
-$booking   = new Book();
+$reservation   = new Reserve();
 $order     = new Order();
 $evaluate     = new Evaluate();
 
@@ -47,16 +47,16 @@ $randomMenuItems = $menuItems->retrieveRandomMenuItemsWithLimit( 4 );
 				</div>
 			</div>
 			<?php
-			// Get counts of bookings for each status
-			$bookingStatusCounts = $booking->retrieveBookingStatusCounts();
+			// Get counts of reservations for each status
+			$reservationStatusCounts = $reservation->retrieveReservationStatusCounts();
 			?>
-			<!-- Bookings Status Counts -->
+			<!-- Reservations Status Counts -->
 			<div class="col-md-6">
 				<div class="card mb-3">
 					<div class="card-body">
-						<h5 class="card-title">Bookings Status Summary</h5>
+						<h5 class="card-title">Reservations Status Summary</h5>
 						<ul>
-							<?php foreach ( $bookingStatusCounts as $status => $count ) : ?>
+							<?php foreach ( $reservationStatusCounts as $status => $count ) : ?>
 								<li><?php echo ucfirst( $status ) . ': ' . $count; ?></li>
 							<?php endforeach; ?>
 						</ul>
@@ -64,7 +64,7 @@ $randomMenuItems = $menuItems->retrieveRandomMenuItemsWithLimit( 4 );
 				</div>
 			</div>
 		</div>
-		<?php if ( $_SESSION["role"] === 'admin' || $_SESSION["role"] === 'branch_manager' ): ?>
+		<?php if ( $_SESSION["role"] === 'admin' ): ?>
 		<div class="row">
 			<div class="col-md-6">
 				<div class="card mb-3">
@@ -82,12 +82,12 @@ $randomMenuItems = $menuItems->retrieveRandomMenuItemsWithLimit( 4 );
 			<div class="col-md-6">
 				<div class="card mb-3">
 					<div class="card-body">
-						<h5 class="card-title">Bookings Ratings Summary</h5>
+						<h5 class="card-title">Reservations Ratings Summary</h5>
 						<ul>
-							<li>Total Ratings Today: <span><?php echo $evaluate->totalRatingsToday('booking'); ?></span></li>
-							<li>Average Rating Today: <span><?php echo $evaluate->averageRatingToday('booking'); ?></span></li>
-							<li>Total Ratings This Month: <span><?php echo $evaluate->totalRatingsThisMonth('booking'); ?></span></li>
-							<li>Average Rating This Month: <span><?php echo $evaluate->averageRatingThisMonth('booking'); ?></span></li>
+							<li>Total Ratings Today: <span><?php echo $evaluate->totalRatingsToday('reservation'); ?></span></li>
+							<li>Average Rating Today: <span><?php echo $evaluate->averageRatingToday('reservation'); ?></span></li>
+							<li>Total Ratings This Month: <span><?php echo $evaluate->totalRatingsThisMonth('reservation'); ?></span></li>
+							<li>Average Rating This Month: <span><?php echo $evaluate->averageRatingThisMonth('reservation'); ?></span></li>
 						</ul>
 					</div>
 				</div>
