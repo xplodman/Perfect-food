@@ -1,5 +1,10 @@
 {
     "require": {
         "fakerphp/faker": "^1.23"
+    },
+    "scripts": {
+        "compress-files": [
+            "./create_zip.sh"
+        ]
     }
 }
