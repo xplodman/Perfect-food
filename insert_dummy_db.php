@@ -71,7 +71,7 @@ function resetAndImportDataBase($conn)
     }
 
 // Load and execute the SQL file
-    $sqlFile = file_get_contents('./reset_database.sql');
+    $sqlFile = file_get_contents('./family_restaurant.sql');
 
     if ($conn->multi_query($sqlFile)) {
         // Clear all pending results
